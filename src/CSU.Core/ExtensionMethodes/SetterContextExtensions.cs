@@ -18,5 +18,18 @@ namespace CSU.Core.ExtensionMethodes
             }
             return context;
         }
+
+        public static SetterContext<T> NotifyMany<T>(this SetterContext<T> context, params string[] propertyNames)
+        {
+            if (context.HasChanged)
+            {
+                foreach (var propertyName in propertyNames)
+                {
+                    context.OnPropertyChanged(propertyName);
+                }
+            }
+            return context;
+        }
+
     }
 }
