@@ -1,4 +1,5 @@
-﻿using CSU.Core.PropertyChanged;
+﻿using CSU.Core.Commands;
+using CSU.Core.PropertyChanged;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CSU.Core.ExtensionMethodes;
@@ -31,6 +32,15 @@ public static class SetterContextExtensions
         if (context.HasChanged)
         {
             action(context.Value);
+        }
+        return context;
+    }
+
+    public static SetterContext<T> NotifyCommand<T>(this SetterContext<T> context, BaseCommand command)
+    {
+        if (context.HasChanged)
+        {
+            command.RaisCanExecuteChanged();
         }
         return context;
     }
