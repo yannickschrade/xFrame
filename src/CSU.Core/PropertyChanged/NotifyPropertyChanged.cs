@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace CSU.Core.PropertyChanged;
@@ -59,12 +60,9 @@ public abstract class NotifyPropertyChanged : INotifyPropertyChanged, INotifyPro
 
     #region Get
 
-    protected virtual T? Get<T>([CallerMemberName] string propertyName = null)
+    protected virtual T? Get<T>([CallerMemberName] string? propertyName = null)
     {
-        if (propertyName is null)
-        {
-            throw new ArgumentNullException(nameof(propertyName));
-        }
+        ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
 
         if (!_properties.TryGetValue(propertyName, out var value))
         {
