@@ -3,61 +3,80 @@ using xFrame.Core.IoC;
 
 namespace xFrame.Core.IoC;
 
-internal class DryIocContainerWrapper : IContainer<Container>
+public class DryIocContainerWrapper : ITypeService<IContainer>
 {
-    public Container Instance { get; private set; }
+
+    public static Rules DefaultRules => Rules.Default.WithConcreteTypeDynamicRegistrations(reuse: Reuse.Transient)
+                                                        .With(Made.Of(FactoryMethod.ConstructorWithResolvableArguments))
+                                                        .WithFuncAndLazyWithoutRegistration()
+                                                        .WithTrackingDisposableTransients()
+                                                        .WithoutFastExpressionCompiler()
+                                                        .WithFactorySelector(Rules.SelectLastRegisteredFactory());
+    public IContainer TypeService { get; private set; }
 
     public DryIocContainerWrapper()
     {
-        Instance = new Container();
+        TypeService = new Container(DefaultRules);
     }
 
-    public void FinalizeContainer() { }
-
-    public IRegistrationContainer RegisterInstance(Type to, object instance)
+    public DryIocContainerWrapper(IContainer container)
     {
-        Instance.RegisterInstance(to, instance);
+        TypeService = container;
+    }
+
+    public void FinalizeTypeService() { }
+
+    public ITypeRegistrationService RegisterInstance(Type to, object instance)
+    {
+        TypeService.RegisterInstance(to, instance);
         return this;
     }
 
-    public IRegistrationContainer RegisterSingelton(Type from, Type to)
+    public ITypeRegistrationService RegisterSingelton(Type from, Type to)
     {
-        Instance.Register(from, to, Reuse.Singleton);
+        TypeService.Register(from, to, Reuse.Singleton);
         return this;
     }
 
-    public IRegistrationContainer RegisterSingelton(Type to, Func<object> factory)
+    public ITypeRegistrationService RegisterSingelton(Type to, Func<object> factory)
     {
-        Instance.RegisterDelegate(to, c => factory(), Reuse.Singleton);
+        TypeService.RegisterDelegate(to, c => factory(), Reuse.Singleton);
         return this;
     }
 
-    public IRegistrationContainer RegisterSingelton(Type to, Func<IRegistrationContainer, object> factory)
+    public ITypeRegistrationService RegisterSingelton(Type to, Func<ITypeRegistrationService, object> factory)
     {
-        Instance.RegisterDelegate(to, c => factory(this), Reuse.Singleton);
+        TypeService.RegisterDelegate(to, c => factory(this), Reuse.Singleton);
         return this;
     }
 
-    public IRegistrationContainer RegisterType(Type from, Type to)
+    public ITypeRegistrationService RegisterType(Type from, Type to)
     {
-        Instance.Register(from, to);
+        TypeService.Register(from, to);
         return this;
     }
 
-    public IRegistrationContainer RegisterType(Type to, Func<object> factory)
+    public ITypeRegistrationService RegisterType(Type to, Func<object> factory)
     {
-        Instance.RegisterDelegate(to, c => factory());
+        TypeService.RegisterDelegate(to, c => factory());
         return this;
     }
 
-    public IRegistrationContainer RegisterType(Type to, Func<IRegistrationContainer, object> factory)
+    public ITypeRegistrationService RegisterType(Type to, Func<ITypeRegistrationService, object> factory)
     {
-        Instance.RegisterDelegate(to, c => factory(this));
+        TypeService.RegisterDelegate(to, c => factory(this));
         return this;
     }
 
     public object Resolve(Type type)
     {
-        return Instance.Resolve(type);
+        return TypeService.Resolve(type);
+    }
+}
+public static class DryIoCExtensionMethodes
+{
+    public static ITypeService Wrap(this IContainer container)
+    {
+        return new DryIocContainerWrapper(container);
     }
 }

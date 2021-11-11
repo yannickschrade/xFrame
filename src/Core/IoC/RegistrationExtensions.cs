@@ -8,14 +8,14 @@ namespace xFrame.Core.IoC
 {
     public static class RegistrationExtensions
     {
-        public static IRegistrationContainer RegisterType<Tfrom, Tto>(this IRegistrationContainer container)
+        public static ITypeRegistrationService RegisterType<Tfrom, Tto>(this ITypeRegistrationService registrationService)
         {
-            return container.RegisterType(typeof(Tfrom), typeof(Tto));
+            return registrationService.RegisterType(typeof(Tfrom), typeof(Tto));
         }
 
-        public static IRegistrationContainer RegisterSingelton<Tfrom, Tto>(this IRegistrationContainer container)
+        public static ITypeRegistrationService RegisterSingelton<Tfrom, Tto>(this ITypeRegistrationService registrationService)
         {
-            return container.RegisterSingelton(typeof(Tfrom), typeof(Tto));
+            return registrationService.RegisterSingelton(typeof(Tfrom), typeof(Tto));
         }
     }
 }
