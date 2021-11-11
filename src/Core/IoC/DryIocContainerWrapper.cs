@@ -1,7 +1,7 @@
-﻿using CSU.Core.IoC;
-using DryIoc;
+﻿using DryIoc;
+using xFrame.Core.IoC;
 
-namespace CSU.Core.IoC;
+namespace xFrame.Core.IoC;
 
 internal class DryIocContainerWrapper : IContainer<Container>
 {

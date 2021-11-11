@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSU.Core.IoC
+namespace xFrame.Core.IoC
 {
     public static class ResolverExtensions
     {

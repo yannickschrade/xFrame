@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CSU.Core.PropertyChanged;
+namespace xFrame.Core.PropertyChanged;
 
 public abstract class NotifyPropertyChanged : INotifyPropertyChanged, INotifyPropertyChanging
 {

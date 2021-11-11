@@ -1,10 +1,4 @@
-﻿using CSU.Core.MVVM;
-using CSU.Core.PropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using xFrame.Core.MVVM;
 
 namespace TestApp
 {

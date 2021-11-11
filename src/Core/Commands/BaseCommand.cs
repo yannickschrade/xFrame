@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace CSU.Core.Commands;
+namespace xFrame.Core.Commands;
 
 public abstract class BaseCommand : ICommand
 {

@@ -1,4 +1,4 @@
-﻿namespace CSU.Core.IoC;
+﻿namespace xFrame.Core.IoC;
 
 public interface IResolverContainer
 {

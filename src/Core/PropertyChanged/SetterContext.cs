@@ -1,4 +1,4 @@
-﻿namespace CSU.Core.PropertyChanged;
+﻿namespace xFrame.Core.PropertyChanged;
 
 public readonly ref struct SetterContext<T>
 {

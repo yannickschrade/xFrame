@@ -1,11 +1,11 @@
-﻿using CSU.Core.PropertyChanged;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using xFrame.Core.PropertyChanged;
 
-namespace CSU.Core.MVVM;
+namespace xFrame.Core.MVVM;
 
 public abstract class ViewModelBase : NotifyPropertyChanged, INotifyDataErrorInfo
 {
@@ -32,7 +32,7 @@ public abstract class ViewModelBase : NotifyPropertyChanged, INotifyDataErrorInf
 
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }
-    
+
 
     protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(T value, [CallerMemberName] string? propertyName = null)
     {
@@ -60,7 +60,7 @@ public abstract class ViewModelBase : NotifyPropertyChanged, INotifyDataErrorInf
     }
 
 
-    protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(ref T field,T value, [CallerMemberName] string? propertyName = null)
+    protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
         var results = new List<ValidationResult>();
