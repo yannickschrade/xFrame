@@ -1,8 +1,8 @@
-﻿using CSU.Core.Commands;
-using CSU.Core.PropertyChanged;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using xFrame.Core.Commands;
+using xFrame.Core.PropertyChanged;
 
-namespace CSU.Core.ExtensionMethodes;
+namespace xFrame.Core.ExtensionMethodes;
 
 public static class SetterContextExtensions
 {
