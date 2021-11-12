@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-Windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Core\xFrame.Core.csproj" />
+	</ItemGroup>
+
+</Project>

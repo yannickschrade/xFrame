@@ -1,6 +1,6 @@
 ﻿namespace xFrame.Core.IoC;
 
-public interface ITypeService : ITypeRegistrationService, ITypeResolverService
+public interface ITypeService : ITypeRegistrationService, ITypeProviderService
 {
 
 }

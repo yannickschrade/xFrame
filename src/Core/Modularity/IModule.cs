@@ -6,5 +6,5 @@ public interface IModule
 {
     void RegisterServices(ITypeRegistrationService registrationService);
 
-    void Initialize(ITypeResolverService resolver);
+    void Initialize(ITypeProviderService resolver);
 }

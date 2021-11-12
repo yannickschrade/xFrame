@@ -8,7 +8,7 @@ namespace xFrame.Core.IoC
 {
     public static class ResolverExtensions
     {
-        public static T Resolve<T>(this ITypeResolverService resolverService)
+        public static T Resolve<T>(this ITypeProviderService resolverService)
         {
             return (T)Convert.ChangeType(resolverService.Resolve(typeof(T)), typeof(T));
         }

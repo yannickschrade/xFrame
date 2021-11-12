@@ -1,6 +1,6 @@
 ﻿namespace xFrame.Core.IoC;
 
-public interface ITypeResolverService
+public interface ITypeProviderService
 {
     object Resolve(Type type);
 }
