@@ -19,22 +19,6 @@ public class ViewContainer : ContentControl
         DependencyProperty.Register(nameof(Key), typeof(string), typeof(ViewContainer), new PropertyMetadata(null));
 
 
-    protected override void OnContentChanged(object oldContent, object newContent)
-    {
-        if(string.IsNullOrWhiteSpace(Key)) return;
-
-        if(newContent is null)
-        {
-            ExsitingContainers[Key] = new ContentControl();
-        }
-
-        if(newContent is not UIElement element)
-        {
-            throw new InvalidOperationException("Content elements must be an UIElement");
-        }
-        ExsitingContainers[Key] = element;
-    }
-
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -44,14 +28,18 @@ public class ViewContainer : ContentControl
             throw new ArgumentNullException(nameof(Key));
         }
 
-        if (ExsitingContainers.ContainsKey(Key))
-        {
-            throw new InvalidOperationException($"Key: \"{Key}\" was allready added");
-        }
-
         if(Content is null)
         {
-            Content = new ContentControl();
+            ExsitingContainers.Add(Key, this);
+            return;
         }
+
+        if(Content is not UIElement uiElement)
+        {
+            throw new ArgumentException("Content has to be an UIElement");
+        }
+
+        ExsitingContainers[Key] = uiElement;
+
     }
 }
