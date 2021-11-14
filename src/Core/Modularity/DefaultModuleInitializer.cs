@@ -2,23 +2,23 @@
 
 namespace xFrame.Core.Modularity;
 
-internal class DefaultModuleInitializer : IModuleInitializer
+public class DefaultModuleInitializer : IModuleInitializer
 {
 
-    private readonly ITypeService _typeService;
+    protected readonly ITypeService TypeService;
 
     public DefaultModuleInitializer(ITypeService typeService)
     {
         ArgumentNullException.ThrowIfNull(typeService, nameof(typeService));
-        _typeService = typeService;
+        TypeService = typeService;
     }
 
-    public bool CanInitializeModule(IModuleInfo moduleInfo)
+    public virtual bool CanInitializeModule(IModuleInfo moduleInfo)
     {
         return true;
     }
 
-    public void InitializeModule(IModuleInfo moduleInfo)
+    public virtual void InitializeModule(IModuleInfo moduleInfo)
     {
         if (moduleInfo is null || moduleInfo.State == ModuleState.Initialized)
         {
@@ -28,13 +28,13 @@ internal class DefaultModuleInitializer : IModuleInitializer
         var module = CreateModule(moduleInfo);
         moduleInfo.State = ModuleState.RegisteringTypes;
         moduleInfo.State = ModuleState.Initializing;
-        module.RegisterServices(_typeService);
-        module.Initialize(_typeService);
+        module.RegisterServices(TypeService);
+        module.Initialize(TypeService);
         moduleInfo.State = ModuleState.Initialized;
     }
 
-    private IModule CreateModule(IModuleInfo moduleInfo)
+    protected virtual IModule CreateModule(IModuleInfo moduleInfo)
     {
-        return (IModule)_typeService.Resolve(moduleInfo.Type);
+        return (IModule)TypeService.Resolve(moduleInfo.Type);
     }
 }

@@ -10,8 +10,6 @@ public class ModuleManager :
     IInitialisationStage,
     IModuleManager
 {
-    private readonly List<Assembly> _loadedAssemblys;
-    private readonly ITypeService _typeService;
     private readonly List<IModuleInfo> _modules = new();
 
     private IModuleInitializer? _moduleInitializer;
@@ -19,7 +17,6 @@ public class ModuleManager :
 
     private ModuleManager(ITypeService typeService)
     {
-        _typeService = typeService;
         _moduleInitializer = new DefaultModuleInitializer(typeService);
     }
 
