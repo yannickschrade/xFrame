@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using xFrame.WPF.Controls;
 using xFrame.WPF.ViewProvider;
 
 namespace xFrame.WPF.ViewInjection;
@@ -7,7 +6,7 @@ namespace xFrame.WPF.ViewInjection;
 public class ViewInjectionService : IViewInjectionService
 {
     private readonly IViewProviderService _viewResolver;
-    private readonly Queue<(Type viewType, string containerKey)> _injectionQueue = new();
+    private readonly Queue<(Type viewType, object containerKey)> _injectionQueue = new();
     private readonly Dictionary<Type, IViewAdapter> _viewAdapters = new();
 
 
@@ -42,25 +41,25 @@ public class ViewInjectionService : IViewInjectionService
         _viewAdapters.Add(adapter.ForType, adapter);
     }
 
-    public void InjectView<TView>(string viewContainerKey)
+    public void InjectView<TView>(object containerKey)
     {
-        InjectView(typeof(TView), viewContainerKey);
+        InjectView(typeof(TView), containerKey);
     }
 
-    public void InjectView(Type viewType, string viewContainerKey)
+    public void InjectView(Type viewType, object containerKey)
     {
         var view = _viewResolver.GetView(viewType);
-        InjectView(view, viewContainerKey);
+        InjectView(view, containerKey);
     }
 
-    public void InjectView(UIElement view, string viewContainerKey)
+    public void InjectView(UIElement view, object containerKey)
     {
         if (!IsInitialized)
         {
-            _injectionQueue.Enqueue((view.GetType(), viewContainerKey));
+            _injectionQueue.Enqueue((view.GetType(), containerKey));
             return;
         }
-        if (!ViewContainer.ExsitingContainers.TryGetValue(viewContainerKey, out var container))
+        if (!ViewInjector.ExsitingContainers.TryGetValue(containerKey, out var container))
         {
             // TODO: Add CustomException
             throw new InvalidOperationException();

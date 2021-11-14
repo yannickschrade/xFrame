@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Windows.Markup;
 
 // In Projekten im SDK-Stil wie dem vorliegenden, bei dem verschiedene Assemblyattribute
 // üblicherweise in dieser Datei definiert wurden, werden diese Attribute jetzt während
@@ -18,3 +19,8 @@ using System.Runtime.InteropServices;
 // bereitgestellt wird.
 
 [assembly: Guid("da91b385-7401-4281-98da-30bdf2a73f89")]
+
+
+[assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF")]
+[assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF.Controls")]
+[assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF.ViewInjection")]

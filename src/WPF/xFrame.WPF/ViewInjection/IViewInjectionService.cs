@@ -14,11 +14,11 @@ public interface IViewInjectionService
 
     void AddViewAdapters(IEnumerable<IViewAdapter> adapters);
 
-    void InjectView<TView>(string viewContainerKey);
+    void InjectView<TView>(object containerKey);
 
-    void InjectView(Type viewType, string viewContainerKey);
+    void InjectView(Type viewType, object containerKey);
 
-    void InjectView(UIElement view, string viewContainerKey);
+    void InjectView(UIElement view, object containerKey);
 
     void Initialize();
 }

@@ -1,23 +1,12 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
+using xFrame.WPF.ViewInjection;
 
 namespace xFrame.WPF.Controls;
 
 public class ViewContainer : ContentControl
 {
-    public static readonly Dictionary<string, UIElement> ExsitingContainers = new();
-
-
-
-    public string Key
-    {
-        get { return (string)GetValue(KeyProperty); }
-        set { SetValue(KeyProperty, value); }
-    }
-
-    public static readonly DependencyProperty KeyProperty =
-        DependencyProperty.Register(nameof(Key), typeof(string), typeof(ViewContainer), new PropertyMetadata(null));
-
+    public object Key { get; set; }
 
     public override void OnApplyTemplate()
     {
@@ -30,7 +19,7 @@ public class ViewContainer : ContentControl
 
         if(Content is null)
         {
-            ExsitingContainers.Add(Key, this);
+            ViewInjector.ExsitingContainers.Add(Key, this);
             return;
         }
 
@@ -39,7 +28,7 @@ public class ViewContainer : ContentControl
             throw new ArgumentException("Content has to be an UIElement");
         }
 
-        ExsitingContainers[Key] = uiElement;
+        ViewInjector.ExsitingContainers[Key] = uiElement;
 
     }
 }
