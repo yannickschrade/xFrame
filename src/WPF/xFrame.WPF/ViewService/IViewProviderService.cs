@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace xFrame.WPF.ViewProvider;
+namespace xFrame.WPF.ViewService;
 
 public interface IViewProviderService
 {
@@ -9,8 +9,8 @@ public interface IViewProviderService
 
     UIElement GetView(Type viewType);
 
-    T GetWindow<T>()
+    T CreateWindow<T>()
         where T : Window;
 
-    Window GetWindow(Type windowType);
+    Window CreateWindow(Type windowType);
 }

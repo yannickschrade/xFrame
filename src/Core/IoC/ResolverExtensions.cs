@@ -10,7 +10,7 @@ namespace xFrame.Core.IoC
     {
         public static T Resolve<T>(this ITypeProviderService resolverService)
         {
-            return (T)Convert.ChangeType(resolverService.Resolve(typeof(T)), typeof(T));
+            return (T)resolverService.Resolve(typeof(T));
         }
     }
 }

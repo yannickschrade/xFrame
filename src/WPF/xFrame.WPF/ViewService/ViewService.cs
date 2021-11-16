@@ -2,9 +2,9 @@
 using xFrame.Core.IoC;
 using xFrame.Core.MVVM;
 
-namespace xFrame.WPF.ViewProvider;
+namespace xFrame.WPF.ViewService;
 
-public class ViewService : IViewProviderService, IViewRegistrationService
+public class ViewService : IViewService
 {
     private readonly Dictionary<Type, Type?> _registeredViews = new();
     private readonly Dictionary<Type, Type?> _registeredWindows = new();
@@ -42,14 +42,14 @@ public class ViewService : IViewProviderService, IViewRegistrationService
         return view;
     }
 
-    public T GetWindow<T>() where T : Window
+    public T CreateWindow<T>() where T : Window
     {
-        return (T)GetWindow(typeof(T));
+        return (T)CreateWindow(typeof(T));
     }
 
-    public Window GetWindow(Type windowType)
+    public Window CreateWindow(Type windowType)
     {
-        if(!_registeredWindows.TryGetValue(windowType, out var viewModelType))
+        if (!_registeredWindows.TryGetValue(windowType, out var viewModelType))
         {
             //TODO: custom exception
             throw new InvalidOperationException();
@@ -73,6 +73,12 @@ public class ViewService : IViewProviderService, IViewRegistrationService
             throw new InvalidOperationException();
         }
 
+        if (viewType.IsAssignableTo(typeof(Window)))
+        {
+            _registeredWindows.Add(viewType, viewModelType);
+            return this;
+        }
+
         _registeredViews.Add(viewType, viewModelType);
         return this;
     }
@@ -84,44 +90,20 @@ public class ViewService : IViewProviderService, IViewRegistrationService
             //TODO custom exception.
             throw new InvalidOperationException();
         }
+
+        if (viewType.IsAssignableTo(typeof(Window)))
+        {
+            _registeredWindows.Add(viewType, null);
+            return this;
+        }
+
         _registeredViews.Add(viewType, null);
-        return this;
-    }
-
-
-    public IViewRegistrationService RegisterWindow(Type windowType)
-    {
-        if (!windowType.IsAssignableTo(typeof(Window)))
-        {
-            //TODO custom exception.
-            throw new InvalidOperationException();
-        }
-
-        _registeredWindows.Add(windowType, null);
-        return this;
-    }
-
-    public IViewRegistrationService RegisterWindowWithViewModel(Type windowType, Type viewModelType)
-    {
-        if (!windowType.IsAssignableTo(typeof(Window)))
-        {
-            //TODO custom exception.
-            throw new InvalidOperationException();
-        }
-
-        if (!viewModelType.IsAssignableTo(typeof(ViewModelBase)))
-        {
-            //TODO custom exception.
-            throw new InvalidOperationException();
-        }
-
-        _registeredWindows.Add(windowType, viewModelType);
         return this;
     }
 
     private UIElement CreateView(Type viewType, Type? viewModelType)
     {
-        if(viewModelType is null)
+        if (viewModelType is null)
         {
             viewModelType = viewType.GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IViewFor<>))
@@ -136,8 +118,6 @@ public class ViewService : IViewProviderService, IViewRegistrationService
             var vm = _typeProvider.Resolve(viewModelType);
             ((FrameworkElement)view).DataContext = vm;
         }
-
-
 
         return view;
     }

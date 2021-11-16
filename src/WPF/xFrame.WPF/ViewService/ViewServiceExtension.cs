@@ -1,8 +1,7 @@
 ﻿using System.Windows;
 using xFrame.Core.MVVM;
-using xFrame.WPF.ViewProvider;
 
-namespace xFrame.WPF.ViewInjection
+namespace xFrame.WPF.ViewService
 {
     public static class ViewServiceExtension
     {
@@ -20,22 +19,5 @@ namespace xFrame.WPF.ViewInjection
             registrationService.RegisterViewWithViewModel(typeof(TView), typeof(TViewModel));
             return registrationService;
         }
-
-        public static IViewRegistrationService RegisterWindow<TWindow>(this IViewRegistrationService registrationService)
-            where TWindow : Window
-        {
-            registrationService.RegisterWindow(typeof(TWindow));
-            return registrationService;
-        }
-
-        public static IViewRegistrationService RegisterWindowWithViewModel<TWindow, TViewModel>(this IViewRegistrationService registrationService)
-            where TWindow : Window
-            where TViewModel : ViewModelBase
-        {
-            registrationService.RegisterWindowWithViewModel(typeof(TWindow), typeof(TViewModel));
-            return registrationService;
-        }
-
-
     }
 }

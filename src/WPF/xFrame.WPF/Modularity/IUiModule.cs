@@ -1,5 +1,5 @@
 ﻿using xFrame.Core.Modularity;
-using xFrame.WPF.ViewProvider;
+using xFrame.WPF.ViewService;
 
 namespace xFrame.WPF.Modularity;
 

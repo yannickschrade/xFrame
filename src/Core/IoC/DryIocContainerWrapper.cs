@@ -17,11 +17,24 @@ public class DryIocContainerWrapper : ITypeService<IContainer>
     public DryIocContainerWrapper()
     {
         TypeService = new Container(DefaultRules);
+        TypeService.RegisterInstanceMany(new[]
+        {
+            typeof(ITypeProviderService),
+            typeof(ITypeRegistrationService)
+        }, this);
+        TypeService.RegisterInstance(TypeService);
     }
 
     public DryIocContainerWrapper(IContainer container)
     {
         TypeService = container;
+        TypeService.RegisterInstanceMany(new[]
+        {
+            typeof(IContainer),
+            typeof(ITypeService),
+            typeof(ITypeProviderService),
+            typeof(ITypeRegistrationService)
+        }, this);
     }
 
     public void FinalizeTypeService() { }
@@ -34,7 +47,7 @@ public class DryIocContainerWrapper : ITypeService<IContainer>
 
     public ITypeRegistrationService RegisterSingelton(Type from, Type to)
     {
-        TypeService.Register(from, to, Reuse.Singleton);
+        TypeService.Register(to, from, Reuse.Singleton);
         return this;
     }
 
@@ -52,7 +65,7 @@ public class DryIocContainerWrapper : ITypeService<IContainer>
 
     public ITypeRegistrationService RegisterType(Type from, Type to)
     {
-        TypeService.Register(from, to);
+        TypeService.Register(to, from);
         return this;
     }
 
@@ -68,9 +81,53 @@ public class DryIocContainerWrapper : ITypeService<IContainer>
         return this;
     }
 
+    public ITypeRegistrationService RegisterType(Type from, Type to, string name)
+    {
+        TypeService.Register(to, from, serviceKey: name);
+        return this;
+    }
+
+    public ITypeRegistrationService RegisterMany(Type type, params Type[] services)
+    {
+        TypeService.RegisterMany(services, type);
+        return this;
+    }
+
+    public ITypeRegistrationService RegisterInstanceMany(object instance, params Type[] services)
+    {
+        TypeService.RegisterInstanceMany(services, instance);
+        return this;
+    }
+
+    public ITypeRegistrationService RegisterSingeltonMany(Type type, params Type[] services)
+    {
+        TypeService.RegisterMany(services, type, reuse: Reuse.Singleton);
+        return this;
+    }
+
     public object Resolve(Type type)
     {
         return TypeService.Resolve(type);
+    }
+
+    public object Resolve(Type type, params (Type type, object Instance)[] parameters)
+    {
+        return TypeService.Resolve(type, args: parameters.Select(p => p.Instance).ToArray());
+    }
+
+    public object Resolve(Type type, string name)
+    {
+        return TypeService.Resolve(type, name);
+    }
+
+    public object Resolve(Type type, string name, params (Type Type, object Instance)[] parameters)
+    {
+        return TypeService.Resolve(type, name, args: parameters.Select(p => p.Instance).ToArray());
+    }
+
+    public bool IsRegistered(Type type, string? name = null)
+    {
+        return TypeService.IsRegistered(type, name);
     }
 }
 public static class DryIoCExtensionMethodes

@@ -7,12 +7,31 @@ public interface IViewInjectionService
 {
     bool IsInitialized { get; }
 
-    void AddViewAdapter(IViewAdapter adapter);
+    void AddAdapter(IViewAdapter adapter);
 
-    void AddViewAdapter<T>(IViewAdapter<T> adapter)
+    void AddAdapterIfMissing(IViewAdapter adapter);
+
+    void AddAdapter<T>(IViewAdapter<T> adapter)
         where T : UIElement;
 
-    void AddViewAdapters(IEnumerable<IViewAdapter> adapters);
+
+    void RegisterAdapter(Type adapterType);
+
+    void RegisterAdapterIfMissing(Type adapterType);
+
+    void RegisterAdapters(IEnumerable<Type> adapterTypes);
+
+    void RegisterAdaptersIfMissing(IEnumerable<Type> adapterTypes);
+
+    void RegisterAdapter<T>()
+        where T : IViewAdapter, new();
+
+    void RegisterAdapterIfMissing<T>()
+        where T : IViewAdapter, new();
+
+    void AddAdapters(IEnumerable<IViewAdapter> adapters);
+
+    void AddAdaptersIfMissing(IEnumerable<IViewAdapter> adapters);
 
     void InjectView<TView>(object containerKey);
 

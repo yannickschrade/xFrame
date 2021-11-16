@@ -9,7 +9,8 @@ public interface IDiscoveryStage
     IDiscoveryStage AddModulesFromAssembly(Assembly assembly);
     IDiscoveryStage AddModulesFromFolder(string path);
     IDiscoveryStage RemoveModule(string moduleName);
-    IInitialisationStage UseModuleInitializer(IModuleInitializer moduleInitializer);
+    IModuleManager UseModuleInitializer(IModuleInitializer moduleInitializer);
+    IModuleManager UseModuleInitializer<T>()
+        where T : IModuleInitializer;
     ISortingStage SortModulesBy(Func<IEnumerable<IModuleInfo>, IEnumerable<IModuleInfo>> sortFunction);
-    IModuleManager InitializeAll();
 }

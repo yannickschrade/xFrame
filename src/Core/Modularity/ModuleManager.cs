@@ -7,24 +7,24 @@ namespace xFrame.Core.Modularity;
 public class ModuleManager :
     IDiscoveryStage,
     ISortingStage,
-    IInitialisationStage,
     IModuleManager
 {
     private readonly List<IModuleInfo> _modules = new();
 
     private IModuleInitializer? _moduleInitializer;
     private IEnumerable<IModuleInfo>? _sortedModules;
+    private readonly ITypeProviderService? _typeProvider;
 
-    private ModuleManager(ITypeService typeService)
+    private ModuleManager(ITypeProviderService typeProvider)
     {
-        _moduleInitializer = new DefaultModuleInitializer(typeService);
+        _typeProvider = typeProvider;
     }
 
     public IEnumerable<IModuleInfo> LoadedModules => _sortedModules ?? _modules;
 
-    public static IDiscoveryStage Create(ITypeService typeService)
+    public static IDiscoveryStage Create(ITypeProviderService typeProvider)
     {
-        return new ModuleManager(typeService);
+        return new ModuleManager(typeProvider);
     }
 
 
@@ -74,38 +74,6 @@ public class ModuleManager :
         return this;
     }
 
-    public IModuleManager InitializeAll()
-    {
-        if(_sortedModules == null)
-        {
-            throw new InvalidOperationException("Modules not sorted");
-        }
-
-        if(_moduleInitializer is null)
-        {
-            throw new InvalidOperationException("moduleinitilizer is not setted");
-        }
-
-
-        foreach (var module in _sortedModules)
-        {
-            if (!_moduleInitializer.CanInitializeModule(module))
-            {
-                throw new InvalidOperationException("ModuleInitializer can't initialize module");
-            }
-            _moduleInitializer.InitializeModule(module);
-        }
-
-        return this;
-    }
-
-    IModuleManager IDiscoveryStage.InitializeAll()
-    {
-        _sortedModules = SortModules();
-        InitializeAll();
-        return this;
-    }
-
     public IDiscoveryStage RemoveModule(string moduleName)
     {
         _modules.RemoveAll(m => m.Name == moduleName);
@@ -117,7 +85,7 @@ public class ModuleManager :
         return this;
     }
 
-    public IInitialisationStage UseModuleInitializer(IModuleInitializer moduleInitializer)
+    public IModuleManager UseModuleInitializer(IModuleInitializer moduleInitializer)
     {
         _moduleInitializer = moduleInitializer;
         return this;
@@ -161,10 +129,15 @@ public class ModuleManager :
         return new ModuleInfo(moduleType, name!, version, priority, type);
     }
 
-    IInitialisationStage IDiscoveryStage.UseModuleInitializer(IModuleInitializer moduleInitializer)
+    IModuleManager IDiscoveryStage.UseModuleInitializer(IModuleInitializer moduleInitializer)
     {
         _sortedModules = SortModules();
         return UseModuleInitializer(moduleInitializer);
+    }
+
+    public IModuleManager UseModuleInitializer<T>() where T : IModuleInitializer
+    {
+        throw new NotImplementedException();
     }
 
     private IEnumerable<IModuleInfo> SortModules()
@@ -174,4 +147,29 @@ public class ModuleManager :
             .ThenBy(m => m.Name);
 
     }
+
+    public void Run()
+    {
+        if (_sortedModules == null)
+        {
+            throw new InvalidOperationException("Modules not sorted");
+        }
+
+        if (_moduleInitializer is null)
+        {
+            throw new InvalidOperationException("moduleinitilizer is not setted");
+        }
+
+
+        foreach (var module in _sortedModules)
+        {
+            if (!_moduleInitializer.CanInitializeModule(module))
+            {
+                throw new InvalidOperationException("ModuleInitializer can't initialize module");
+            }
+            _moduleInitializer.InitializeModule(module);
+        }
+    }
+
+
 }

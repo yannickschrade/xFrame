@@ -2,5 +2,7 @@
 
 public interface ISortingStage
 {
-    IInitialisationStage UseModuleInitializer(IModuleInitializer moduleInitializer);
+    IModuleManager UseModuleInitializer(IModuleInitializer moduleInitializer);
+    IModuleManager UseModuleInitializer<T>()
+        where T : IModuleInitializer;
 }
