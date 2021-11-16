@@ -1,17 +1,15 @@
-﻿using System.Windows;
-using xFrame.Core.IoC;
-using xFrame.WPF.ViewService;
+﻿using xFrame.Core.IoC;
+using xFrame.Core.MVVM;
 
-namespace xFrame.WPF;
-
-public abstract class XFrameApp : BaseApplication
+namespace xFrame.WPF
 {
-    protected abstract override Window CreateShell(IViewProviderService viewProvider);
-
-    protected override ITypeService CreateTypeService()
+    public abstract class XFrameApp<T>: BaseApplication<T>
+        where T : ViewModelBase
     {
-        return new DryIocContainerWrapper();
-    }
 
-    protected abstract override void RegisterTypes(ITypeRegistrationService typeRegistration);
+        protected override ITypeService CreateTypeService()
+        {
+            return new DryIocContainerWrapper();
+        }
+    }
 }

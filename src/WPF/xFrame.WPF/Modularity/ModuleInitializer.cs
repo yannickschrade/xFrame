@@ -2,34 +2,35 @@
 using xFrame.Core.Modularity;
 using xFrame.WPF.ViewService;
 
-namespace xFrame.WPF.Modularity;
-
-public sealed class ModuleInitializer : DefaultModuleInitializer
+namespace xFrame.WPF.Modularity
 {
-    private readonly IViewRegistrationService _viewRegistration;
-
-    public ModuleInitializer(ITypeService typeService, IViewRegistrationService viewRegistration) : base(typeService)
+    public sealed class ModuleInitializer : DefaultModuleInitializer
     {
-        _viewRegistration = viewRegistration;
-    }
+        private readonly IViewRegistrationService _viewRegistration;
 
-    public override void InitializeModule(IModuleInfo moduleInfo)
-    {
-        if (moduleInfo is null || moduleInfo.State == ModuleState.Initialized)
+        public ModuleInitializer(ITypeService typeService, IViewRegistrationService viewRegistration) : base(typeService)
         {
-            return;
+            _viewRegistration = viewRegistration;
         }
 
-        moduleInfo.State = ModuleState.Loading;
-        var module = CreateModule(moduleInfo);
-        moduleInfo.State = ModuleState.RegisteringTypes;
-        moduleInfo.State = ModuleState.Initializing;
-        module.RegisterServices(TypeService);
-        if(module is IUiModule uiModule)
+        public override void InitializeModule(IModuleInfo moduleInfo)
         {
-            uiModule.RegisterViews(_viewRegistration);
+            if (moduleInfo is null || moduleInfo.State == ModuleState.Initialized)
+            {
+                return;
+            }
+
+            moduleInfo.State = ModuleState.Loading;
+            var module = CreateModule(moduleInfo);
+            moduleInfo.State = ModuleState.RegisteringTypes;
+            moduleInfo.State = ModuleState.Initializing;
+            module.RegisterServices(TypeService);
+            if (module is IUiModule uiModule)
+            {
+                uiModule.RegisterViews(_viewRegistration);
+            }
+            module.Initialize(TypeService);
+            moduleInfo.State = ModuleState.Initialized;
         }
-        module.Initialize(TypeService);
-        moduleInfo.State = ModuleState.Initialized;
     }
 }

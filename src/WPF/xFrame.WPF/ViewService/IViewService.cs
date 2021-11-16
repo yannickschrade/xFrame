@@ -1,5 +1,6 @@
-﻿namespace xFrame.WPF.ViewService;
-
-public interface IViewService : IViewRegistrationService, IViewProviderService
+﻿namespace xFrame.WPF.ViewService
 {
+    public interface IViewRegistry : IViewRegistrationService, IViewProviderService
+    {
+    }
 }

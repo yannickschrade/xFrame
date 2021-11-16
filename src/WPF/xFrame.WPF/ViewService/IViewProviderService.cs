@@ -1,16 +1,17 @@
-﻿using System.Windows;
+﻿using System;
+using xFrame.Core.MVVM;
+using xFrame.Core.ViewService;
 
-namespace xFrame.WPF.ViewService;
-
-public interface IViewProviderService
+namespace xFrame.WPF.ViewService
 {
-    T GetView<T>()
-        where T : UIElement;
+    public interface IViewProviderService
+    {
+        IViewFor GetView<T>()
+            where T : ViewModelBase;
 
-    UIElement GetView(Type viewType);
+        IViewFor GetView(Type viewModelType);
 
-    T CreateWindow<T>()
-        where T : Window;
+        IViewFor GetView(ViewModelBase viewModel);
 
-    Window CreateWindow(Type windowType);
+    }
 }

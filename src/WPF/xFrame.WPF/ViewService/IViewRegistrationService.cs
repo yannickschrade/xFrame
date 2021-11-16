@@ -1,8 +1,13 @@
-﻿namespace xFrame.WPF.ViewService;
+﻿using System;
+using System.Windows;
+using xFrame.Core.ViewService;
 
-public interface IViewRegistrationService
+namespace xFrame.WPF.ViewService
 {
-    IViewRegistrationService RegisterViewWithViewModel(Type viewType, Type viewModelType);
-
-    IViewRegistrationService RegisterView(Type viewType);
+    public interface IViewRegistrationService
+    {
+        void RegisterView(Type viewType);
+        void RegisterView<T>()
+           where T : UIElement, IViewFor, new();
+    }
 }

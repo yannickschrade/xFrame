@@ -1,21 +1,22 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using xFrame.Core.MVVM;
-using xFrame.WPF.ViewService;
+using xFrame.Core.ViewService;
 
-namespace xFrame.WPF.Controls;
-
-public class SplashWindow<T> : SplashWindow, IViewFor<T>
-    where T : ViewModelBase, ISplashViewModel
+namespace xFrame.WPF.Controls
 {
-    new public T? DataContext { get; set; }
-}
-
-public abstract class SplashWindow : Window
-{
-    public new ISplashViewModel? DataContext { get; set; }
-
-    protected SplashWindow()
+    public class SplashWindow<T> : SplashWindow, IViewFor<T>
+        where T : ViewModelBase, ISplashViewModel
     {
+    }
 
+    public abstract class SplashWindow : Window
+    {
+        public new ISplashViewModel? DataContext { get; set; }
+
+        protected SplashWindow()
+        {
+
+        }
     }
 }
