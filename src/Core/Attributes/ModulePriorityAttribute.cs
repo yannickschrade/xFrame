@@ -1,12 +1,15 @@
-﻿namespace xFrame.Core.Attributes;
+﻿using System;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ModulePriorityAttribute : Attribute
+namespace xFrame.Core.Attributes
 {
-    public int Priority { get; }
-
-    public ModulePriorityAttribute(int priority)
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public class ModulePriorityAttribute : Attribute
     {
-        Priority = priority;
+        public int Priority { get; }
+
+        public ModulePriorityAttribute(int priority)
+        {
+            Priority = priority;
+        }
     }
 }

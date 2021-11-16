@@ -1,18 +1,21 @@
-﻿namespace xFrame.Core.PropertyChanged;
+﻿using System;
 
-public readonly ref struct SetterContext<T>
+namespace xFrame.Core.PropertyChanged
 {
-
-    public string PropertyName { get; }
-    public bool HasChanged { get; }
-    public T Value { get; }
-    public Action<string> OnPropertyChanged { get; }
-
-    public SetterContext(string propertyName, bool hasChanged, T value, Action<string> onPropertyChanged)
+    public readonly ref struct SetterContext<T>
     {
-        PropertyName = propertyName;
-        HasChanged = hasChanged;
-        Value = value;
-        OnPropertyChanged = onPropertyChanged;
+
+        public string PropertyName { get; }
+        public bool HasChanged { get; }
+        public T Value { get; }
+        public Action<string> OnPropertyChanged { get; }
+
+        public SetterContext(string propertyName, bool hasChanged, T value, Action<string> onPropertyChanged)
+        {
+            PropertyName = propertyName;
+            HasChanged = hasChanged;
+            Value = value;
+            OnPropertyChanged = onPropertyChanged;
+        }
     }
 }

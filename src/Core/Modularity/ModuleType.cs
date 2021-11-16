@@ -1,8 +1,9 @@
-﻿namespace xFrame.Core.Modularity;
-
-public enum ModuleType
+﻿namespace xFrame.Core.Modularity
 {
-    Undefined = -1,
-    UI,
-    Service,
+    public enum ModuleType
+    {
+        Undefined = -1,
+        UI,
+        Service,
+    }
 }

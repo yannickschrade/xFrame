@@ -1,32 +1,33 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
-namespace xFrame.Core.Commands;
-
-public abstract class BaseCommand : ICommand
+namespace xFrame.Core.Commands
 {
-    public event EventHandler? CanExecuteChanged;
-
-    protected readonly Action<object?> ExecuteAction;
-    protected readonly Func<object?, bool>? CanExecuteFunc;
-
-    protected BaseCommand(Action<object?> executeAction, Func<object?, bool>? canExecuteFunc = null)
+    public abstract class BaseCommand : ICommand
     {
-        ArgumentNullException.ThrowIfNull(executeAction, nameof(executeAction));
-        CanExecuteFunc = canExecuteFunc;
-        ExecuteAction = executeAction;
-    }
+        public event EventHandler CanExecuteChanged;
 
-    public abstract bool CanExecute(object? parameter);
+        protected readonly Action<object> ExecuteAction;
+        protected readonly Func<object, bool> CanExecuteFunc;
 
-    public abstract void Execute(object? parameter);
+        protected BaseCommand(Action<object> executeAction, Func<object, bool> canExecuteFunc = null)
+        {
+            ExecuteAction = executeAction ?? throw new ArgumentNullException(nameof(executeAction));
+            CanExecuteFunc = canExecuteFunc;
+        }
 
-    public void RaisCanExecuteChanged()
-    {
-        OnCanExecuteChanged();
-    }
+        public abstract bool CanExecute(object parameter);
 
-    protected virtual void OnCanExecuteChanged()
-    {
-        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        public abstract void Execute(object parameter);
+
+        public void RaisCanExecuteChanged()
+        {
+            OnCanExecuteChanged();
+        }
+
+        protected virtual void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

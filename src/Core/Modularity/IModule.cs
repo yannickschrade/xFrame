@@ -1,10 +1,11 @@
 ﻿using xFrame.Core.IoC;
 
-namespace xFrame.Core.Modularity;
-
-public interface IModule
+namespace xFrame.Core.Modularity
 {
-    void RegisterServices(ITypeRegistrationService registrationService);
+    public interface IModule
+    {
+        void RegisterServices(ITypeRegistrationService registrationService);
 
-    void Initialize(ITypeProviderService resolver);
+        void Initialize(ITypeProviderService resolver);
+    }
 }

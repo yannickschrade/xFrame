@@ -1,20 +1,23 @@
-﻿namespace xFrame.Core.Modularity;
+﻿using System;
 
-public record class ModuleInfo : IModuleInfo
+namespace xFrame.Core.Modularity
 {
-    public Type Type { get; init; }
-    public ModuleState State { get; set; }
-    public string Name { get; init; }
-    public Version Version { get; init; }
-    public int Priority { get; init; }
-    public ModuleType ModuleType { get; init; }
-
-    public ModuleInfo(Type type, string name, Version? version = null, int priority = 0, ModuleType moduleType = ModuleType.Undefined)
+    public class ModuleInfo : IModuleInfo
     {
-        Type = type;
-        Name = name;
-        Version = version ?? new Version();
-        Priority = priority;
-        ModuleType = moduleType;
+        public Type Type { get; }
+        public ModuleState State { get; set; }
+        public string Name { get; }
+        public Version Version { get; }
+        public int Priority { get; }
+        public ModuleType ModuleType { get; }
+
+        public ModuleInfo(Type type, string name, Version version = null, int priority = 0, ModuleType moduleType = ModuleType.Undefined)
+        {
+            Type = type;
+            Name = name;
+            Version = version ?? new Version();
+            Priority = priority;
+            ModuleType = moduleType;
+        }
     }
 }

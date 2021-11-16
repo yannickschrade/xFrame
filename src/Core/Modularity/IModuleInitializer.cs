@@ -1,7 +1,8 @@
-﻿namespace xFrame.Core.Modularity;
-
-public interface IModuleInitializer
+﻿namespace xFrame.Core.Modularity
 {
-    void InitializeModule(IModuleInfo moduleInfo);
-    bool CanInitializeModule(IModuleInfo moduleInfo);
+    public interface IModuleInitializer
+    {
+        void InitializeModule(IModuleInfo moduleInfo);
+        bool CanInitializeModule(IModuleInfo moduleInfo);
+    }
 }

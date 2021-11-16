@@ -1,30 +1,32 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
-namespace xFrame.Core.Commands;
-
-public class RelayCommand : BaseCommand
+namespace xFrame.Core.Commands
 {
-
-    public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : base(execute, canExecute)
+    public class RelayCommand : BaseCommand
     {
+
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null) : base(execute, canExecute)
+        {
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            return CanExecuteFunc == null || CanExecuteFunc(parameter);
+        }
+
+        public override void Execute(object parameter)
+        {
+            if (CanExecute(parameter))
+                ExecuteAction(parameter);
+        }
     }
 
-    public override bool CanExecute(object? parameter)
-    {
-        return CanExecute == null || CanExecute(parameter);
-    }
 
-    public override void Execute(object? parameter)
+    public class RelayCommand<T> : RelayCommand
     {
-        if (CanExecute(parameter))
-            ExecuteAction(parameter);
-    }
-}
-
-
-public class RelayCommand<T> : RelayCommand
-{
-    public RelayCommand(Func<T?, bool> canExecute, Action<T?> execute) : base(p => execute((T?)p), p => canExecute((T?)p))
-    {
+        public RelayCommand(Func<T, bool> canExecute, Action<T> execute) : base(p => execute((T)p), p => canExecute((T)p))
+        {
+        }
     }
 }

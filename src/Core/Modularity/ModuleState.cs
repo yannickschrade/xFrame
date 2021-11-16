@@ -1,11 +1,12 @@
-﻿namespace xFrame.Core.Modularity;
-
-public enum ModuleState
+﻿namespace xFrame.Core.Modularity
 {
-    NotLoaded,
-    Loading,
-    Loaded,
-    RegisteringTypes,
-    Initializing,
-    Initialized,
+    public enum ModuleState
+    {
+        NotLoaded,
+        Loading,
+        Loaded,
+        RegisteringTypes,
+        Initializing,
+        Initialized,
+    }
 }

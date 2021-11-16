@@ -1,11 +1,14 @@
-﻿namespace xFrame.Core.Modularity;
+﻿using System;
 
-public interface IModuleInfo
+namespace xFrame.Core.Modularity
 {
-    Type Type { get; }
-    ModuleState State { get; set; }
-    string Name { get; }
-    Version Version { get; }
-    int Priority { get; }
-    ModuleType ModuleType { get; }
+    public interface IModuleInfo
+    {
+        Type Type { get; }
+        ModuleState State { get; set; }
+        string Name { get; }
+        Version Version { get; }
+        int Priority { get; }
+        ModuleType ModuleType { get; }
+    }
 }

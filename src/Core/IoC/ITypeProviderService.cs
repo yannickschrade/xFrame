@@ -1,14 +1,17 @@
-﻿namespace xFrame.Core.IoC;
+﻿using System;
 
-public interface ITypeProviderService
+namespace xFrame.Core.IoC
 {
-    object Resolve(Type type);
+    public interface ITypeProviderService
+    {
+        object Resolve(Type type);
 
-    object Resolve(Type type, params (Type type, object Instance)[] parameters);
+        object Resolve(Type type, params (Type type, object Instance)[] parameters);
 
-    object Resolve(Type type, string name);
+        object Resolve(Type type, string name);
 
-    object Resolve(Type type, string name, params (Type Type, object Instance)[] parameters);
+        object Resolve(Type type, string name, params (Type Type, object Instance)[] parameters);
 
-    bool IsRegistered(Type type, string? name = null);
+        bool IsRegistered(Type type, string name = null);
+    }
 }

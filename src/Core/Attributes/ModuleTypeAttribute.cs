@@ -1,14 +1,16 @@
-﻿using xFrame.Core.Modularity;
+﻿using System;
+using xFrame.Core.Modularity;
 
-namespace xFrame.Core.Attributes;
-
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ModuleTypeAttribute : Attribute
+namespace xFrame.Core.Attributes
 {
-    public ModuleType ModuleType { get; }
-
-    public ModuleTypeAttribute(ModuleType moduleType)
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public class ModuleTypeAttribute : Attribute
     {
-        ModuleType = moduleType;
+        public ModuleType ModuleType { get; }
+
+        public ModuleTypeAttribute(ModuleType moduleType)
+        {
+            ModuleType = moduleType;
+        }
     }
 }

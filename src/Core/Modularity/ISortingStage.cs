@@ -1,8 +1,9 @@
-﻿namespace xFrame.Core.Modularity;
-
-public interface ISortingStage
+﻿namespace xFrame.Core.Modularity
 {
-    IModuleManager UseModuleInitializer(IModuleInitializer moduleInitializer);
-    IModuleManager UseModuleInitializer<T>()
-        where T : IModuleInitializer;
+    public interface ISortingStage
+    {
+        IModuleManager UseModuleInitializer(IModuleInitializer moduleInitializer);
+        IModuleManager UseModuleInitializer<T>()
+            where T : IModuleInitializer;
+    }
 }

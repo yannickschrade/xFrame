@@ -1,47 +1,48 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
 using xFrame.Core.Commands;
 using xFrame.Core.PropertyChanged;
 
-namespace xFrame.Core.ExtensionMethodes;
-
-public static class SetterContextExtensions
+namespace xFrame.Core.ExtensionMethodes
 {
-    public static SetterContext<T> Notify<T>(this SetterContext<T> context, [NotNull] string propertyName)
+    public static class SetterContextExtensions
     {
-        if (context.HasChanged)
+        public static SetterContext<T> Notify<T>(this SetterContext<T> context, string propertyName)
         {
-            context.OnPropertyChanged(propertyName);
-        }
-        return context;
-    }
-
-    public static SetterContext<T> NotifyMany<T>(this SetterContext<T> context, params string[] propertyNames)
-    {
-        if (context.HasChanged)
-        {
-            foreach (var propertyName in propertyNames)
+            if (context.HasChanged)
             {
                 context.OnPropertyChanged(propertyName);
             }
+            return context;
         }
-        return context;
-    }
 
-    public static SetterContext<T> ExecuteOnUpdate<T>(this SetterContext<T> context, Action<T> action)
-    {
-        if (context.HasChanged)
+        public static SetterContext<T> NotifyMany<T>(this SetterContext<T> context, params string[] propertyNames)
         {
-            action(context.Value);
+            if (context.HasChanged)
+            {
+                foreach (var propertyName in propertyNames)
+                {
+                    context.OnPropertyChanged(propertyName);
+                }
+            }
+            return context;
         }
-        return context;
-    }
 
-    public static SetterContext<T> NotifyCommand<T>(this SetterContext<T> context, BaseCommand command)
-    {
-        if (context.HasChanged)
+        public static SetterContext<T> ExecuteOnUpdate<T>(this SetterContext<T> context, Action<T> action)
         {
-            command.RaisCanExecuteChanged();
+            if (context.HasChanged)
+            {
+                action(context.Value);
+            }
+            return context;
         }
-        return context;
+
+        public static SetterContext<T> NotifyCommand<T>(this SetterContext<T> context, BaseCommand command)
+        {
+            if (context.HasChanged)
+            {
+                command.RaisCanExecuteChanged();
+            }
+            return context;
+        }
     }
 }
