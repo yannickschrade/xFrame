@@ -13,5 +13,7 @@ namespace xFrame.WPF.ViewService
 
         IViewFor GetView(ViewModelBase viewModel);
 
+        void RemoveView(ViewModelBase viewModel);
+
     }
 }

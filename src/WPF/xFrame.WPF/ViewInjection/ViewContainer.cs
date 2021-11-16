@@ -73,11 +73,13 @@ namespace xFrame.WPF.ViewInjection
                 return;
             }
             IsLoaded = true;
-            foreach (var (view, adapter) in _addQueue)
+
+            while (_addQueue.Count > 0)
             {
+                (var view, var adapter) = _addQueue.Dequeue();
                 Add(view, adapter);
             }
-            
+
         }
 
         

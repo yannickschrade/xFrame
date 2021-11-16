@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewService;
 using xFrame.WPF.ViewService;
@@ -52,6 +49,7 @@ namespace xFrame.WPF.ViewInjection
             var containerType = ViewContainers[containerKey].TargetView.GetType();
             var adapter = GetAdapter(containerType);
             ViewContainers[containerKey].Remove(view, adapter);
+            _viewProvider.RemoveView(viewModel);
         }
 
 

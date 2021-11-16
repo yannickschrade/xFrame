@@ -84,5 +84,15 @@ namespace xFrame.WPF.ViewService
 
             return (IViewFor)_typeprovider.Resolve(_registeredViews[viewModelType]);
         }
+
+        public void RemoveView(ViewModelBase viewModel)
+        {
+            var view = _viewRegistry[viewModel];
+            if(view is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+            _viewRegistry.Remove(viewModel);
+        }
     }
 }
