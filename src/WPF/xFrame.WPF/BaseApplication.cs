@@ -43,7 +43,7 @@ namespace xFrame.WPF
             RegisterTypes(TypeService);
             RegisterDefaultViewAdapters(TypeService.Resolve<IViewAdapterCollection>());
             RegisterViewAdapters(TypeService.Resolve<IViewAdapterCollection>());
-            RegisterViews(TypeService.Resolve<IViewProvider>());
+            RegisterViews(TypeService.Resolve<IViewRegistration>());
         }
 
         private void RegisterDefaultViewAdapters(IViewAdapterCollection viewAdapterCollection)
@@ -55,7 +55,7 @@ namespace xFrame.WPF
         private void RegisterDefaultTypes(ITypeRegistrationService typeService)
         {
             typeService.RegisterSingelton<ViewAdapterCollection, IViewAdapterCollection>();
-            typeService.RegisterSingelton<ViewProvider, IViewProvider>();
+            typeService.RegisterSingeltonMany<ViewProvider>(typeof(IViewRegistration), typeof(IViewProvider));
             typeService.RegisterSingelton<ViewInjectionService, IViewInjectionService>();
         }
 
@@ -75,7 +75,7 @@ namespace xFrame.WPF
             MainWindow = shell;
         }
 
-        protected virtual void RegisterViews(IViewProvider viewProvider)
+        protected virtual void RegisterViews(IViewRegistration viewRegistration)
         {
             var views = Assembly.GetEntryAssembly()
                 .GetTypes()
@@ -83,7 +83,7 @@ namespace xFrame.WPF
 
             foreach (var view in views)
             {
-                viewProvider.Register(view);
+                viewRegistration.Register(view);
             }
         }
 

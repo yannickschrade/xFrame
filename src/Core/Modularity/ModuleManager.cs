@@ -3,184 +3,108 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using xFrame.Core.Attributes;
-using xFrame.Core.IoC;
 
 namespace xFrame.Core.Modularity
 {
-    public class ModuleManager :
-        IDiscoveryStage,
-        ISortingStage,
-        IModuleManager
+    public class ModuleManager : IModuleManager
     {
-        private readonly List<IModuleInfo> _modules = new List<IModuleInfo>();
 
-        private IModuleInitializer _moduleInitializer;
-        private IEnumerable<IModuleInfo> _sortedModules;
-        private readonly ITypeProviderService _typeProvider;
+        private Func<Type, IModule> _defaultModuleFactory;
+        private readonly List<Type> _modules = new List<Type>();
+        private readonly List<IModule> _loadedModules = new List<IModule>();
 
-        private ModuleManager(ITypeProviderService typeProvider)
+        
+        public List<LoadingStep> LoadingSteps { get; }
+        public Dictionary<Type, Func<Type, IModule>> ModuleFactorys { get; }
+
+        public IEnumerable<IModule> LoadedModules => _loadedModules;
+
+
+        public ModuleManager()
         {
-            _typeProvider = typeProvider;
+            _defaultModuleFactory = CreateModule;
+            ModuleFactorys = new Dictionary<Type, Func<Type, IModule>>();
+            LoadingSteps = new List<LoadingStep>();
         }
 
-        public IEnumerable<IModuleInfo> LoadedModules => _sortedModules ?? _modules;
-
-        public static IDiscoveryStage Create(ITypeProviderService typeProvider)
+        public void AddModule<T>()
         {
-            return new ModuleManager(typeProvider);
+            AddModule(typeof(T));
         }
 
-
-        public IDiscoveryStage AddModule(Type module)
+        public void AddModule(Type moduleType)
         {
-            var info = CreateModuleInfo(module);
-            if (_modules.Any(m => m.Name == info.Name))
+            _modules.Add(moduleType);
+        }
+
+        public void AddModulesFromFolder(string path)
+        {
+            var files = Directory.GetFiles(path, "*.dll");
+            foreach (var file in files)
             {
-                return this;
+                var modules = Assembly.Load(file)
+                    .GetTypes()
+                    .Where(t => typeof(IModule).IsAssignableFrom(t));
+
+                _modules.AddRange(modules);
             }
-
-            _modules.Add(info);
-            return this;
         }
 
-        public IDiscoveryStage AddModule<T>()
+        public void AddLoadingStep<T>(Action<T> action, LoadingType loadingType)
+           where T : IModule
         {
-            return AddModule(typeof(T));
+            var step = new LoadingStep<T>(action, loadingType);
+            LoadingSteps.Add(step);
         }
 
-        public IDiscoveryStage AddModulesFromAssembly(Assembly assembly)
+        public void AddLoadingStep<T>(LoadingStep<T> loadingStep)
+            where T : IModule
         {
-            var modules = assembly.GetTypes()
-                .Where(t => typeof(IModule).IsAssignableFrom(t))
-                .Where(t => t.IsClass);
+            LoadingSteps.Add(loadingStep);
+        }
 
-            foreach (var module in modules)
+
+        public void AddModuleFactory<T>(Func<Type, IModule> moduleFactory)
+        {
+            ModuleFactorys[typeof(T)] = moduleFactory;
+        }
+
+        public void LoadModules()
+        {
+            var createdModules = new List<IModule>();
+
+            foreach (var moduleType in _modules)
             {
-                if (_modules.Any(m => m.Name == module.Name))
+                IModule module = null;
+                if (ModuleFactorys.ContainsKey(moduleType))
                 {
-                    continue;
+                    module = ModuleFactorys[moduleType](moduleType);
                 }
-                _modules.Add(CreateModuleInfo(module));
+
+                if (module == null)
+                    module = _defaultModuleFactory(moduleType);
+
+                createdModules.Add(module);
             }
 
-            return this;
-        }
-
-        public IDiscoveryStage AddModulesFromFolder(string path)
-        {
-            foreach (var dll in Directory.GetFiles(path, "*.dll"))
+            foreach (var loadingStep in LoadingSteps.OrderBy(s => s.LoadingType))
             {
-                var assembly = Assembly.Load(dll);
-                AddModulesFromAssembly(assembly);
-            }
-
-            return this;
-        }
-
-        public IDiscoveryStage RemoveModule(string moduleName)
-        {
-            _modules.RemoveAll(m => m.Name == moduleName);
-            return this;
-        }
-        public ISortingStage SortModulesBy(Func<IEnumerable<IModuleInfo>, IEnumerable<IModuleInfo>> sortFunction)
-        {
-            _sortedModules = sortFunction(_modules);
-            return this;
-        }
-
-        public IModuleManager UseModuleInitializer(IModuleInitializer moduleInitializer)
-        {
-            _moduleInitializer = moduleInitializer;
-            return this;
-        }
-
-        private ModuleInfo CreateModuleInfo(Type moduleType)
-        {
-            if (!typeof(IModule).IsAssignableFrom(moduleType))
-            {
-                throw new InvalidOperationException($"{moduleType.FullName} does not implement IModule");
-            }
-
-            if(moduleType == null)
-            {
-                throw new ArgumentNullException(nameof(moduleType));
-            }
-            var name = moduleType.Name;
-
-            var moduleAttribute = moduleType.GetCustomAttribute<ModuleAttribute>();
-            name = moduleAttribute?.ModuleName;
-            var version = moduleAttribute?.Version ?? new Version();
-            var priority = moduleAttribute?.Priority ?? 0;
-            var type = moduleAttribute?.ModuleType ?? ModuleType.Undefined;
-
-            var verAttr = moduleType.GetCustomAttribute<ModuleVersionAttribute>();
-            var typeAttr = moduleType.GetCustomAttribute<ModuleTypeAttribute>();
-            var prioAttr = moduleType.GetCustomAttribute<ModulePriorityAttribute>();
-
-            if (verAttr != null)
-            {
-                version = verAttr.ModuleVersion;
-            }
-
-            if (typeAttr != null)
-            {
-                type = typeAttr.ModuleType;
-            }
-
-            if (prioAttr != null)
-            {
-                priority = prioAttr.Priority;
-            }
-
-            return new ModuleInfo(Assembly.GetAssembly(moduleType),moduleType, name, version, priority, type);
-        }
-
-        IModuleManager IDiscoveryStage.UseModuleInitializer(IModuleInitializer moduleInitializer)
-        {
-            _sortedModules = SortModules();
-            return UseModuleInitializer(moduleInitializer);
-        }
-
-        public IModuleManager UseModuleInitializer<T>() where T : IModuleInitializer
-        {
-            UseModuleInitializer((IModuleInitializer)_typeProvider.Resolve(typeof(T)));
-            return this;
-        }
-
-        private IEnumerable<IModuleInfo> SortModules()
-        {
-            return _modules.OrderBy(m => m.ModuleType)
-                .ThenBy(m => m.Priority)
-                .ThenBy(m => m.Name);
-
-        }
-
-        public void Run()
-        {
-            if (_sortedModules == null)
-            {
-                throw new InvalidOperationException("Modules not sorted");
-            }
-
-            if (_moduleInitializer is null)
-            {
-                throw new InvalidOperationException("moduleinitilizer is not setted");
-            }
-
-            foreach (var step in _moduleInitializer.InitializationSteps)
-            {
-                foreach (var module in _sortedModules)
+                foreach (var module in createdModules)
                 {
-                    if (!_moduleInitializer.CanInitializeModule(module))
-                    {
-                        throw new InvalidOperationException($"ModuleInitializer: {_moduleInitializer} can't initialize module");
-                    }
-                    step.Invoke(module);
+                    if (!loadingStep.ModuleType.IsAssignableFrom(module.GetType()))
+                        continue;
+
+                    loadingStep.Action(module);
                 }
             }
         }
 
 
+        private IModule CreateModule(Type moduleType)
+        {
+            return (IModule)Activator.CreateInstance(moduleType);
+        }
+
+       
     }
 }

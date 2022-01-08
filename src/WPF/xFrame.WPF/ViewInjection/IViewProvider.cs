@@ -11,12 +11,7 @@ namespace xFrame.WPF.ViewInjection
         FrameworkElement GetViewForViewModel<T>()
             where T : ViewModelBase;
 
-        void Register(IViewFor view);
-        void Register(Type viewType, Type viewModelType);
-        void Register(Type viewType);
-        void Register<TView, TViewModel>()
-            where TView : FrameworkElement
-            where TViewModel : ViewModelBase;
+       
 
     }
 }

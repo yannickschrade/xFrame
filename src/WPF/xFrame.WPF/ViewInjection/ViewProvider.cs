@@ -7,7 +7,7 @@ using xFrame.Core.MVVM;
 
 namespace xFrame.WPF.ViewInjection
 {
-    internal class ViewProvider : IViewProvider
+    internal class ViewProvider : IViewProvider, IViewRegistration
     {
         private readonly ITypeProviderService _typeProvider;
         private readonly Dictionary<Type, Type> _viewModelToViewMapping = new Dictionary<Type, Type>();

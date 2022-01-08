@@ -8,15 +8,11 @@ namespace xFrame.Core.Attributes
     {
         public string ModuleName { get; }
         public Version Version { get; }
-        public int Priority { get; }
-        public ModuleType ModuleType { get; }
 
-        public ModuleAttribute(string name, Version version = null, int priority = 0, ModuleType moduleType = ModuleType.Undefined)
+        public ModuleAttribute(string name, Version version = null)
         {
             ModuleName = name;
-            Version = version ?? new Version();
-            Priority = priority;
-            ModuleType = moduleType;
+            Version = version;
         }
     }
 }
