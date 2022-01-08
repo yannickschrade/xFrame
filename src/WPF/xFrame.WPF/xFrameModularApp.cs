@@ -9,7 +9,7 @@ using xFrame.WPF.ViewService;
 namespace xFrame.WPF
 {
     public abstract class XFrameModularApp<T>: BaseApplication<T>
-        where T : ViewModelBase, new()
+        where T : ViewModelBase
     {
         protected abstract override void RegisterTypes(ITypeRegistrationService typeRegistration);
         protected abstract IDiscoveryStage AddModules(IDiscoveryStage moduleManager);
@@ -37,7 +37,7 @@ namespace xFrame.WPF
 
         protected virtual IModuleManager SetupModuleManager(IDiscoveryStage moduleManager)
         {
-            return moduleManager.UseModuleInitializer<ModuleInitializer>();
+            return moduleManager.UseModuleInitializer(new ModuleInitializer(TypeService));
         }
 
     }

@@ -6,6 +6,6 @@ namespace xFrame.Core.Modularity
     {
         void RegisterServices(ITypeRegistrationService registrationService);
 
-        void Initialize(ITypeProviderService resolver);
+        void OnInitialized(ITypeProviderService resolver);
     }
 }

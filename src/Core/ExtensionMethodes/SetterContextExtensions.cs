@@ -36,7 +36,7 @@ namespace xFrame.Core.ExtensionMethodes
             return context;
         }
 
-        public static SetterContext<T> NotifyCommand<T>(this SetterContext<T> context, BaseCommand command)
+        public static SetterContext<T> NotifyCommand<T>(this SetterContext<T> context, CommandBase command)
         {
             if (context.HasChanged)
             {

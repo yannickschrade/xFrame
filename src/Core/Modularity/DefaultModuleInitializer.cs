@@ -34,7 +34,7 @@ namespace xFrame.Core.Modularity
             moduleInfo.State = ModuleState.RegisteringTypes;
             moduleInfo.State = ModuleState.Initializing;
             module.RegisterServices(TypeService);
-            module.Initialize(TypeService);
+            module.OnInitialized(TypeService);
             moduleInfo.State = ModuleState.Initialized;
         }
 

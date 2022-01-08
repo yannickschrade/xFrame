@@ -1,16 +1,19 @@
-﻿using xFrame.Core.IoC;
+﻿using System.Linq;
+using System.Reflection;
+using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
+using xFrame.Core.MVVM;
+using xFrame.Core.ViewService;
+using xFrame.WPF.ViewInjection;
 using xFrame.WPF.ViewService;
 
 namespace xFrame.WPF.Modularity
 {
     public sealed class ModuleInitializer : DefaultModuleInitializer
     {
-        private readonly IViewRegistrationService _viewRegistration;
 
-        public ModuleInitializer(ITypeService typeService, IViewRegistrationService viewRegistration) : base(typeService)
+        public ModuleInitializer(ITypeService typeService) : base(typeService)
         {
-            _viewRegistration = viewRegistration;
         }
 
         public override void InitializeModule(IModuleInfo moduleInfo)
@@ -27,10 +30,22 @@ namespace xFrame.WPF.Modularity
             module.RegisterServices(TypeService);
             if (module is IUiModule uiModule)
             {
-                uiModule.RegisterViews(_viewRegistration);
+                var moduleAssembly = moduleInfo.ModuleAssembly;
+                RegisterViews(moduleAssembly);
+                uiModule.SetupUI(TypeService.Resolve<IViewManager>(), TypeService.Resolve<IViewAdapterCollection>());
             }
-            module.Initialize(TypeService);
+            module.OnInitialized(TypeService);
             moduleInfo.State = ModuleState.Initialized;
+        }
+
+        private void RegisterViews(Assembly moduleAssembly)
+        {
+            var viewTypes = moduleAssembly.GetTypes().Where(t => typeof(IViewFor).IsAssignableFrom(t));
+            var viewRegistrationService = TypeService.Resolve<IViewRegistrationService>();
+            foreach (var viewType in viewTypes)
+            {
+                viewRegistrationService.RegisterView(viewType);
+            }
         }
     }
 }

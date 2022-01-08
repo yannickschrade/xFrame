@@ -133,7 +133,7 @@ namespace xFrame.Core.Modularity
                 priority = prioAttr.Priority;
             }
 
-            return new ModuleInfo(moduleType, name, version, priority, type);
+            return new ModuleInfo(Assembly.GetAssembly(moduleType),moduleType, name, version, priority, type);
         }
 
         IModuleManager IDiscoveryStage.UseModuleInitializer(IModuleInitializer moduleInitializer)
@@ -144,7 +144,8 @@ namespace xFrame.Core.Modularity
 
         public IModuleManager UseModuleInitializer<T>() where T : IModuleInitializer
         {
-            throw new NotImplementedException();
+            UseModuleInitializer((IModuleInitializer)_typeProvider.Resolve(typeof(T)));
+            return this;
         }
 
         private IEnumerable<IModuleInfo> SortModules()

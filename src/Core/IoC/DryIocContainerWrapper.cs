@@ -13,6 +13,7 @@ namespace xFrame.Core.IoC
                                                             .WithFuncAndLazyWithoutRegistration()
                                                             .WithTrackingDisposableTransients()
                                                             .WithoutFastExpressionCompiler()
+                                                            .WithAutoConcreteTypeResolution()
                                                             .WithFactorySelector(Rules.SelectLastRegisteredFactory());
         public IContainer TypeService { get; private set; }
 

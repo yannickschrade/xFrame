@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace xFrame.Core.Commands
 {
-    public class RelayCommand : BaseCommand
+    public class RelayCommand : CommandBase
     {
 
         public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null) : base(execute, canExecute)
