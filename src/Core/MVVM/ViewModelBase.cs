@@ -19,6 +19,8 @@ namespace xFrame.Core.MVVM
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
+        public virtual void OnViewStateChanged(bool IsActive) { }
+
         public IEnumerable GetErrors(string propertyName)
         {
             if (propertyName == null)

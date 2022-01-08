@@ -50,6 +50,8 @@ namespace xFrame.WPF
         {
             viewAdapterCollection.RegisterAdapterIfMissing<ContentControlAdapter>();
             viewAdapterCollection.RegisterAdapterIfMissing<PanelAdapter>();
+            viewAdapterCollection.RegisterAdapterIfMissing<ItemsControlAdapter>();
+            viewAdapterCollection.RegisterAdapterIfMissing<SelectorAdapter>();
         }
 
         private void RegisterDefaultTypes(ITypeRegistrationService typeService)
