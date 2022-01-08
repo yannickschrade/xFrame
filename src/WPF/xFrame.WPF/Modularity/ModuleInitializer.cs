@@ -1,11 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
-using xFrame.Core.MVVM;
-using xFrame.Core.ViewService;
 using xFrame.WPF.ViewInjection;
-using xFrame.WPF.ViewService;
 
 namespace xFrame.WPF.Modularity
 {
@@ -14,37 +13,25 @@ namespace xFrame.WPF.Modularity
 
         public ModuleInitializer(ITypeService typeService) : base(typeService)
         {
+            Steps = new List<Action<IModuleInfo>>
+            {
+                RegisterTypes,
+                RegisterViews,
+                InitializeModule
+            };
         }
 
-        public override void InitializeModule(IModuleInfo moduleInfo)
+
+        private void RegisterViews(IModuleInfo moduleInfo)
         {
-            if (moduleInfo is null || moduleInfo.State == ModuleState.Initialized)
-            {
+            if (!(moduleInfo is IUiModule))
                 return;
-            }
-
-            moduleInfo.State = ModuleState.Loading;
-            var module = CreateModule(moduleInfo);
-            moduleInfo.State = ModuleState.RegisteringTypes;
-            moduleInfo.State = ModuleState.Initializing;
-            module.RegisterServices(TypeService);
-            if (module is IUiModule uiModule)
-            {
-                var moduleAssembly = moduleInfo.ModuleAssembly;
-                RegisterViews(moduleAssembly);
-                uiModule.SetupUI(TypeService.Resolve<IViewManager>(), TypeService.Resolve<IViewAdapterCollection>());
-            }
-            module.OnInitialized(TypeService);
-            moduleInfo.State = ModuleState.Initialized;
-        }
-
-        private void RegisterViews(Assembly moduleAssembly)
-        {
+            var moduleAssembly = Assembly.GetAssembly(moduleInfo.Type);
             var viewTypes = moduleAssembly.GetTypes().Where(t => typeof(IViewFor).IsAssignableFrom(t));
-            var viewRegistrationService = TypeService.Resolve<IViewRegistrationService>();
+            var viewProvider = TypeService.Resolve<IViewProvider>();
             foreach (var viewType in viewTypes)
             {
-                viewRegistrationService.RegisterView(viewType);
+                viewProvider.Register((IViewFor)viewType);
             }
         }
     }

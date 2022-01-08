@@ -21,7 +21,7 @@ namespace xFrame.Core.MVVM
 
         public IEnumerable GetErrors(string propertyName)
         {
-            if(propertyName == null)
+            if (propertyName == null)
             {
                 throw new ArgumentNullException(nameof(propertyName));
             }
@@ -43,7 +43,7 @@ namespace xFrame.Core.MVVM
 
         protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(T value, [CallerMemberName] string propertyName = null)
         {
-            if(propertyName == null)
+            if (propertyName == null)
             {
                 throw new ArgumentNullException(nameof(propertyName));
             }

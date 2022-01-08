@@ -22,5 +22,4 @@ using System.Windows.Markup;
 
 
 [assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF")]
-[assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF.Controls")]
 [assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF.ViewInjection")]

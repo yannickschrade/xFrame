@@ -6,10 +6,9 @@ using System.Windows.Controls;
 using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
-using xFrame.Core.ViewService;
+using xFrame.Core.ViewInjection;
 using xFrame.WPF.ViewAdapters;
 using xFrame.WPF.ViewInjection;
-using xFrame.WPF.ViewService;
 
 namespace xFrame.WPF
 {
@@ -39,25 +38,25 @@ namespace xFrame.WPF
         protected virtual void SetupApp()
         {
             TypeService = CreateTypeService();
+            TypeProvider.Current = TypeService;
             RegisterDefaultTypes(TypeService);
             RegisterTypes(TypeService);
             RegisterDefaultViewAdapters(TypeService.Resolve<IViewAdapterCollection>());
             RegisterViewAdapters(TypeService.Resolve<IViewAdapterCollection>());
-            RegisterViews(TypeService.Resolve<IViewRegistrationService>());
+            RegisterViews(TypeService.Resolve<IViewProvider>());
         }
 
         private void RegisterDefaultViewAdapters(IViewAdapterCollection viewAdapterCollection)
         {
             viewAdapterCollection.RegisterAdapterIfMissing<ContentControlAdapter>();
-            viewAdapterCollection.RegisterAdapterIfMissing<ItemsControlAdapter>();
             viewAdapterCollection.RegisterAdapterIfMissing<PanelAdapter>();
         }
 
         private void RegisterDefaultTypes(ITypeRegistrationService typeService)
         {
             typeService.RegisterSingelton<ViewAdapterCollection, IViewAdapterCollection>();
-            typeService.RegisterSingelton<ViewManager, IViewManager>();
-            typeService.RegisterSingeltonMany<ViewRegistry>(typeof(IViewProviderService), typeof(IViewRegistrationService));
+            typeService.RegisterSingelton<ViewProvider, IViewProvider>();
+            typeService.RegisterSingelton<ViewInjectionService, IViewInjectionService>();
         }
 
         protected virtual void RegisterViewAdapters(IViewAdapterCollection viewAdapterCollection)
@@ -68,7 +67,7 @@ namespace xFrame.WPF
                 .Where(t => t.IsClass)
                 .Where(t => !t.IsAbstract);
 
-            viewAdapterCollection.RegisterAdaptersIfMissing(adpaters);
+            viewAdapterCollection.RegisterAdapters(adpaters);
         }
 
         protected virtual void InitializeShell(Window shell)
@@ -76,7 +75,7 @@ namespace xFrame.WPF
             MainWindow = shell;
         }
 
-        protected virtual void RegisterViews(IViewRegistrationService viewRegistrationService)
+        protected virtual void RegisterViews(IViewProvider viewProvider)
         {
             var views = Assembly.GetEntryAssembly()
                 .GetTypes()
@@ -84,7 +83,7 @@ namespace xFrame.WPF
 
             foreach (var view in views)
             {
-                viewRegistrationService.RegisterView(view);
+                viewProvider.Register(view);
             }
         }
 
@@ -92,14 +91,9 @@ namespace xFrame.WPF
 
         private Window CreateShell()
         {
-            var viewProvider = TypeService.Resolve<IViewProviderService>();
-            var view = viewProvider.GetView<T>();
-            if(view is Window window)
-            {
-                return window;
-            }
-
-            throw new Exception();
+            var viewProvider = TypeService.Resolve<IViewProvider>();
+            var view = viewProvider.GetViewForViewModel<T>();
+            return view is Window window ? window : throw new Exception();
         }
     }
 }

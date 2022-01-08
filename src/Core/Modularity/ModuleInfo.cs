@@ -12,6 +12,7 @@ namespace xFrame.Core.Modularity
         public Version Version { get; }
         public int Priority { get; }
         public ModuleType ModuleType { get; }
+        public IModule Instance { get; set; }
 
         public ModuleInfo(Assembly assembly, Type type, string name, Version version = null, int priority = 0, ModuleType moduleType = ModuleType.Undefined)
         {

@@ -168,14 +168,16 @@ namespace xFrame.Core.Modularity
                 throw new InvalidOperationException("moduleinitilizer is not setted");
             }
 
-
-            foreach (var module in _sortedModules)
+            foreach (var step in _moduleInitializer.InitializationSteps)
             {
-                if (!_moduleInitializer.CanInitializeModule(module))
+                foreach (var module in _sortedModules)
                 {
-                    throw new InvalidOperationException("ModuleInitializer can't initialize module");
+                    if (!_moduleInitializer.CanInitializeModule(module))
+                    {
+                        throw new InvalidOperationException($"ModuleInitializer: {_moduleInitializer} can't initialize module");
+                    }
+                    step.Invoke(module);
                 }
-                _moduleInitializer.InitializeModule(module);
             }
         }
 

@@ -1,8 +1,12 @@
-﻿namespace xFrame.Core.Modularity
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace xFrame.Core.Modularity
 {
     public interface IModuleInitializer
     {
-        void InitializeModule(IModuleInfo moduleInfo);
+        IEnumerable<Action<IModuleInfo>> InitializationSteps { get; }
         bool CanInitializeModule(IModuleInfo moduleInfo);
     }
 }

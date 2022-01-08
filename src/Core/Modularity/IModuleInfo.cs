@@ -12,5 +12,6 @@ namespace xFrame.Core.Modularity
         Version Version { get; }
         int Priority { get; }
         ModuleType ModuleType { get; }
+        IModule Instance { get; set; }
     }
 }
