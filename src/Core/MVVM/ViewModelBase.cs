@@ -1,129 +1,153 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using xFrame.Core.PropertyChanged;
 
-namespace xFrame.Core.MVVM;
-
-public abstract class ViewModelBase : NotifyPropertyChanged, INotifyDataErrorInfo
+namespace xFrame.Core.MVVM
 {
-
-    private readonly ConcurrentDictionary<string, List<string>> _errorsByPropertyName = new();
-
-    public bool HasErrors => _errorsByPropertyName.Any();
-
-    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-    public IEnumerable GetErrors(string? propertyName)
+    public abstract class ViewModelBase : NotifyPropertyChanged, INotifyDataErrorInfo
     {
-        ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
-        _errorsByPropertyName.TryGetValue(propertyName, out var errors);
-        return errors;
-    }
 
-    protected virtual void OnErrorsChanged([CallerMemberName] string? propertyName = null)
-    {
-        if (propertyName == null)
+        private readonly ConcurrentDictionary<string, List<string>> _errorsByPropertyName = new ConcurrentDictionary<string, List<string>>();
+
+        public bool HasErrors => _errorsByPropertyName.Any();
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        public virtual void OnViewStateChanged(bool IsActive) { }
+
+        public IEnumerable GetErrors(string propertyName)
         {
-            throw new ArgumentNullException(nameof(propertyName));
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            _errorsByPropertyName.TryGetValue(propertyName, out var errors);
+            return errors;
         }
 
-        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-    }
-
-
-    protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(T value, [CallerMemberName] string? propertyName = null)
-    {
-        ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
-
-        return Set(value, propertyName);
-    }
-
-    protected virtual SetterContext<T> SetAndValidateWithFunction<T>(T value, Func<T, List<string>, bool> validationFunction, [CallerMemberName] string? propertyName = null)
-    {
-        ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
-        var results = new List<string>();
-        var isValid = validationFunction(value, results);
-
-        if (!isValid)
+        protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = null)
         {
-            AddErrors(results, propertyName);
-        }
-        else
-        {
-            ClearErrors(propertyName);
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
-        return Set(value, propertyName);
-    }
 
-
-    protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
-        var results = new List<ValidationResult>();
-        var isValid = Validator.TryValidateProperty(value, new ValidationContext(this) { MemberName = propertyName }, results);
-
-        if (!isValid)
+        protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(T value, [CallerMemberName] string propertyName = null)
         {
-            AddErrors(results.Select(r => r.ErrorMessage!), propertyName);
-        }
-        else
-        {
-            ClearErrors(propertyName);
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            return Set(value, propertyName);
         }
 
-        return Set(ref field, value, propertyName);
-    }
-
-    protected virtual SetterContext<T> SetAndValidateWithFunction<T>(ref T field, T value, Func<T, List<string>, bool> validationFunction, [CallerMemberName] string? propertyName = null)
-    {
-        ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
-        var results = new List<string>();
-        var isValid = validationFunction(value, results);
-
-        if (!isValid)
+        protected virtual SetterContext<T> SetAndValidateWithFunction<T>(T value, Func<T, List<string>, bool> validationFunction, [CallerMemberName] string propertyName = null)
         {
-            AddErrors(results, propertyName);
-        }
-        else
-        {
-            ClearErrors(propertyName);
-        }
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
 
-        return Set(ref field, value, propertyName);
-    }
+            var results = new List<string>();
+            var isValid = validationFunction(value, results);
 
-    protected virtual void AddError(string error, string propertyName)
-    {
-        if (!_errorsByPropertyName.ContainsKey(propertyName))
-        {
-            _errorsByPropertyName[propertyName] = new List<string>();
+            if (!isValid)
+            {
+                AddErrors(results, propertyName);
+            }
+            else
+            {
+                ClearErrors(propertyName);
+            }
+
+            return Set(value, propertyName);
         }
 
-        if (!_errorsByPropertyName[propertyName].Contains(error))
-        {
-            _errorsByPropertyName[propertyName].Add(error);
-            OnErrorsChanged(propertyName);
-        }
-    }
 
-    protected virtual void AddErrors(IEnumerable<string> errors, string propertyName)
-    {
-        foreach (var error in errors)
+        protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
-            AddError(error, propertyName);
-        }
-    }
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateProperty(value, new ValidationContext(this) { MemberName = propertyName }, results);
 
-    protected virtual void ClearErrors(string propertyName)
-    {
-        if (_errorsByPropertyName.ContainsKey(propertyName))
+            if (!isValid)
+            {
+                AddErrors(results.Select(r => r.ErrorMessage), propertyName);
+            }
+            else
+            {
+                ClearErrors(propertyName);
+            }
+
+            return Set(ref field, value, propertyName);
+        }
+
+        protected virtual SetterContext<T> SetAndValidateWithFunction<T>(ref T field, T value, Func<T, List<string>, bool> validationFunction, [CallerMemberName] string propertyName = null)
         {
-            _errorsByPropertyName.TryRemove(propertyName, out _);
-            OnErrorsChanged(propertyName);
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            var results = new List<string>();
+            var isValid = validationFunction(value, results);
+
+            if (!isValid)
+            {
+                AddErrors(results, propertyName);
+            }
+            else
+            {
+                ClearErrors(propertyName);
+            }
+
+            return Set(ref field, value, propertyName);
+        }
+
+        protected virtual void AddError(string error, string propertyName)
+        {
+            if (!_errorsByPropertyName.ContainsKey(propertyName))
+            {
+                _errorsByPropertyName[propertyName] = new List<string>();
+            }
+
+            if (!_errorsByPropertyName[propertyName].Contains(error))
+            {
+                _errorsByPropertyName[propertyName].Add(error);
+                OnErrorsChanged(propertyName);
+            }
+        }
+
+        protected virtual void AddErrors(IEnumerable<string> errors, string propertyName)
+        {
+            foreach (var error in errors)
+            {
+                AddError(error, propertyName);
+            }
+        }
+
+        protected virtual void ClearErrors(string propertyName)
+        {
+            if (_errorsByPropertyName.ContainsKey(propertyName))
+            {
+                _errorsByPropertyName.TryRemove(propertyName, out _);
+                OnErrorsChanged(propertyName);
+            }
         }
     }
 }

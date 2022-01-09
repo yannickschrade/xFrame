@@ -1,10 +1,17 @@
-﻿using xFrame.Core.IoC;
+﻿using System;
+using System.Runtime.ExceptionServices;
+using xFrame.Core.IoC;
 
-namespace xFrame.Core.Modularity;
-
-public interface IModule
+namespace xFrame.Core.Modularity
 {
-    void RegisterServices(ITypeRegistrationService registrationService);
+    public interface IModule
+    {
+        string Name { get; }
+        Version Version { get; }
+        Exception LoadingException { get; set; }
 
-    void Initialize(ITypeResolverService resolver);
+        void RegisterServices(ITypeRegistrationService registrationService);
+
+        void InitializeModule(ITypeProviderService resolver);
+    }
 }
