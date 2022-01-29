@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:xFrame="clr-namespace:xFrame.WPF.Theming">
+    
+    <SolidColorBrush x:Key="{x:Static xFrame:ThemeColor.BaseColorBrushKey}" Color="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorKey}}"/>
+    <SolidColorBrush x:Key="{x:Static xFrame:ThemeColor.ForegroundColorBrushKey}" Color="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundColorKey}}"/>
+    
+</ResourceDictionary>

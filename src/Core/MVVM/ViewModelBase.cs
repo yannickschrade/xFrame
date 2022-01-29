@@ -49,6 +49,17 @@ namespace xFrame.Core.MVVM
             {
                 throw new ArgumentNullException(nameof(propertyName));
             }
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateProperty(value, new ValidationContext(this) { MemberName = propertyName },  results);
+
+            if (!isValid)
+            {
+                AddErrors(results.Select(r => r.ErrorMessage), propertyName);
+            }
+            else
+            {
+                ClearErrors(propertyName);
+            }
 
             return Set(value, propertyName);
         }

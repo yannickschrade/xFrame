@@ -1,0 +1,112 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:xFrame="xFrame/Wpf"
+                    xmlns:input="clr-namespace:xFrame.WPF.Controls.Inputs">
+
+    <Style TargetType="{x:Type input:TextBox}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor1BrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundColorBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+        <Setter Property="MinWidth" Value="60"/>
+        <Setter Property="FontSize" Value="14pt"/>
+        <Setter Property="MaxWidth" Value="200"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type input:TextBox}">
+                    <Grid Name="OuterBorder">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{TemplateBinding Header}"
+                                               Foreground="{TemplateBinding Foreground}"
+                                               FontSize="12"
+                                               x:Name="PART_Header"
+                                               Margin="0,2"/>
+
+                        <Border Name="clipingBorder" 
+                                CornerRadius="{TemplateBinding CornerRadius}" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Grid.Row="1"/>
+                        <Border BorderBrush="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor2BrushKey}}"
+                                BorderThickness="0,0,0,2"
+                                Grid.Row="1"
+                                Padding="5,2"
+                                x:Name="IndicatorBorder">
+                            <Border.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=clipingBorder}"/>
+                            </Border.OpacityMask>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{TemplateBinding PlaceHolderText}"
+                                           Grid.Column="0"
+                                           x:Name="PART_PlaceHolderText"
+                                           Visibility="Visible"
+                                           IsHitTestVisible="False"
+                                           Margin="10,3"
+                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Foreground="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundDisabledColorBrushKey}}"/>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Grid.Column="0"
+                                              Padding="{TemplateBinding Padding}"
+                                              HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Disabled"
+                                              BorderThickness="0" 
+                                              Margin="10,3"
+                                              IsTabStop="False" 
+                                              Background="{x:Null}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+                                <Border Grid.Column="1"
+                                        CornerRadius="20"
+                                        BorderBrush="Red"
+                                        Background="Red"
+                                        BorderThickness="1"
+                                        Width="20"
+                                        Height="20"
+                                        Margin="0,0,10,0">
+                                    <TextBlock Text="!"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="14pt"
+                                               Padding="0"
+                                               Margin="0"/>
+                                </Border>
+                                
+                                
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+
+
+                        <Trigger Property="Validation.HasError" Value="False">
+                            <Setter Property="BorderBrush" Value="Green" TargetName="IndicatorBorder"/>
+                        </Trigger>
+
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.AccentColorBrushKey}}" TargetName="IndicatorBorder"/>
+                        </Trigger>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="BorderBrush" Value="Red" TargetName="IndicatorBorder"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

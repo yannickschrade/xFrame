@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\xFrame.WPF.Theming\xFrame.WPF.Theming.csproj" />
+    <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
+  </ItemGroup>
+
+</Project>
