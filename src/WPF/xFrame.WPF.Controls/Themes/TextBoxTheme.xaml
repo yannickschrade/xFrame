@@ -70,36 +70,15 @@
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
-                                <Border Grid.Column="1"
-                                        CornerRadius="20"
-                                        BorderBrush="Red"
-                                        Background="Red"
-                                        BorderThickness="1"
-                                        Width="20"
-                                        Height="20"
-                                        Margin="0,0,10,0">
-                                    <TextBlock Text="!"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontSize="14pt"
-                                               Padding="0"
-                                               Margin="0"/>
-                                </Border>
-                                
-                                
                             </Grid>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
 
-
-                        <Trigger Property="Validation.HasError" Value="False">
-                            <Setter Property="BorderBrush" Value="Green" TargetName="IndicatorBorder"/>
-                        </Trigger>
-
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter Property="BorderBrush" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.AccentColorBrushKey}}" TargetName="IndicatorBorder"/>
                         </Trigger>
+                        
                         <Trigger Property="Validation.HasError" Value="True">
                             <Setter Property="BorderBrush" Value="Red" TargetName="IndicatorBorder"/>
                         </Trigger>
