@@ -1,20 +1,15 @@
-﻿<Window x:Class="WPFTestApp.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFTestApp"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        xmlns:xFrame="xFrame/Wpf"
-        Background="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}">
-    <StackPanel VerticalAlignment="Center">
-        <xFrame:TextBox HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        PlaceHolderText="Hallo Welt"
-                        Header="Test:"
-                        Text="{Binding Text, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                        Margin="10"/>
-
-    </StackPanel>
-</Window>
+﻿<xFrame:Window x:Class="WPFTestApp.MainWindow"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:local="clr-namespace:WPFTestApp"
+               mc:Ignorable="d"
+               Title="HelloWorld" Height="450" Width="800"
+               xmlns:xFrame="xFrame/Wpf"
+               Background="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}"
+               GlowColor="Green">
+    <xFrame:TextBox Text="Hallo Welt" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+</xFrame:Window>

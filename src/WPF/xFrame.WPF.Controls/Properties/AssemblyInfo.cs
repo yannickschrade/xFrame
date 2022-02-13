@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Markup;
 
 // In Projekten im SDK-Stil wie dem vorliegenden, bei dem verschiedene Assemblyattribute
@@ -13,6 +14,16 @@ using System.Windows.Markup;
 // Assembly zugreifen müssen, legen Sie das ComVisible-Attribut für den betreffenden
 // Typ auf TRUE fest.
 
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+                                     //(used if a resource is not found in the page,
+                                     // or application resource dictionaries)
+    ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
+                                              //(used if a resource is not found in the page,
+                                              // app, or any theme specific resource dictionaries)
+)]
+
+
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM
@@ -22,3 +33,4 @@ using System.Windows.Markup;
 
 [assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Controls")]
 [assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Controls.Inputs")]
+[assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Controls.Windows")]

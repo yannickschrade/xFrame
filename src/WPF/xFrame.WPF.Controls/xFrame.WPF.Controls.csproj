@@ -1,13 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <TargetFrameworks>net5.0-windows;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\xFrame.WPF.Theming\xFrame.WPF.Theming.csproj" />
     <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" Version="6.0.0-alpha0204" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.1.635-beta">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
