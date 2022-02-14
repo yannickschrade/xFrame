@@ -3,23 +3,22 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using xFrame.Core.PropertyChanged;
 
 namespace xFrame.Core.MVVM
 {
-    public abstract class ViewModelBase : NotifyPropertyChanged, INotifyDataErrorInfo
+    public abstract class ViewModelBase : INotifyPropertyChanged, INotifyPropertyChanging, INotifyDataErrorInfo
     {
+        public virtual void OnViewStateChanged(bool IsActive) { }
 
+        #region INotifyDataErrorInfo
+        
         private readonly ConcurrentDictionary<string, List<string>> _errorsByPropertyName = new ConcurrentDictionary<string, List<string>>();
-
+        
         public bool HasErrors => _errorsByPropertyName.Any();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-        public virtual void OnViewStateChanged(bool IsActive) { }
 
         public IEnumerable GetErrors(string propertyName)
         {
@@ -32,104 +31,6 @@ namespace xFrame.Core.MVVM
             return errors;
         }
 
-        protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
-
-
-        protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(T value, [CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-            var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateProperty(value, new ValidationContext(this) { MemberName = propertyName },  results);
-
-            if (!isValid)
-            {
-                AddErrors(results.Select(r => r.ErrorMessage), propertyName);
-            }
-            else
-            {
-                ClearErrors(propertyName);
-            }
-
-            return Set(value, propertyName);
-        }
-
-        protected virtual SetterContext<T> SetAndValidateWithFunction<T>(T value, Func<T, List<string>, bool> validationFunction, [CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-
-            var results = new List<string>();
-            var isValid = validationFunction(value, results);
-
-            if (!isValid)
-            {
-                AddErrors(results, propertyName);
-            }
-            else
-            {
-                ClearErrors(propertyName);
-            }
-
-            return Set(value, propertyName);
-        }
-
-
-        protected virtual SetterContext<T> SetAndValidateWithAnnotations<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-            var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateProperty(value, new ValidationContext(this) { MemberName = propertyName }, results);
-
-            if (!isValid)
-            {
-                AddErrors(results.Select(r => r.ErrorMessage), propertyName);
-            }
-            else
-            {
-                ClearErrors(propertyName);
-            }
-
-            return Set(ref field, value, propertyName);
-        }
-
-        protected virtual SetterContext<T> SetAndValidateWithFunction<T>(ref T field, T value, Func<T, List<string>, bool> validationFunction, [CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-
-            var results = new List<string>();
-            var isValid = validationFunction(value, results);
-
-            if (!isValid)
-            {
-                AddErrors(results, propertyName);
-            }
-            else
-            {
-                ClearErrors(propertyName);
-            }
-
-            return Set(ref field, value, propertyName);
-        }
-
         protected virtual void AddError(string error, string propertyName)
         {
             if (!_errorsByPropertyName.ContainsKey(propertyName))
@@ -140,7 +41,7 @@ namespace xFrame.Core.MVVM
             if (!_errorsByPropertyName[propertyName].Contains(error))
             {
                 _errorsByPropertyName[propertyName].Add(error);
-                OnErrorsChanged(propertyName);
+                NotifyErrosChanged(propertyName);
             }
         }
 
@@ -157,8 +58,38 @@ namespace xFrame.Core.MVVM
             if (_errorsByPropertyName.ContainsKey(propertyName))
             {
                 _errorsByPropertyName.TryRemove(propertyName, out _);
-                OnErrorsChanged(propertyName);
+                NotifyErrosChanged(propertyName);
             }
         }
+
+        protected virtual void NotifyErrosChanged([CallerMemberName] string propertyName = null)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanging
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        protected virtual void NotifyPropertyChanging([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanging?.Invoke(this,new PropertyChangingEventArgs(propertyName));
+        }
+
+        #endregion
+
     }
 }
