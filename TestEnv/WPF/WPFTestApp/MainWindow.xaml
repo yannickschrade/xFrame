@@ -6,10 +6,17 @@
                xmlns:local="clr-namespace:WPFTestApp"
                mc:Ignorable="d"
                Title="HelloWorld" Height="450" Width="800"
-               xmlns:xFrame="xFrame/Wpf"
+               xmlns:xFrame="xFrame/Wpf" 
+               d:DataContext="{d:DesignInstance Type=local:ViewModel}"
                Background="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}"
                GlowColor="Green">
-    <xFrame:TextBox Text="Hallo Welt" 
+    <StackPanel>
+        <xFrame:TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                     HorizontalAlignment="Center"
+                    x:Name="NametextBox"
                     VerticalAlignment="Center"/>
+        <xFrame:Button Margin="5"
+                       Content="Klick Mich"
+                       Command="{Binding Command}"/>
+    </StackPanel>
 </xFrame:Window>

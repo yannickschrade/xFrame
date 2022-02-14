@@ -4,7 +4,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using xFrame.Core.ExtensionMethodes;
 
 namespace xFrame.Core.MVVM
 {
@@ -13,9 +16,9 @@ namespace xFrame.Core.MVVM
         public virtual void OnViewStateChanged(bool IsActive) { }
 
         #region INotifyDataErrorInfo
-        
+
         private readonly ConcurrentDictionary<string, List<string>> _errorsByPropertyName = new ConcurrentDictionary<string, List<string>>();
-        
+
         public bool HasErrors => _errorsByPropertyName.Any();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
@@ -86,10 +89,27 @@ namespace xFrame.Core.MVVM
 
         protected virtual void NotifyPropertyChanging([CallerMemberName] string propertyName = null)
         {
-            PropertyChanging?.Invoke(this,new PropertyChangingEventArgs(propertyName));
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
-
         #endregion
+    }
 
+    public abstract class ViewModelBase<T> : ViewModelBase
+        where T : ViewModelBase<T>
+    {
+        protected IPropertyChangedContext<T, TProperty> OnChanged<TProperty>(Expression<Func<T, TProperty>> predicate)
+        {
+
+            var context = new PropertyChangedContext<T, TProperty>((T)this);
+            var name = predicate.GetMebmerName();
+            this.SubscribePropertyChanged(name, p =>
+            {
+                foreach (var action in context.ExecutionPipline)
+                {
+                    action((TProperty)p);
+                }
+            });
+            return context;
+        }
     }
 }
