@@ -6,6 +6,12 @@ using System.Reflection;
 
 namespace xFrame.Core.Modularity
 {
+
+    //TODO: Change adding loadingteps with fluent way
+    // example : ModuleLoader.For<IUIModule>()
+    //           .RegisterTypes()
+    //           .Execute(() => ...)
+    //           .InThread(xFrameApp.MainThread)
     public class ModuleManager : IModuleManager
     {
 

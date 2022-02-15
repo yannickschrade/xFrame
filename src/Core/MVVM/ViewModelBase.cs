@@ -7,13 +7,43 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using xFrame.Core.ExtensionMethodes;
+using xFrame.Core.Fluent;
 
 namespace xFrame.Core.MVVM
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged, INotifyPropertyChanging, INotifyDataErrorInfo
+    public interface IViewModel : INotifyPropertyChanged, INotifyPropertyChanging, INotifyDataErrorInfo
     {
-        public virtual void OnViewStateChanged(bool IsActive) { }
+        void OnViewStateChanged(bool IsActive);
+
+    }
+
+    public abstract class ViewModelBase<T> : IViewModel
+        where T : ViewModelBase<T>, new()
+    {
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanging
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        protected virtual void NotifyPropertyChanging([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        }
+        #endregion
 
         #region INotifyDataErrorInfo
 
@@ -72,44 +102,13 @@ namespace xFrame.Core.MVVM
 
         #endregion
 
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        
+        public IPropertyContext<T,TProperty> When<TProperty>(Expression<Func<T,TProperty>> expression)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var propName = expression.GetPropertyInfo();
+            return new PropertyContext<T, TProperty>(propName, (T)this);
         }
 
-        #endregion
-
-        #region INotifyPropertyChanging
-
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        protected virtual void NotifyPropertyChanging([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-        }
-        #endregion
-    }
-
-    public abstract class ViewModelBase<T> : ViewModelBase
-        where T : ViewModelBase<T>
-    {
-        protected IPropertyChangedContext<T, TProperty> OnChanged<TProperty>(Expression<Func<T, TProperty>> predicate)
-        {
-
-            var context = new PropertyChangedContext<T, TProperty>((T)this);
-            var name = predicate.GetMebmerName();
-            this.SubscribePropertyChanged(name, p =>
-            {
-                foreach (var action in context.ExecutionPipline)
-                {
-                    action((TProperty)p);
-                }
-            });
-            return context;
-        }
+        public virtual void OnViewStateChanged(bool IsActive) { }
     }
 }

@@ -27,7 +27,7 @@ namespace xFrame.Core.Commands
 
         protected virtual void OnCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            CanExecuteChanged?.Invoke(this, System.EventArgs.Empty);
         }
     }
 }

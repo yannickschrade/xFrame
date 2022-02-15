@@ -13,7 +13,7 @@ using xFrame.WPF.ViewInjection;
 namespace xFrame.WPF
 {
     public abstract class BaseApplication<T> : Application
-        where T : ViewModelBase
+        where T : IViewModel
 
     {
         protected ITypeService TypeService;

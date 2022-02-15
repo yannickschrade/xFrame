@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using xFrame.Core.Attributes;
 using xFrame.Core.Commands;
+using xFrame.Core.Fluent;
 using xFrame.Core.MVVM;
 using xFrame.WPF.Extensions;
 
@@ -24,8 +25,10 @@ namespace WPFTestApp
         public ViewModel()
         {
             Command = new RelayCommand<string>(CanExecute, p => MessageBox.Show("Works"));
-            OnChanged(x => x.Name)
+            When(x => x.Name)
+                .HasChanged()
                 .Execute(p => Debug.WriteLine(p))
+                .IF(v => v.CanExecute(v.Name))
                 .NotifyCommand(x => x.Command);
         }
     }

@@ -9,11 +9,11 @@ namespace xFrame.Core.ViewInjection
         void Inject(Type viewModelType, object key);
 
         void Inject<T>(object key) 
-            where T : ViewModelBase;
+            where T : IViewModel;
 
-        void Inject(ViewModelBase vm, object key);
+        void Inject(IViewModel vm, object key);
 
-        void Remove(ViewModelBase vm, object key);
+        void Remove(IViewModel vm, object key);
 
 
         void AttachContainer(object view, object key);

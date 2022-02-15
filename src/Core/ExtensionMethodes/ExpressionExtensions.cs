@@ -8,7 +8,14 @@ namespace xFrame.Core.ExtensionMethodes
 {
     public static class ExpressionExtensions
     {
-        public static string GetMebmerName<T,TProperty>(this Expression<Func<T, TProperty>> expression)
+        public static string GetPropertyName<T,TProperty>(this Expression<Func<T, TProperty>> expression)
+        {
+            var propInfo = expression.GetPropertyInfo();
+
+            return propInfo.Name;
+        }
+
+        public static PropertyInfo GetPropertyInfo<T,TProperty>(this Expression<Func<T,TProperty>> expression)
         {
             var member = expression.Body as MemberExpression;
             if (member == null)
@@ -16,7 +23,10 @@ namespace xFrame.Core.ExtensionMethodes
 
             var propInfo = member.Member as PropertyInfo;
 
-            return propInfo == null ? throw new ArgumentException("Expression refers to a field not a property") : propInfo.Name;
+            if (propInfo == null)
+                throw new ArgumentException("Expression refers to a field");
+
+            return propInfo;
         }
     }
 }

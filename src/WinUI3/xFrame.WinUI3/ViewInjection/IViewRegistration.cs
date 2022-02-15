@@ -15,10 +15,10 @@ namespace xFrame.WinUI3.ViewInjection
         void Register(Type viewType);
         void Register<TView, TViewModel>()
             where TView : FrameworkElement
-            where TViewModel : ViewModelBase;
+            where TViewModel : IViewModel;
 
         void RegisterWindow<TWindow, TViewModel>()
             where TWindow : Window
-            where TViewModel : ViewModelBase;
+            where TViewModel : IViewModel;
     }
 }

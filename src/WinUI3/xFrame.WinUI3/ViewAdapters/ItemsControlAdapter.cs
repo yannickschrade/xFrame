@@ -9,14 +9,14 @@ namespace xFrame.WinUI3.ViewAdapters
         public override void AddToView(ItemsControl View, FrameworkElement child)
         {
             View.Items.Add(child);
-            if (child.DataContext is ViewModelBase vm)
+            if (child.DataContext is IViewModel vm)
                 vm.OnViewStateChanged(true);
         }
 
         public override void RemoveFromView(ItemsControl View, FrameworkElement child)
         {
             View.Items.Remove(child);
-            if (child.DataContext is ViewModelBase vm)
+            if (child.DataContext is IViewModel vm)
                 vm.OnViewStateChanged(false);
         }
 
@@ -24,7 +24,7 @@ namespace xFrame.WinUI3.ViewAdapters
         {
             foreach (var item in View.Items)
             {
-                if (item is FrameworkElement element && element.DataContext is ViewModelBase vm)
+                if (item is FrameworkElement element && element.DataContext is IViewModel vm)
                     vm.OnViewStateChanged(false);
             }
 

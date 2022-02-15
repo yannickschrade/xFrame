@@ -63,19 +63,19 @@ namespace xFrame.WinUI3.ViewInjection
             Containers[key].Inject(viewModelType);
         }
 
-        public void Inject(ViewModelBase vm, object key)
+        public void Inject(IViewModel vm, object key)
         {
             if (!Containers.ContainsKey(key))
                 Containers[key] = new ViewContainer(key, _viewAdapterCollection, _viewProvider, _dispatcher);
             Containers[key].Inject(vm);
         }
 
-        public void Inject<T>(object key) where T : ViewModelBase
+        public void Inject<T>(object key) where T : IViewModel
         {
             Inject(typeof(T), key);
         }
 
-        public void Remove(ViewModelBase vm, object key)
+        public void Remove(IViewModel vm, object key)
         {
             Containers[key]?.Remove(vm);
         }

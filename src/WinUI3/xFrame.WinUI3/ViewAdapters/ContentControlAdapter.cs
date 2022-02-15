@@ -8,14 +8,14 @@ namespace xFrame.WinUI3.ViewAdapters
     {
         public override void AddToView(ContentControl View, FrameworkElement child)
         {
-            if (View.Content != null && View.Content is FrameworkElement element && element.DataContext is ViewModelBase vmOld)
+            if (View.Content != null && View.Content is FrameworkElement element && element.DataContext is IViewModel vmOld)
             {
                 vmOld.OnViewStateChanged(false);
             }
 
             View.Content = child;
 
-            if (child.DataContext is ViewModelBase vm)
+            if (child.DataContext is IViewModel vm)
             {
                 vm.OnViewStateChanged(true);
             }
@@ -23,7 +23,7 @@ namespace xFrame.WinUI3.ViewAdapters
 
         public override void RemoveAllChildren(ContentControl View)
         {
-            if (View.Content != null && View.Content is FrameworkElement element && element.DataContext is ViewModelBase vmOld)
+            if (View.Content != null && View.Content is FrameworkElement element && element.DataContext is IViewModel vmOld)
             {
                 vmOld.OnViewStateChanged(false);
             }
@@ -32,7 +32,7 @@ namespace xFrame.WinUI3.ViewAdapters
 
         public override void RemoveFromView(ContentControl View, FrameworkElement child)
         {
-            if (View.Content != null && View.Content is FrameworkElement element && element.DataContext is ViewModelBase vmOld)
+            if (View.Content != null && View.Content is FrameworkElement element && element.DataContext is IViewModel vmOld)
             {
                 vmOld.OnViewStateChanged(false);
             }

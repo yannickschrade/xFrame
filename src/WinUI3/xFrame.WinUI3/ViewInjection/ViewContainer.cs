@@ -11,7 +11,7 @@ namespace xFrame.WinUI3.ViewInjection
     {
         private readonly List<FrameworkElement> _attachedViews = new();
         private readonly IViewProvider _viewProvider;
-        private readonly Dictionary<ViewModelBase, FrameworkElement> _injectedViews = new();
+        private readonly Dictionary<IViewModel, FrameworkElement> _injectedViews = new();
         private readonly DispatcherQueue _dispatcher;
 
         public object Key { get; }
@@ -60,7 +60,7 @@ namespace xFrame.WinUI3.ViewInjection
             Inject(childview);
         }
 
-        public void Inject(ViewModelBase vm)
+        public void Inject(IViewModel vm)
         {
             var childview = _viewProvider.GetViewWithViewModel(vm);
             Inject(childview);
@@ -71,7 +71,7 @@ namespace xFrame.WinUI3.ViewInjection
 
         }
 
-        public void Remove(ViewModelBase vm)
+        public void Remove(IViewModel vm)
         {
             if (!_injectedViews.TryGetValue(vm, out var childview))
                 return;
@@ -88,7 +88,7 @@ namespace xFrame.WinUI3.ViewInjection
         private void Inject(FrameworkElement uIElement)
         {
 
-            var vm = (ViewModelBase)uIElement.DataContext;
+            var vm = (IViewModel)uIElement.DataContext;
             if (uIElement is IViewFor viewFor)
                 vm = viewFor.ViewModel;
             if (!_injectedViews.TryAdd(vm, uIElement))

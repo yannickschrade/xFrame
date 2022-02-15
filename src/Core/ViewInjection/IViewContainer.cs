@@ -17,10 +17,10 @@ namespace xFrame.Core.ViewInjection
 
         void Inject(Type viewModelType);
 
-        void Inject(ViewModelBase viewModel);
+        void Inject(IViewModel viewModel);
 
         void Remove(Type viewModelType);
 
-        void Remove(ViewModelBase viewModel);
+        void Remove(IViewModel viewModel);
     }
 }

@@ -12,7 +12,7 @@ using xFrame.WPF.ViewInjection;
 namespace xFrame.WPF
 {
     public abstract class XFrameModularApp<T> : XFrameApp<T>
-        where T : ViewModelBase
+        where T : IViewModel
     {
         protected abstract override void RegisterTypes(ITypeRegistrationService typeRegistration);
 
@@ -22,12 +22,12 @@ namespace xFrame.WPF
         {
             base.SetupApp();
             var manager = new ModuleManager();
-            AddDefaultModuleSteps(manager);
+            AddDefaultModuleLodingSteps(manager);
             SetupModuleManager(manager);
             manager.LoadModules();
         }
 
-        private void AddDefaultModuleSteps(ModuleManager moduleManager)
+        private void AddDefaultModuleLodingSteps(ModuleManager moduleManager)
         {
             moduleManager.AddLoadingStep<IModule>(RegisterServices, LoadingType.AfterCreation);
             moduleManager.AddLoadingStep<IUiModule>(RegisterViews, LoadingType.AfterCreation);

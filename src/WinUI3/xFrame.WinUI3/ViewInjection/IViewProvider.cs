@@ -6,12 +6,12 @@ namespace xFrame.WinUI3.ViewInjection
 {
     public interface IViewProvider
     {
-        FrameworkElement GetViewWithViewModel(ViewModelBase vm);
+        FrameworkElement GetViewWithViewModel(IViewModel vm);
         FrameworkElement GetViewWithViewModel(Type viewModelType);
         FrameworkElement GetViewWithViewModel<T>()
-            where T : ViewModelBase;
+            where T : IViewModel;
 
-        Window GetWindowWithViewModel(ViewModelBase vm);
+        Window GetWindowWithViewModel(IViewModel vm);
         Window GetWindowWithViewModel(Type viewModelType);
         Window GetWindowWithViewModel<T>();
     }

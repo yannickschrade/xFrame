@@ -18,7 +18,7 @@ namespace xFrame.WinUI3.ViewInjection
             _typeProvider = typeProvider;
         }
 
-        public FrameworkElement GetViewWithViewModel(ViewModelBase vm)
+        public FrameworkElement GetViewWithViewModel(IViewModel vm)
         {
             var viewType = _viewModelToViewMapping[vm.GetType()];
             var uiElement = (IViewFor)_typeProvider.Resolve(viewType);
@@ -28,17 +28,17 @@ namespace xFrame.WinUI3.ViewInjection
 
         public FrameworkElement GetViewWithViewModel(Type viewModelType)
         {           
-            var vm = (ViewModelBase)_typeProvider.Resolve(viewModelType);
+            var vm = (IViewModel)_typeProvider.Resolve(viewModelType);
             return GetViewWithViewModel(vm);
         }
 
         public FrameworkElement GetViewWithViewModel<T>()
-            where T : ViewModelBase
+            where T : IViewModel
         {
             return GetViewWithViewModel(typeof(T));
         }
 
-        public Window GetWindowWithViewModel(ViewModelBase vm)
+        public Window GetWindowWithViewModel(IViewModel vm)
         {
             var viewType = _viewModelToWindowMapping[vm.GetType()];
             var window = (Window)_typeProvider.Resolve(viewType);
@@ -48,7 +48,7 @@ namespace xFrame.WinUI3.ViewInjection
 
         public Window GetWindowWithViewModel(Type viewModelType)
         {
-            var vm = (ViewModelBase)_typeProvider.Resolve(viewModelType);
+            var vm = (IViewModel)_typeProvider.Resolve(viewModelType);
             return GetWindowWithViewModel(vm);
         }
 
@@ -68,7 +68,7 @@ namespace xFrame.WinUI3.ViewInjection
 
         public void Register<TView, TViewModel>()
             where TView : FrameworkElement
-            where TViewModel : ViewModelBase
+            where TViewModel : IViewModel
         {
             Register(typeof(TView), typeof(TViewModel));
         }
@@ -87,7 +87,7 @@ namespace xFrame.WinUI3.ViewInjection
 
         public void RegisterWindow<TWindow, TViewModel>()
             where TWindow : Window
-            where TViewModel : ViewModelBase
+            where TViewModel : IViewModel
         {
             Register(typeof(TWindow), typeof(TViewModel));
         }
