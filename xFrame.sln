@@ -30,6 +30,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xFrame.WPF.Theming", "src\W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xFrame.SourceGenerators", "src\Generators\xFrame.SourceGenerators.csproj", "{862CF790-4C06-43E3-809D-8A2AA0AF670B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTestApp.Module1", "TestEnv\WPF\WPFTestApp.Module1\WPFTestApp.Module1.csproj", "{3FF509BA-A0C9-49EB-B946-7F60425A3259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTest.Module2", "TestEnv\WPF\WPFTest.Module2\WPFTest.Module2.csproj", "{6D6CD1D1-AB71-4EA7-A398-E3ABD798E045}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +68,14 @@ Global
 		{862CF790-4C06-43E3-809D-8A2AA0AF670B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{862CF790-4C06-43E3-809D-8A2AA0AF670B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{862CF790-4C06-43E3-809D-8A2AA0AF670B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF509BA-A0C9-49EB-B946-7F60425A3259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF509BA-A0C9-49EB-B946-7F60425A3259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF509BA-A0C9-49EB-B946-7F60425A3259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF509BA-A0C9-49EB-B946-7F60425A3259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D6CD1D1-AB71-4EA7-A398-E3ABD798E045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D6CD1D1-AB71-4EA7-A398-E3ABD798E045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D6CD1D1-AB71-4EA7-A398-E3ABD798E045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D6CD1D1-AB71-4EA7-A398-E3ABD798E045}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

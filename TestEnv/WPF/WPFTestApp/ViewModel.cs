@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using xFrame.Core.Attributes;
 using xFrame.Core.Commands;
 using xFrame.Core.Fluent;
 using xFrame.Core.MVVM;
-using xFrame.WPF.Extensions;
 
 namespace WPFTestApp
 {

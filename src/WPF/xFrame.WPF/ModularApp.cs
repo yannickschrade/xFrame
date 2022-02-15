@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using System.Windows;
 using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
@@ -21,38 +19,21 @@ namespace xFrame.WPF
         protected override void SetupApp()
         {
             base.SetupApp();
-            var manager = new ModuleManager();
+            var manager = TypeService.Current.Resolve<ModuleManager>();
+            RegisterDefaultLoader(manager);
             SetupModuleManager(manager);
             manager.LoadModules();
         }
 
-        private void RegisterViews(IUiModule module)
+        private void RegisterDefaultLoader(ModuleManager manager)
         {
-            var assembly = Assembly.GetAssembly(module.GetType());
-            var views = assembly.GetTypes()
-                    .Where(t => typeof(IViewFor).IsAssignableFrom(t));
-
-            var viewRegistration = TypeService.Resolve<IViewRegistration>();
-            foreach (var view in views)
-            {
-                viewRegistration.Register(view);
-            }
-        }
-
-        private void RegisterServices(IModule module)
-        {
-            module.RegisterServices(TypeService);
-        }
-
-        private void InitializeModule(IModule module)
-        {
-            module.InitializeModule(TypeService);
-        }
-
-        private void SetupViews(IUiModule uiModule)
-        {
-            var viewInjectionService = TypeService.Resolve<IViewInjectionService>();
-            uiModule.SetupViews(viewInjectionService);
+            manager.AddModuleLoader<IUiModule>(x =>
+               x.Name("DefaultUILoader")
+               .AddRegistrationPhase()
+               .AddPhase(p =>
+               p.Name("Load UIModules")
+               .AddLoadingAction(a => 
+               a.AddExecute(m => m.SetupViews(TypeService.Current.Resolve<IViewInjectionService>())))));
         }
     }
 }

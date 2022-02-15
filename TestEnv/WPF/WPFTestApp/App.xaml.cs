@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using WPFTest.Module2;
+using WPFTestApp.Module1;
 using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
 using xFrame.WPF;
@@ -22,11 +24,8 @@ namespace WPFTestApp
 
         protected override void SetupModuleManager(ModuleManager moduleManager)
         {
-            moduleManager.AddModuleLoader<IModule>(x =>
-            {
-                x.Name("DefaultLoader")
-                .AddRegistrationPhase();
-            });
+            moduleManager.AddModule<TestModule>();
+            moduleManager.AddModule<Module>();
         }
     }
 }

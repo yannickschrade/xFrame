@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace xFrame.Core.Modularity
 {
     public class ModuleLoader<TModule> : IModuleLoader<TModule>
         where TModule : IModule
     {
-        private readonly List<ILoadingPhase<TModule>> _phases;
+        private readonly List<ILoadingPhase<TModule>> _phases = new List<ILoadingPhase<TModule>>();
         public Type ForType => typeof(TModule);
         public string Name { get; set; }
         public Func<Type, TModule> ModuleFactory { get; set; }
-        Func<Type, object> IModuleLoader.ModuleFactory => p => ModuleFactory(p);
 
         public IEnumerable<ILoadingPhase<TModule>> LoadingPhases => _phases;
         IEnumerable<ILoadingPhase<IModule>> IModuleLoader.LoadingPhases => (IEnumerable<ILoadingPhase<IModule>>)LoadingPhases;
@@ -19,6 +18,7 @@ namespace xFrame.Core.Modularity
         public ModuleLoader()
         {
             Name = ToString();
+            ModuleFactory = p =>  (TModule)ModuleManager.DefaultModuleFactory(p);
         }
 
         public IModuleLoader<TModule> AddPhase(Action<ILoadingPhaseBuilder<TModule>> action)
@@ -33,6 +33,33 @@ namespace xFrame.Core.Modularity
         {
             _phases.Add(loadingPhase);
             return this;
+        }
+
+        public TModule CreateModule(Type moduleType)
+        {
+            var module = ModuleFactory(moduleType);
+            var registerPhase = _phases.FirstOrDefault(p => DefaultLoadingPhase.TypeRegistration.Equals(p));
+            registerPhase?.Run(module);
+            _phases.Remove(registerPhase);
+            return module;
+        }
+
+        IModule IModuleLoader.CreateModule(Type moduleType)
+        {
+            return CreateModule(moduleType);
+        }
+
+        public void LoadModule(TModule module)
+        {
+            foreach (var phase in LoadingPhases)
+            {
+                phase.Run(module);
+            }
+        }
+
+        public void LoadModule(IModule module)
+        {
+            LoadModule((TModule)module);
         }
     }
 }

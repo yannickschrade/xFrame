@@ -15,19 +15,23 @@ namespace xFrame.Core.Modularity
     //           .InThread(xFrameApp.MainThread)
     public class ModuleManager : IModuleManager
     {
+        public static Func<Type, IModule> DefaultModuleFactory { get; set; }
 
-        private readonly List<Type> _modules = new List<Type>();
+        private readonly List<Type> _moduleTypes = new List<Type>();
         private readonly List<IModule> _loadedModules = new List<IModule>();
-        private readonly List<IModuleLoader> _moduleLoaders = new List<IModuleLoader>();
+        private readonly Dictionary<Type, IModuleLoader> _moduleLoaders = new Dictionary<Type, IModuleLoader>();
+        private readonly Dictionary<IModule, IModuleLoader> _loaderForModule = new Dictionary<IModule, IModuleLoader>();
 
         public Dictionary<Type, Func<Type, IModule>> ModuleFactorys { get; }
 
         public IEnumerable<IModule> LoadedModules => _loadedModules;
 
 
-        public ModuleManager()
+        public ModuleManager(ITypeService typeService)
         {
             ModuleFactorys = new Dictionary<Type, Func<Type, IModule>>();
+            if(DefaultModuleFactory == null)
+                DefaultModuleFactory = p => (IModule)TypeService.Current.Resolve(p);
         }
 
         public IModuleManager AddModule<T>()
@@ -38,7 +42,7 @@ namespace xFrame.Core.Modularity
 
         public IModuleManager AddModule(Type moduleType)
         {
-            _modules.Add(moduleType);
+            _moduleTypes.Add(moduleType);
             return this;
         }
 
@@ -51,20 +55,31 @@ namespace xFrame.Core.Modularity
                     .GetTypes()
                     .Where(t => typeof(IModule).IsAssignableFrom(t));
 
-                _modules.AddRange(modules);
+                _moduleTypes.AddRange(modules);
             }
             return this;
         }
 
         public void LoadModules()
         {
-            throw new NotImplementedException();
+            foreach (var moduleType in _moduleTypes)
+            {
+                var loader = GetLoaderForModule(moduleType);
+                var module = loader.CreateModule(moduleType);
+                _loaderForModule.Add(module, loader);
+            }
+
+            foreach (var module in _loaderForModule.Keys)
+            {
+                var loader = _loaderForModule[module];
+                loader.LoadModule(module);
+            }
         }
 
-        public IModuleManager AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader) 
+        public IModuleManager AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader)
             where TModule : IModule
         {
-            _moduleLoaders.Add(moduleLoader);
+            _moduleLoaders.Add(moduleLoader.ForType, moduleLoader);
             return this;
         }
 
@@ -72,8 +87,23 @@ namespace xFrame.Core.Modularity
         {
             var builder = new ModuleLoaderBuilder<TModule>();
             action(builder);
-            _moduleLoaders.Add(builder.ModuleLoader);
+            _moduleLoaders.Add(builder.ModuleLoader.ForType, builder.ModuleLoader);
             return this;
+        }
+
+        private IModuleLoader GetLoaderForModule(Type moduleType)
+        {
+            var basetype = moduleType;
+
+
+            var interfaces = basetype.GetInterfaces();
+            foreach (var interfaceType in interfaces)
+            {
+                if (_moduleLoaders.TryGetValue(interfaceType, out var loader))
+                    return loader;
+            }
+
+            throw new KeyNotFoundException($" No moduleloader found for {moduleType}");
         }
     }
 }

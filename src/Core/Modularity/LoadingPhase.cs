@@ -7,7 +7,7 @@ namespace xFrame.Core.Modularity
     public class LoadingPhase<TModule> : ILoadingPhase<TModule>
         where TModule : IModule
     {
-        private List<ILoadingAction<TModule>> _loadingActions;        
+        private List<ILoadingAction<TModule>> _loadingActions = new List<ILoadingAction<TModule>>();
 
         public object Key { get; }
         public IEnumerable<ILoadingAction<TModule>> LoadingActions => _loadingActions;
@@ -25,9 +25,12 @@ namespace xFrame.Core.Modularity
             _loadingActions.Add(action);
             return this;
         }
-        public ILoadingPhase<TModule> AddAction(Action<ILoadingActionBuilder<TModule>> builder)
+        public ILoadingPhase<TModule> AddAction(Action<ILoadingActionBuilder<TModule>> action)
         {
-            throw new NotImplementedException();
+            var builder = new LoadingActionBuilder<TModule>();
+            action(builder);
+            _loadingActions.Add(builder.LoadingAction);
+            return this;
         }
 
         public void Run(TModule module)
