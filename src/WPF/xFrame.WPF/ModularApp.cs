@@ -11,7 +11,7 @@ using xFrame.WPF.ViewInjection;
 
 namespace xFrame.WPF
 {
-    public abstract class XFrameModularApp<T> : XFrameApp<T>
+    public abstract class ModularApp<T> : App<T>
         where T : IViewModel
     {
         protected abstract override void RegisterTypes(ITypeRegistrationService typeRegistration);
@@ -22,17 +22,8 @@ namespace xFrame.WPF
         {
             base.SetupApp();
             var manager = new ModuleManager();
-            AddDefaultModuleLodingSteps(manager);
             SetupModuleManager(manager);
             manager.LoadModules();
-        }
-
-        private void AddDefaultModuleLodingSteps(ModuleManager moduleManager)
-        {
-            moduleManager.AddLoadingStep<IModule>(RegisterServices, LoadingType.AfterCreation);
-            moduleManager.AddLoadingStep<IUiModule>(RegisterViews, LoadingType.AfterCreation);
-            moduleManager.AddLoadingStep<IUiModule>(SetupViews, LoadingType.AfterTypRegistration);
-            moduleManager.AddLoadingStep<IModule>(InitializeModule, LoadingType.Setup);
         }
 
         private void RegisterViews(IUiModule module)

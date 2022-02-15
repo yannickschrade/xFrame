@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using xFrame.Core.IoC;
 
 namespace xFrame.Core.Modularity
 {
@@ -15,12 +16,10 @@ namespace xFrame.Core.Modularity
     public class ModuleManager : IModuleManager
     {
 
-        private Func<Type, IModule> _defaultModuleFactory;
         private readonly List<Type> _modules = new List<Type>();
         private readonly List<IModule> _loadedModules = new List<IModule>();
+        private readonly List<IModuleLoader> _moduleLoaders = new List<IModuleLoader>();
 
-        
-        public List<LoadingStep> LoadingSteps { get; }
         public Dictionary<Type, Func<Type, IModule>> ModuleFactorys { get; }
 
         public IEnumerable<IModule> LoadedModules => _loadedModules;
@@ -28,22 +27,22 @@ namespace xFrame.Core.Modularity
 
         public ModuleManager()
         {
-            _defaultModuleFactory = CreateModule;
             ModuleFactorys = new Dictionary<Type, Func<Type, IModule>>();
-            LoadingSteps = new List<LoadingStep>();
         }
 
-        public void AddModule<T>()
+        public IModuleManager AddModule<T>()
         {
             AddModule(typeof(T));
+            return this;
         }
 
-        public void AddModule(Type moduleType)
+        public IModuleManager AddModule(Type moduleType)
         {
             _modules.Add(moduleType);
+            return this;
         }
 
-        public void AddModulesFromFolder(string path)
+        public IModuleManager AddModulesFromFolder(string path)
         {
             var files = Directory.GetFiles(path, "*.dll");
             foreach (var file in files)
@@ -54,63 +53,27 @@ namespace xFrame.Core.Modularity
 
                 _modules.AddRange(modules);
             }
-        }
-
-        public void AddLoadingStep<T>(Action<T> action, LoadingType loadingType)
-           where T : IModule
-        {
-            var step = new LoadingStep<T>(action, loadingType);
-            LoadingSteps.Add(step);
-        }
-
-        public void AddLoadingStep<T>(LoadingStep<T> loadingStep)
-            where T : IModule
-        {
-            LoadingSteps.Add(loadingStep);
-        }
-
-
-        public void AddModuleFactory<T>(Func<Type, IModule> moduleFactory)
-        {
-            ModuleFactorys[typeof(T)] = moduleFactory;
+            return this;
         }
 
         public void LoadModules()
         {
-            var createdModules = new List<IModule>();
-
-            foreach (var moduleType in _modules)
-            {
-                IModule module = null;
-                if (ModuleFactorys.ContainsKey(moduleType))
-                {
-                    module = ModuleFactorys[moduleType](moduleType);
-                }
-
-                if (module == null)
-                    module = _defaultModuleFactory(moduleType);
-
-                createdModules.Add(module);
-            }
-
-            foreach (var loadingStep in LoadingSteps.OrderBy(s => s.LoadingType))
-            {
-                foreach (var module in createdModules)
-                {
-                    if (!loadingStep.ModuleType.IsAssignableFrom(module.GetType()))
-                        continue;
-
-                    loadingStep.Action(module);
-                }
-            }
+            throw new NotImplementedException();
         }
 
-
-        private IModule CreateModule(Type moduleType)
+        public IModuleManager AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader) 
+            where TModule : IModule
         {
-            return (IModule)Activator.CreateInstance(moduleType);
+            _moduleLoaders.Add(moduleLoader);
+            return this;
         }
 
-       
+        public IModuleManager AddModuleLoader<TModule>(Action<IModuleLoaderBuilder<TModule>> action) where TModule : IModule
+        {
+            var builder = new ModuleLoaderBuilder<TModule>();
+            action(builder);
+            _moduleLoaders.Add(builder.ModuleLoader);
+            return this;
+        }
     }
 }

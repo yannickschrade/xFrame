@@ -3,7 +3,7 @@ using xFrame.Core.MVVM;
 
 namespace xFrame.WPF
 {
-    public abstract class XFrameApp<T>: BaseApplication<T>
+    public abstract class App<T>: BaseApplication<T>
         where T : IViewModel
     {
 
