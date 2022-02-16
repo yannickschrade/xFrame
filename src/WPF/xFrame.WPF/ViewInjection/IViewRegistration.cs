@@ -13,6 +13,6 @@ namespace xFrame.WPF.ViewInjection
         void Register(Type viewType);
         void Register<TView, TViewModel>()
             where TView : FrameworkElement
-            where TViewModel : ViewModelBase;
+            where TViewModel : IViewModel;
     }
 }

@@ -23,7 +23,9 @@ namespace xFrame.Core.IoC
             TypeService.RegisterInstanceMany(new[]
             {
             typeof(ITypeProviderService),
-            typeof(ITypeRegistrationService)
+            typeof(ITypeRegistrationService),
+            typeof(ITypeService)
+            
         }, this);
             TypeService.RegisterInstance(TypeService);
         }

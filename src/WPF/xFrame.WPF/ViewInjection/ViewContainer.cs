@@ -14,7 +14,7 @@ namespace xFrame.WPF.ViewInjection
     {
         private readonly List<UIElement> _attachedViews = new List<UIElement>();
         private readonly IViewProvider _viewProvider;
-        private readonly Dictionary<ViewModelBase, FrameworkElement> _injectedViews = new Dictionary<ViewModelBase, FrameworkElement>();
+        private readonly Dictionary<IViewModel, FrameworkElement> _injectedViews = new Dictionary<IViewModel, FrameworkElement>();
 
         public object Key { get; }
         public IViewAdapterCollection ViewAdapterCollection { get; }
@@ -61,7 +61,7 @@ namespace xFrame.WPF.ViewInjection
             Inject(childview);
         }
 
-        public void Inject(ViewModelBase vm)
+        public void Inject(IViewModel vm)
         {
             var childview = _viewProvider.GetViewForViewModel(vm);
             Inject(childview);
@@ -72,7 +72,7 @@ namespace xFrame.WPF.ViewInjection
 
         }
 
-        public void Remove(ViewModelBase vm)
+        public void Remove(IViewModel vm)
         {
             if (!_injectedViews.TryGetValue(vm, out var childview))
                 return;
@@ -89,7 +89,7 @@ namespace xFrame.WPF.ViewInjection
 
         private void Inject(FrameworkElement uIElement)
         {
-            if (!_injectedViews.TryAdd((ViewModelBase)uIElement.DataContext, uIElement))
+            if (!_injectedViews.TryAdd((IViewModel)uIElement.DataContext, uIElement))
             {
                 // TODO: better exceptions
                 throw new Exception("viewmodel allready added");

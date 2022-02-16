@@ -12,7 +12,7 @@ namespace xFrame.WPF.ViewAdapters
         public override void AddToView(Panel View, FrameworkElement child)
         {
             View.Children.Add(child);
-            if (child.DataContext is ViewModelBase vm)
+            if (child.DataContext is IViewModel vm)
             {
                 vm.OnViewStateChanged(true);
             }
@@ -22,7 +22,7 @@ namespace xFrame.WPF.ViewAdapters
         {
             foreach (var child in View.Children)
             {
-                if (child is FrameworkElement element && element.DataContext is ViewModelBase vm)
+                if (child is FrameworkElement element && element.DataContext is IViewModel vm)
                 {
                     vm.OnViewStateChanged(false);
                 }
@@ -33,7 +33,7 @@ namespace xFrame.WPF.ViewAdapters
         public override void RemoveFromView(Panel View, FrameworkElement child)
         {
             View.Children.Remove(child);
-            if (child.DataContext is ViewModelBase vm)
+            if (child.DataContext is IViewModel vm)
             {
                 vm.OnViewStateChanged(false);
             }

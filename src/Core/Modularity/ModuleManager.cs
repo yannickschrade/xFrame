@@ -3,41 +3,50 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using xFrame.Core.IoC;
 
 namespace xFrame.Core.Modularity
 {
+
+    //TODO: Change adding loadingteps with fluent way
+    // example : ModuleLoader.For<IUIModule>()
+    //           .RegisterTypes()
+    //           .Execute(() => ...)
+    //           .InThread(xFrameApp.MainThread)
     public class ModuleManager : IModuleManager
     {
+        public static Func<Type, IModule> DefaultModuleFactory { get; set; }
 
-        private Func<Type, IModule> _defaultModuleFactory;
-        private readonly List<Type> _modules = new List<Type>();
+        private readonly List<Type> _moduleTypes = new List<Type>();
         private readonly List<IModule> _loadedModules = new List<IModule>();
+        private readonly Dictionary<Type, IModuleLoader> _moduleLoaders = new Dictionary<Type, IModuleLoader>();
+        private readonly Dictionary<IModule, IModuleLoader> _loaderForModule = new Dictionary<IModule, IModuleLoader>();
 
-        
-        public List<LoadingStep> LoadingSteps { get; }
         public Dictionary<Type, Func<Type, IModule>> ModuleFactorys { get; }
 
         public IEnumerable<IModule> LoadedModules => _loadedModules;
 
 
-        public ModuleManager()
+        public ModuleManager(ITypeService typeService)
         {
-            _defaultModuleFactory = CreateModule;
             ModuleFactorys = new Dictionary<Type, Func<Type, IModule>>();
-            LoadingSteps = new List<LoadingStep>();
+            if (DefaultModuleFactory == null)
+                DefaultModuleFactory = p => (IModule)TypeService.Current.Resolve(p);
         }
 
-        public void AddModule<T>()
+        public IModuleManager AddModule<T>()
         {
             AddModule(typeof(T));
+            return this;
         }
 
-        public void AddModule(Type moduleType)
+        public IModuleManager AddModule(Type moduleType)
         {
-            _modules.Add(moduleType);
+            _moduleTypes.Add(moduleType);
+            return this;
         }
 
-        public void AddModulesFromFolder(string path)
+        public IModuleManager AddModulesFromFolder(string path)
         {
             var files = Directory.GetFiles(path, "*.dll");
             foreach (var file in files)
@@ -46,65 +55,70 @@ namespace xFrame.Core.Modularity
                     .GetTypes()
                     .Where(t => typeof(IModule).IsAssignableFrom(t));
 
-                _modules.AddRange(modules);
+                _moduleTypes.AddRange(modules);
             }
-        }
-
-        public void AddLoadingStep<T>(Action<T> action, LoadingType loadingType)
-           where T : IModule
-        {
-            var step = new LoadingStep<T>(action, loadingType);
-            LoadingSteps.Add(step);
-        }
-
-        public void AddLoadingStep<T>(LoadingStep<T> loadingStep)
-            where T : IModule
-        {
-            LoadingSteps.Add(loadingStep);
-        }
-
-
-        public void AddModuleFactory<T>(Func<Type, IModule> moduleFactory)
-        {
-            ModuleFactorys[typeof(T)] = moduleFactory;
+            return this;
         }
 
         public void LoadModules()
         {
-            var createdModules = new List<IModule>();
-
-            foreach (var moduleType in _modules)
+            foreach (var moduleType in _moduleTypes)
             {
-                IModule module = null;
-                if (ModuleFactorys.ContainsKey(moduleType))
-                {
-                    module = ModuleFactorys[moduleType](moduleType);
-                }
-
-                if (module == null)
-                    module = _defaultModuleFactory(moduleType);
-
-                createdModules.Add(module);
+                var loader = GetLoaderForModule(moduleType);
+                var module = loader.CreateModule(moduleType);
+                _loaderForModule.Add(module, loader);
             }
 
-            foreach (var loadingStep in LoadingSteps.OrderBy(s => s.LoadingType))
+            foreach (var module in _loaderForModule.Keys)
             {
-                foreach (var module in createdModules)
-                {
-                    if (!loadingStep.ModuleType.IsAssignableFrom(module.GetType()))
-                        continue;
-
-                    loadingStep.Action(module);
-                }
+                var loader = _loaderForModule[module];
+                loader.LoadModule(module);
             }
         }
 
-
-        private IModule CreateModule(Type moduleType)
+        public void AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader)
+            where TModule : IModule
         {
-            return (IModule)Activator.CreateInstance(moduleType);
+            _moduleLoaders.Add(moduleLoader.ForType, moduleLoader);
         }
 
-       
+        public IModuleLoader<TModule> AddModuleLoader<TModule>(Action<IModuleLoaderBuilder<TModule>> action)
+            where TModule : IModule
+        {
+            var builder = new ModuleLoaderBuilder<TModule>();
+            action(builder);
+            _moduleLoaders.Add(builder.ModuleLoader.ForType, builder.ModuleLoader);
+            return builder.ModuleLoader;
+        }
+
+        private IModuleLoader GetLoaderForModule(Type moduleType)
+        {
+            var basetype = moduleType;
+
+            while (basetype != null)
+            {
+                if (_moduleLoaders.TryGetValue(basetype, out var loader))
+                    return loader;
+
+                basetype = basetype.BaseType;
+            }
+
+            var interfaces = moduleType.GetInterfaces();
+            foreach (var interfaceType in interfaces)
+            {
+                if (_moduleLoaders.TryGetValue(interfaceType, out var loader))
+                    return loader;
+            }
+
+            throw new KeyNotFoundException($" No moduleloader found for {moduleType}");
+        }
+
+        public void EditModuleLoader<TModule>(Action<IModuleLoader<TModule>> loader) where TModule : IModule
+        {
+            var editedLoader = (IModuleLoader<TModule>)_moduleLoaders[typeof(TModule)];
+            if (editedLoader == null)
+                throw new KeyNotFoundException($"loader for type: '{typeof(TModule)}' does not exsit");
+            loader(editedLoader);
+        }
     }
 }

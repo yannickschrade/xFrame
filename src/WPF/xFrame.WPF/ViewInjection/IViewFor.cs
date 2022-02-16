@@ -11,7 +11,7 @@ namespace xFrame.WPF.ViewInjection
     }
 
     public interface IViewFor<T> : IViewFor
-        where T : ViewModelBase
+        where T : IViewModel
     {
         Type IViewFor.ViewModelType => typeof(T);
     }

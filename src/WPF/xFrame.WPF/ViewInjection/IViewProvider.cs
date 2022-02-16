@@ -6,10 +6,10 @@ namespace xFrame.WPF.ViewInjection
 {
     public interface IViewProvider
     {
-        FrameworkElement GetViewForViewModel(ViewModelBase vm);
+        FrameworkElement GetViewForViewModel(IViewModel vm);
         FrameworkElement GetViewForViewModel(Type viewModelType);
         FrameworkElement GetViewForViewModel<T>()
-            where T : ViewModelBase;
+            where T : IViewModel;
 
        
 

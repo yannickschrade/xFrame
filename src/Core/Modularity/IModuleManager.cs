@@ -8,15 +8,17 @@ namespace xFrame.Core.Modularity
         IEnumerable<IModule> LoadedModules { get; }
 
         public Dictionary<Type, Func<Type, IModule>> ModuleFactorys { get; }
-        void AddModule<T>();
-        void AddModule(Type moduleType);
-        void AddModulesFromFolder(string path);
-
-        void AddModuleFactory<T>(Func<Type, IModule> moduleFactory);
-
-        void AddLoadingStep<T>(Action<T> step, LoadingType loadingType)
-            where T : IModule;
-
+        IModuleManager AddModule<T>();
+        IModuleManager AddModule(Type moduleType);
+        IModuleManager AddModulesFromFolder(string path);
         void LoadModules();
+
+        void AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader) where TModule : IModule;
+
+        IModuleLoader<TModule> AddModuleLoader<TModule>(Action<IModuleLoaderBuilder<TModule>> builder)
+            where TModule : IModule;
+
+        void EditModuleLoader<TModule>(Action<IModuleLoader<TModule>> loader)
+            where TModule : IModule;
     }
 }

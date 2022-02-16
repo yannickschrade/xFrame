@@ -13,11 +13,9 @@ using xFrame.WPF.ViewInjection;
 namespace xFrame.WPF
 {
     public abstract class BaseApplication<T> : Application
-        where T : ViewModelBase
+        where T : IViewModel
 
     {
-        protected ITypeService TypeService;
-
         protected abstract ITypeService CreateTypeService();
         protected abstract void RegisterTypes(ITypeRegistrationService typeRegistration);
 
@@ -37,13 +35,13 @@ namespace xFrame.WPF
 
         protected virtual void SetupApp()
         {
-            TypeService = CreateTypeService();
-            TypeProvider.Current = TypeService;
-            RegisterDefaultTypes(TypeService);
-            RegisterTypes(TypeService);
-            RegisterDefaultViewAdapters(TypeService.Resolve<IViewAdapterCollection>());
-            RegisterViewAdapters(TypeService.Resolve<IViewAdapterCollection>());
-            RegisterViews(TypeService.Resolve<IViewRegistration>());
+            var _typeService = CreateTypeService();
+            TypeService.Current = _typeService;
+            RegisterDefaultTypes(_typeService);
+            RegisterTypes(_typeService);
+            RegisterDefaultViewAdapters(_typeService.Resolve<IViewAdapterCollection>());
+            RegisterViewAdapters(_typeService.Resolve<IViewAdapterCollection>());
+            RegisterViews(_typeService.Resolve<IViewRegistration>());
         }
 
         private void RegisterDefaultViewAdapters(IViewAdapterCollection viewAdapterCollection)
@@ -93,7 +91,7 @@ namespace xFrame.WPF
 
         private Window CreateShell()
         {
-            var viewProvider = TypeService.Resolve<IViewProvider>();
+            var viewProvider = TypeService.Current.Resolve<IViewProvider>();
             var view = viewProvider.GetViewForViewModel<T>();
             return view is Window window ? window : throw new Exception();
         }

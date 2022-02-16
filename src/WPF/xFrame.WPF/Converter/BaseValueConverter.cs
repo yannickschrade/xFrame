@@ -5,15 +5,15 @@ using System.Windows.Markup;
 
 namespace xFrame.WPF.Converter
 {
-    public abstract class BaseValueConverter<T> : MarkupExtension, IValueConverter
-        where T : BaseValueConverter<T>, new()
+    public abstract class BaseValueConverter<TConverter, TFor> : MarkupExtension, IValueConverter
+        where TConverter : BaseValueConverter<TConverter, TFor>, new()
     {
 
-        private static readonly T _converter;
+        private static readonly TConverter _converter;
 
         static BaseValueConverter()
         {
-            _converter = new T();
+            _converter = new TConverter();
         }
 
 
@@ -22,9 +22,23 @@ namespace xFrame.WPF.Converter
             return _converter;
         }
 
-        public abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
+        public abstract object Convert(TFor value, Type targetType, object parameter, CultureInfo culture);
 
 
-        public abstract object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture);
+        public abstract object ConvertBack(TFor value, Type targetType, object parameter, CultureInfo culture);
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is TFor forValue
+                ? Convert(forValue, targetType, parameter, culture)
+                : throw new ArgumentException($"Value has to be an {typeof(TFor)}");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is TFor forValue
+                ? Convert(forValue, targetType, parameter, culture)
+                : throw new ArgumentException($"Value has to be an {typeof(TFor)}");
+        }
     }
 }

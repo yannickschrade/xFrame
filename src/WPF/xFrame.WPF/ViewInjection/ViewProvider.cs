@@ -17,7 +17,7 @@ namespace xFrame.WPF.ViewInjection
             _typeProvider = typeProvider;
         }
 
-        public FrameworkElement GetViewForViewModel(ViewModelBase vm)
+        public FrameworkElement GetViewForViewModel(IViewModel vm)
         {
             var viewType = _viewModelToViewMapping[vm.GetType()];
             var uiElement = (FrameworkElement)_typeProvider.Resolve(viewType);
@@ -29,13 +29,13 @@ namespace xFrame.WPF.ViewInjection
         {
             var viewType = _viewModelToViewMapping[viewModelType];
             var uiElement = (FrameworkElement)_typeProvider.Resolve(viewType);
-            var vm = (ViewModelBase)_typeProvider.Resolve(viewModelType);
+            var vm = (IViewModel)_typeProvider.Resolve(viewModelType);
             uiElement.DataContext = vm;
             return uiElement;
         }
 
         public FrameworkElement GetViewForViewModel<T>()
-            where T : ViewModelBase
+            where T : IViewModel
         {
             return GetViewForViewModel(typeof(T));
         }
@@ -52,7 +52,7 @@ namespace xFrame.WPF.ViewInjection
 
         public void Register<TView, TViewModel>()
             where TView : FrameworkElement
-            where TViewModel : ViewModelBase
+            where TViewModel : IViewModel
         {
             Register(typeof(TView), typeof(TViewModel));
         }
