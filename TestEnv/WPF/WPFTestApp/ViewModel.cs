@@ -23,11 +23,11 @@ namespace WPFTestApp
         public ViewModel()
         {
             Command = new RelayCommand<string>(CanExecute, p => MessageBox.Show("Works"));
-            When(x => x.Name)
-                .HasChanged()
-                .Execute(p => Debug.WriteLine(p))
-                .IF(v => v.CanExecute(v.Name))
-                .NotifyCommand(x => x.Command);
+            Property(x => x.Name)
+                .HasChanged(x =>
+                {
+                    x.Execute(p => Debug.WriteLine(p));
+                });
         }
     }
 }
