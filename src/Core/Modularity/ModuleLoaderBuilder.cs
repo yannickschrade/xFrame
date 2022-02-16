@@ -7,8 +7,23 @@ namespace xFrame.Core.Modularity
     internal class ModuleLoaderBuilder<TModule> : IModuleLoaderBuilder<TModule>
         where TModule : IModule
     {
-        public ModuleLoader<TModule> ModuleLoader { get; } = new ModuleLoader<TModule>();
-        
+        public ModuleLoader<TModule> ModuleLoader { get; private set; }
+        public string Name
+        {
+
+            get => ModuleLoader.Name;
+            set => ModuleLoader.Name = value;
+        }
+        public Func<Type, TModule> ModuleFactory
+        {
+            get => ModuleLoader.ModuleFactory;
+            set => ModuleLoader.ModuleFactory = value;
+        }
+
+        public ModuleLoaderBuilder()
+        {
+            ModuleLoader = new ModuleLoader<TModule>();
+        }
 
         public IModuleLoaderBuilder<TModule> AddPhase(ILoadingPhase<TModule> phase)
         {
@@ -16,23 +31,12 @@ namespace xFrame.Core.Modularity
             return this;
         }
 
-        public IModuleLoaderBuilder<TModule> AddPhase(Action<ILoadingPhaseBuilder<TModule>> action)
+        public IModuleLoaderBuilder<TModule> AddPhase(object key, Action<ILoadingPhaseBuilder<TModule>> action)
         {
-            var builder = new LoadingPhaseBuilder<TModule>();
+            var phase = new LoadingPhase<TModule>(key);
+            var builder = new LoadingPhaseBuilder<TModule>(phase);
             action(builder);
             ModuleLoader.AddPhase(builder.LoadingPhase);
-            return this;
-        }
-
-        public IModuleLoaderBuilder<TModule> Factory(Func<Type, TModule> factory)
-        {
-            ModuleLoader.ModuleFactory = factory;
-            return this;
-        }
-
-        public IModuleLoaderBuilder<TModule> Name(string name)
-        {
-            ModuleLoader.Name = name;
             return this;
         }
     }

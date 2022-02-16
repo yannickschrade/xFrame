@@ -12,7 +12,7 @@ namespace xFrame.Core.Modularity.DefaultPhases
         public RegistrationPhase()
             : base(DefaultLoadingPhase.TypeRegistration)
         {
-            AddAction(x => x.AddExecute(m => m.RegisterServices(TypeService.Current)));
+            AddLoadingAction(m => m.RegisterServices(TypeService.Current));
         }
     }
 }

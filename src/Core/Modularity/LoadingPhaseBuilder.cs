@@ -7,25 +7,27 @@ namespace xFrame.Core.Modularity
     internal class LoadingPhaseBuilder<TModule> : ILoadingPhaseBuilder<TModule>
         where TModule : IModule
     {
-        public LoadingPhase<TModule> LoadingPhase { get; private set; }
-        public ILoadingPhaseBuilder<TModule> AddLoadingAction(object key, Action<ILoadingActionBuilder<TModule>> action)
+        public LoadingPhase<TModule> LoadingPhase { get; }
+        public string Name
         {
-            var builder = new LoadingActionBuilder<TModule>();
-            action(builder);
-            LoadingPhase = new LoadingPhase<TModule>(key);
-            LoadingPhase.AddAction(builder.LoadingAction);
+            get => LoadingPhase.Name;
+            set => LoadingPhase.Name = value;
+        }
+
+        public LoadingPhaseBuilder(LoadingPhase<TModule> loadingPhase)
+        {
+            LoadingPhase = loadingPhase;
+        }
+
+        public ILoadingPhaseBuilder<TModule> AddLoadingAction(Action<TModule> action)
+        {
+            LoadingPhase.AddLoadingAction(action);
             return this;
         }
 
         public ILoadingPhaseBuilder<TModule> AddLoadingAction(ILoadingAction<TModule> loadingAction)
         {
-            LoadingPhase.AddAction(loadingAction);
-            return this;
-        }
-
-        public ILoadingPhaseBuilder<TModule> Name(string name)
-        {
-            LoadingPhase.Name = name;
+            LoadingPhase.AddLoadingAction(loadingAction);
             return this;
         }
     }

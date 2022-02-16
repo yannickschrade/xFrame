@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace xFrame.Core.Modularity
 {
+    
     public interface ILoadingPhase<TModule>
         where TModule : IModule
     {
@@ -11,8 +12,8 @@ namespace xFrame.Core.Modularity
         IEnumerable<ILoadingAction<TModule>> LoadingActions { get;}
         
         void Run(TModule module);
-        ILoadingPhase<TModule> AddAction(ILoadingAction<TModule> action);
-        ILoadingPhase<TModule> AddAction(Action<ILoadingActionBuilder<TModule>> action);
+        ILoadingPhase<TModule> AddLoadingAction(ILoadingAction<TModule> action);
+        ILoadingActionBuilder<TModule> AddLoadingAction(Action<TModule> action);
     }
 
 }

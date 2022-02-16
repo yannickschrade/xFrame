@@ -9,10 +9,11 @@ namespace xFrame.Core.Modularity
     public interface IModuleLoaderBuilder<TModule>
         where TModule : IModule
     {
-        IModuleLoaderBuilder<TModule> Name(string name);
-        IModuleLoaderBuilder<TModule> Factory(Func<Type, TModule> factory);
+        string Name { get; set; }
+        Func<Type, TModule> ModuleFactory { get; set; }
+
         IModuleLoaderBuilder<TModule> AddPhase(ILoadingPhase<TModule> phase);
-        IModuleLoaderBuilder<TModule> AddPhase(Action<ILoadingPhaseBuilder<TModule>> action);
+        IModuleLoaderBuilder<TModule> AddPhase(object key,Action<ILoadingPhaseBuilder<TModule>> action);
     }
 
 }

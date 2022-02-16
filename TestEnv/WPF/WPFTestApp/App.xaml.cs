@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
 using WPFTest.Module2;
 using WPFTestApp.Module1;
 using xFrame.Core.IoC;
@@ -26,6 +27,15 @@ namespace WPFTestApp
         {
             moduleManager.AddModule<TestModule>();
             moduleManager.AddModule<Module>();
+            moduleManager.EditModuleLoader<IModule>(x =>
+           {
+               x.AddPhase("new Phase", p =>
+                {
+                    p.Name = "Neue Phase";
+                    p.AddLoadingAction(m => Debug.WriteLine(m.Version));
+                });
+               x.EditPhase(DefaultLoadingPhase.TypeRegistration, x => x.AddLoadingAction(m => Debug.WriteLine(m.Name)));
+           });
         }
     }
 }

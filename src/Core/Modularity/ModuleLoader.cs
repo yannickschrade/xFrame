@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace xFrame.Core.Modularity
 {
@@ -11,9 +12,11 @@ namespace xFrame.Core.Modularity
         public Type ForType => typeof(TModule);
         public string Name { get; set; }
         public Func<Type, TModule> ModuleFactory { get; set; }
+        Func<Type, object> IModuleLoader.ModuleFactory => p => ModuleFactory;
 
         public IEnumerable<ILoadingPhase<TModule>> LoadingPhases => _phases;
         IEnumerable<ILoadingPhase<IModule>> IModuleLoader.LoadingPhases => (IEnumerable<ILoadingPhase<IModule>>)LoadingPhases;
+
 
         public ModuleLoader()
         {
@@ -21,9 +24,10 @@ namespace xFrame.Core.Modularity
             ModuleFactory = p =>  (TModule)ModuleManager.DefaultModuleFactory(p);
         }
 
-        public IModuleLoader<TModule> AddPhase(Action<ILoadingPhaseBuilder<TModule>> action)
+        public IModuleLoader<TModule> AddPhase(object key,Action<ILoadingPhaseBuilder<TModule>> action)
         {
-            var builder = new LoadingPhaseBuilder<TModule>();
+            var phase = new LoadingPhase<TModule>(key);
+            var builder = new LoadingPhaseBuilder<TModule>(phase);
             action(builder);
             _phases.Add(builder.LoadingPhase);
             return this;
@@ -38,7 +42,7 @@ namespace xFrame.Core.Modularity
         public TModule CreateModule(Type moduleType)
         {
             var module = ModuleFactory(moduleType);
-            var registerPhase = _phases.FirstOrDefault(p => DefaultLoadingPhase.TypeRegistration.Equals(p));
+            var registerPhase = _phases.FirstOrDefault(p => DefaultLoadingPhase.TypeRegistration.Equals(p.Key));
             registerPhase?.Run(module);
             _phases.Remove(registerPhase);
             return module;
@@ -60,6 +64,13 @@ namespace xFrame.Core.Modularity
         public void LoadModule(IModule module)
         {
             LoadModule((TModule)module);
+        }
+
+        public IModuleLoader<TModule> EditPhase(object key, Action<ILoadingPhase<TModule>> phase)
+        {
+            var editedphase = _phases.First(p => p.Key.Equals(key));
+            phase(editedphase);
+            return this;
         }
     }
 }

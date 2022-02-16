@@ -20,16 +20,9 @@ namespace xFrame.Core.Modularity
             Name = ToString();
         }
 
-        public ILoadingPhase<TModule> AddAction(ILoadingAction<TModule> action)
+        public ILoadingPhase<TModule> AddLoadingAction(ILoadingAction<TModule> action)
         {
             _loadingActions.Add(action);
-            return this;
-        }
-        public ILoadingPhase<TModule> AddAction(Action<ILoadingActionBuilder<TModule>> action)
-        {
-            var builder = new LoadingActionBuilder<TModule>();
-            action(builder);
-            _loadingActions.Add(builder.LoadingAction);
             return this;
         }
 
@@ -39,6 +32,14 @@ namespace xFrame.Core.Modularity
             {
                 action.Execute(module);
             }
+        }
+
+        public ILoadingActionBuilder<TModule> AddLoadingAction(Action<TModule> action)
+        {
+            var builder = new LoadingActionBuilder<TModule>(action);
+            _loadingActions.Add(builder.LoadingAction);
+            return builder;
+
         }
     }
 }

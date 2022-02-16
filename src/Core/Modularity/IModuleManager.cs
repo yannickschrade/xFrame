@@ -13,9 +13,12 @@ namespace xFrame.Core.Modularity
         IModuleManager AddModulesFromFolder(string path);
         void LoadModules();
 
-        IModuleManager AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader) where TModule : IModule;
+        void AddModuleLoader<TModule>(IModuleLoader<TModule> moduleLoader) where TModule : IModule;
 
-        IModuleManager AddModuleLoader<TModule>(Action<IModuleLoaderBuilder<TModule>> builder)
+        IModuleLoader<TModule> AddModuleLoader<TModule>(Action<IModuleLoaderBuilder<TModule>> builder)
+            where TModule : IModule;
+
+        void EditModuleLoader<TModule>(Action<IModuleLoader<TModule>> loader)
             where TModule : IModule;
     }
 }

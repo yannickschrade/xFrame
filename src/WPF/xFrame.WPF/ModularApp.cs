@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using System.Reflection;
-using xFrame.Core.IoC;
+﻿using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewInjection;
 using xFrame.WPF.Modularity;
-using xFrame.WPF.ViewInjection;
-
 namespace xFrame.WPF
 {
     public abstract class ModularApp<T> : App<T>
@@ -28,12 +24,23 @@ namespace xFrame.WPF
         private void RegisterDefaultLoader(ModuleManager manager)
         {
             manager.AddModuleLoader<IUiModule>(x =>
-               x.Name("DefaultUILoader")
-               .AddRegistrationPhase()
-               .AddPhase(p =>
-               p.Name("Load UIModules")
-               .AddLoadingAction(a => 
-               a.AddExecute(m => m.SetupViews(TypeService.Current.Resolve<IViewInjectionService>())))));
+            {
+                x.Name = "DefaultUILoader";
+                x.AddRegistrationPhase();
+                x.AddInitialisationPhase();
+                x.AddPhase("UIModulePhase", p =>
+                {
+                    p.Name = "Setup UI";
+                    p.AddLoadingAction(m => m.SetupViews(TypeService.Current.Resolve<IViewInjectionService>()));
+                });
+            });
+
+            manager.AddModuleLoader<IModule>(x =>
+            {
+                x.Name = "Default Module Loader";
+                x.AddRegistrationPhase();
+                x.AddInitialisationPhase();
+            });
         }
     }
 }

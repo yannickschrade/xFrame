@@ -7,11 +7,11 @@ namespace xFrame.Core.Modularity
     internal class LoadingActionBuilder<TModule> : ILoadingActionBuilder<TModule>
         where TModule : IModule
     {
-        public LoadingAction<TModule> LoadingAction { get; } = new LoadingAction<TModule>();
-        public ILoadingActionBuilder<TModule> AddExecute(Action<TModule> action)
+        public LoadingAction<TModule> LoadingAction { get; }
+
+        public LoadingActionBuilder(Action<TModule> action)
         {
-            LoadingAction.AddAction(action);
-            return this;
+            LoadingAction = new LoadingAction<TModule>(action);
         }
     }
 }

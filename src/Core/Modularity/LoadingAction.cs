@@ -8,7 +8,8 @@ namespace xFrame.Core.Modularity
         where TModule : IModule    
     {
         private Action<TModule> _action;
-        public void AddAction(Action<TModule> action)
+
+        public LoadingAction(Action<TModule> action)
         {
             _action = action;
         }

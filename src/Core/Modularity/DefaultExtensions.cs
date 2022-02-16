@@ -13,5 +13,24 @@ namespace xFrame.Core.Modularity
             builder.AddPhase(new RegistrationPhase<TModule>());
             return builder;
         }
+
+        public static IModuleLoaderBuilder<TModule> AddInitialisationPhase<TModule>(this IModuleLoaderBuilder<TModule> builder)
+            where TModule: IModule
+        {
+            builder.AddPhase(new InitialisationPhase<TModule>());
+            return builder;
+        }
+
+        public static void AddRegistrationPhase<TModule>(this IModuleLoader<TModule> loader)
+            where TModule : IModule
+        {
+            loader.AddPhase(new RegistrationPhase<TModule>());
+        }
+
+        public static void AddInitialisationPhase<TModule>(this IModuleLoader<TModule> loader)
+            where TModule : IModule
+        {
+            loader.AddPhase(new InitialisationPhase<TModule>());
+        }
     }
 }
