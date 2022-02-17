@@ -11,7 +11,7 @@
                Background="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}"
                GlowColor="Green">
     <StackPanel>
-        <xFrame:TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+        <xFrame:TextBox Text="{Binding Name}"
                     HorizontalAlignment="Center"
                     x:Name="NametextBox"
                     VerticalAlignment="Center"/>

@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace xFrame.Core.Validation
 {
     public class ValidationResult
     {
-        private IEnumerable<ValidationFailure> _failures;
-        public IEnumerable<string> ValidatedPropertys { get; }
-        public bool IsValid => _failures?.Any() != true;
+        private List<ValidationMessage> _messages = new ();
+        public IEnumerable<ValidationMessage> Messages => _messages;
 
-        public IEnumerable<string> ErrorMessages => _failures.Select(f => f.ErrorMessage);
+        public string ValidatedProperty { get; }
+
+        public bool IsValid => Messages?.Any(f => f.Severity == Severity.Error) != true;
 
         public ValidationResult(string validatedProperty)
         {
-            ValidatedPropertys = new List<string> { validatedProperty };
+            ValidatedProperty = validatedProperty;
         }
 
-
-        public ValidationResult(IEnumerable<ValidationFailure> failures)
+        internal void AddComponent(ValidationMessage failure)
         {
-            _failures = failures;
+            _messages.Add(failure);
         }
 
         public static ValidationResult ValidResult(string validatedProperty)

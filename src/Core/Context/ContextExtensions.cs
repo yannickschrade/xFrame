@@ -15,7 +15,7 @@ namespace xFrame.Core.Context
     {
         #region PropertyContext
 
-        public static IPropertyContext<T, TProperty> HasChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<IPropertyChangedContext<T, TProperty>> whenChanged)
+        public static IPropertyContext<T, TProperty> WhenChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<IPropertyChangedContext<T, TProperty>> whenChanged)
             where T : INotifyPropertyChanged
         {
             var propertyChangedContext = new PropertyChangedContext<T, TProperty>(context);
@@ -45,7 +45,7 @@ namespace xFrame.Core.Context
             validation(validationContext);
             context.TypeInstance.SubscribePropertyChanged(context.Expression, p =>
             {
-                var result = validationContext.Validate(context.Value);
+                var result = validationContext.Validate(context.PropertyValue);
                 context.TypeInstance.OnValidated(result);
             });
             return context;
@@ -72,7 +72,7 @@ namespace xFrame.Core.Context
             where TProperty : CommandBase
             where T : INotifyPropertyChanged
         {
-            var command = context.Value;
+            var command = context.PropertyValue;
             context.ExecutionPipline.Add(new Execution<T, TProperty>(P => command.RaisCanExecuteChanged()));
             return context;
         }

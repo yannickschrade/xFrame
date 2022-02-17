@@ -2,11 +2,11 @@
 
 namespace xFrame.Core.Validation
 {
-    public interface IValidator<T,TProperty>
+    public interface IValidator<TProperty>
     {
         string Name { get; }
-        IEnumerable<string> ErrorMessages { get; }
-        ValidationFailure Run(IValidationContext<T> context,TProperty property);
+        string DefaultMessage { get; }
+        bool IsValid(TProperty value);
 
     }
 }

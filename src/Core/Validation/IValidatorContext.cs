@@ -1,7 +1,11 @@
-﻿namespace xFrame.Core.Validation
+﻿using System;
+
+namespace xFrame.Core.Validation
 {
-    public interface IValidatorContext<T>
+    public interface IValidatorContext<T,TProperty>
     {
-        void AddCondition(ICondition condition);
+        IValidatorComponent<T,TProperty> ValidatorComponent{ get; }
+        void AddCondition(Func<T,bool> condition);
+
     }
 }

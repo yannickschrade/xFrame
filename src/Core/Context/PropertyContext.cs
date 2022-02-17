@@ -9,23 +9,27 @@ namespace xFrame.Core.Fluent
 {
     internal class PropertyContext<T, TProperty> : IPropertyContext<T, TProperty>
     {
-        private Func<T, TProperty> propertyReader; 
         public PropertyInfo Property { get; }
         public T TypeInstance { get; }
-        public TProperty Value => propertyReader(TypeInstance);
+        public TProperty PropertyValue => PropertyReader(TypeInstance);
         public Expression<Func<T, TProperty>> Expression { get; }
-
+        public Func<T, TProperty> PropertyReader { get; }
 
         public PropertyContext(Expression<Func<T,TProperty>> expression, T classInstance)
         {
-            Property = expression.GetPropertyInfo();
+            Expression = expression;
             TypeInstance = classInstance;
+
+            PropertyReader = expression.Compile();
+            Property = expression.GetPropertyInfo();
         }
 
         public PropertyContext(IPropertyContext<T,TProperty> context)
         {
             Property = context.Property;
             TypeInstance = context.TypeInstance;
+            Expression = context.Expression;
+            PropertyReader = context.PropertyReader;
         }
     }
 }

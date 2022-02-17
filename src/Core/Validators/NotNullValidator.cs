@@ -5,11 +5,13 @@ using xFrame.Core.Validation;
 
 namespace xFrame.Core.Validators
 {
-    public class NotNullValidator<T,TProperty> : Validator<T,TProperty>
+    public class NotNullValidator<TProperty> : IValidator<TProperty>
     {
-        public override string Name => "Not Null Validator";
+        public string Name => "Not Null Validator";
 
-        protected override ValidationFailure IsValid(TProperty property)
-            => ValidationFailure.FromCondition("Test",() => property == null, "Value can't be null");
+        public string DefaultMessage => "value can't be null";
+
+        public  bool IsValid(TProperty value)
+            => value != null;
     }
 }

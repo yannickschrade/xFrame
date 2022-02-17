@@ -9,6 +9,9 @@ namespace xFrame.Core.Validation
     {
         ValidationResult Validate(TProperty property);
         void AddValidator(IValidator<TProperty> validator);
-        void AddCondition(ICondition condition);
+        void AddValidator(IValidatorComponent<T,TProperty> component);
+        void AddCondition(Func<T, bool> condition);
+        void AddConditionFor(IValidator<TProperty> validator,  Func<T,bool> condition);
+        void AddValidationCallBack(Action<T,TProperty,ValidationResult> callback);
     }
 }

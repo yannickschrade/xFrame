@@ -7,6 +7,7 @@ namespace xFrame.Core.Commands
     {
         public event EventHandler CanExecuteChanged;
 
+        protected bool _canExecute = true;
         protected readonly Action<object> ExecuteAction;
         protected readonly Func<object, bool> CanExecuteFunc;
 
@@ -16,7 +17,13 @@ namespace xFrame.Core.Commands
             CanExecuteFunc = canExecuteFunc;
         }
 
-        public abstract bool CanExecute(object parameter);
+        public virtual bool CanExecute(object parameter)
+        {
+            if (CanExecuteFunc == null)
+                return _canExecute;
+
+            return CanExecuteFunc(parameter);
+        }
 
         public abstract void Execute(object parameter);
 
@@ -25,9 +32,15 @@ namespace xFrame.Core.Commands
             OnCanExecuteChanged();
         }
 
+        public void RaisCanExecuteChanged(bool canExecute)
+        {
+            _canExecute = canExecute;
+            OnCanExecuteChanged();
+        }
+
         protected virtual void OnCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, System.EventArgs.Empty);
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

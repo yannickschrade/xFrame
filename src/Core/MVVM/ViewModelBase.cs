@@ -5,11 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using xFrame.Core.ExtensionMethodes;
 using xFrame.Core.Fluent;
 using xFrame.Core.Validation;
 
@@ -103,8 +99,16 @@ namespace xFrame.Core.MVVM
 
         public void OnValidated(ValidationResult result)
         {
-            if (!result.IsValid)
-                AddErrors(result.ErrorMessages, result.ValidatedProperty);
+            if (result.IsValid)
+            {
+                ClearErrors(result.ValidatedProperty);
+                return;
+            }
+
+            foreach (var message in result.Messages.Where(m => m.Severity == Severity.Error))
+            {
+                AddError(message, result.ValidatedProperty);
+            }
         }
     }
 }
