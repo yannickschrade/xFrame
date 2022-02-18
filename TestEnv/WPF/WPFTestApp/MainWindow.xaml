@@ -9,7 +9,7 @@
                xmlns:xFrame="xFrame/Wpf" 
                d:DataContext="{d:DesignInstance Type=local:ViewModel}"
                Background="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}"
-               GlowColor="Green">
+               GlowColor="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.AccentColorKey}}">
     <StackPanel>
         <xFrame:TextBox Text="{Binding Name}"
                     HorizontalAlignment="Center"

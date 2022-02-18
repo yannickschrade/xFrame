@@ -99,6 +99,22 @@ namespace xFrame.WPF.Controls.Windows
             var headerBorder = GetTemplateChild("HeaderBorder") as Border;
             headerBorder.MouseLeftButtonDown += HeaderBorder_MouseLeftButtonDown;
             windowCommands.SetCurrentValue(WindowChrome.IsHitTestVisibleInChromeProperty, true);
+
+            if (WindowHeader != null)
+                return;
+
+            var title = new TextBlock 
+            { 
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+
+            var bidning = new Binding("Title")
+            {
+                Source = this,
+            };
+            title.SetBinding(TextBlock.TextProperty, bidning);
+            WindowHeader = title;
+
         }
 
         private void HeaderBorder_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
