@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="6.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Helpers\xFrame.Helpers.csproj" />
+  </ItemGroup>
 </Project>

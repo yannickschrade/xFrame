@@ -5,16 +5,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using xFrame.Core.ExtensionMethodes;
 using xFrame.Core.Fluent;
+using xFrame.Core.Validation;
 
 namespace xFrame.Core.MVVM
 {
-    public interface IViewModel : INotifyPropertyChanged, INotifyPropertyChanging, INotifyDataErrorInfo
+    public interface IViewModel : INotifyPropertyChanged, INotifyDataErrorInfo, IValidatable
     {
         void OnViewStateChanged(bool IsActive);
 
@@ -33,16 +30,6 @@ namespace xFrame.Core.MVVM
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
-
-        #region INotifyPropertyChanging
-
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        protected virtual void NotifyPropertyChanging([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
-        }
         #endregion
 
         #region INotifyDataErrorInfo
@@ -103,12 +90,25 @@ namespace xFrame.Core.MVVM
         #endregion
 
         
-        public IPropertyContext<T,TProperty> When<TProperty>(Expression<Func<T,TProperty>> expression)
+        public IPropertyContext<T,TProperty> Property<TProperty>(Expression<Func<T,TProperty>> property)
         {
-            var propName = expression.GetPropertyInfo();
-            return new PropertyContext<T, TProperty>(propName, (T)this);
+            return new PropertyContext<T, TProperty>(property, (T)this);
         }
 
         public virtual void OnViewStateChanged(bool IsActive) { }
+
+        public void OnValidated(ValidationResult result)
+        {
+            if (result.IsValid)
+            {
+                ClearErrors(result.ValidatedProperty);
+                return;
+            }
+
+            foreach (var message in result.Messages.Where(m => m.Severity == Severity.Error))
+            {
+                AddError(message, result.ValidatedProperty);
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace xFrame.Core.Fluent
 {
     public interface IPropertyChangedContext<T, TProperty> : IPropertyContext<T, TProperty>
-        where T : INotifyPropertyChanged, new()
+        where T : INotifyPropertyChanged
     {
 
         List<Execution<T,TProperty>> ExecutionPipline { get; }

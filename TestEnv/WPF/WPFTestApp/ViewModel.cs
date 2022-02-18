@@ -2,8 +2,9 @@
 using System.Windows;
 using xFrame.Core.Attributes;
 using xFrame.Core.Commands;
-using xFrame.Core.Fluent;
+using xFrame.Core.Context;
 using xFrame.Core.MVVM;
+using xFrame.Core.Validation;
 
 namespace WPFTestApp
 {
@@ -22,12 +23,17 @@ namespace WPFTestApp
 
         public ViewModel()
         {
-            Command = new RelayCommand<string>(CanExecute, p => MessageBox.Show("Works"));
-            When(x => x.Name)
-                .HasChanged()
-                .Execute(p => Debug.WriteLine(p))
-                .IF(v => v.CanExecute(v.Name))
-                .NotifyCommand(x => x.Command);
+            Command = new RelayCommand<string>(p => MessageBox.Show(Name));
+            Property(x => x.Name)
+                .WhenChanged(x =>
+                {
+                    x.Execute(p => Debug.WriteLine(p));
+                })
+                .AddValidation(x =>
+                {
+                    x.IsNotEmpty();
+                    x.UpdateCommandCanExecute(x => x.Command);
+                });
         }
     }
 }
