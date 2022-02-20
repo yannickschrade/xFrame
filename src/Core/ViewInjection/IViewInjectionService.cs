@@ -12,6 +12,8 @@ namespace xFrame.Core.ViewInjection
             where T : IViewModel;
 
         void Inject(IViewModel vm, object key);
+        void InjectView(Type viewType, object key);
+        void InjectView<T>(object key);
 
         void Remove(IViewModel vm, object key);
 

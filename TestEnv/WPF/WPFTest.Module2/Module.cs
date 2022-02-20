@@ -23,7 +23,7 @@ namespace WPFTest.Module2
 
         public void SetupViews(IViewInjectionService viewInjectionService)
         {
-            
+            viewInjectionService.Inject<TestVM>("Main");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace xFrame.WPF.ViewInjection
     {
         private readonly List<UIElement> _attachedViews = new List<UIElement>();
         private readonly IViewProvider _viewProvider;
-        private readonly Dictionary<IViewModel, FrameworkElement> _injectedViews = new Dictionary<IViewModel, FrameworkElement>();
+        private readonly Dictionary<object, FrameworkElement> _injectedViews = new Dictionary<object, FrameworkElement>();
 
         public object Key { get; }
         public IViewAdapterCollection ViewAdapterCollection { get; }
@@ -67,6 +67,19 @@ namespace xFrame.WPF.ViewInjection
             Inject(childview);
         }
 
+        public void InjectView(Type viewType)
+        {
+            var view = _viewProvider.GetView(viewType);
+            Inject(view);
+        }
+
+        public void InjectView(object view)
+        {
+            if (!(view is FrameworkElement uiElement))
+                throw new ArgumentException($"view must be an {typeof(FrameworkElement)}");
+            Inject(uiElement);
+        }
+
         public void Remove(Type viewModelType)
         {
 
@@ -89,7 +102,8 @@ namespace xFrame.WPF.ViewInjection
 
         private void Inject(FrameworkElement uIElement)
         {
-            if (!_injectedViews.TryAdd((IViewModel)uIElement.DataContext, uIElement))
+            var key = uIElement.DataContext == null ? uIElement : uIElement.DataContext;
+            if (!_injectedViews.TryAdd(key, uIElement))
             {
                 // TODO: better exceptions
                 throw new Exception("viewmodel allready added");

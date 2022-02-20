@@ -17,6 +17,20 @@ namespace xFrame.WPF.ViewInjection
             _typeProvider = typeProvider;
         }
 
+        public FrameworkElement GetView(Type viewType)
+        {
+            if (!typeof(FrameworkElement).IsAssignableFrom(viewType))
+                throw new ArgumentException($"Type must be an {typeof(FrameworkElement)}");
+
+            return (FrameworkElement)_typeProvider.Resolve(viewType);
+        }
+
+        public T GetView<T>() 
+            where T : FrameworkElement
+        {
+            return _typeProvider.Resolve<T>();
+        }
+
         public FrameworkElement GetViewForViewModel(IViewModel vm)
         {
             var viewType = _viewModelToViewMapping[vm.GetType()];

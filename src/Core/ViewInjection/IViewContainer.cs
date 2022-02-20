@@ -18,6 +18,8 @@ namespace xFrame.Core.ViewInjection
         void Inject(Type viewModelType);
 
         void Inject(IViewModel viewModel);
+        void InjectView(object view);
+        void InjectView(Type viewType);
 
         void Remove(Type viewModelType);
 

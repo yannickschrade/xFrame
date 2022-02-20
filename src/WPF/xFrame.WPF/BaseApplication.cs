@@ -12,10 +12,10 @@ using xFrame.WPF.ViewInjection;
 
 namespace xFrame.WPF
 {
-    public abstract class BaseApplication<T> : Application
-        where T : IViewModel
+    public abstract class BaseApplication : Application
 
     {
+        protected abstract Type StartupViewModelType { get; }
         protected abstract ITypeService CreateTypeService();
         protected abstract void RegisterTypes(ITypeRegistrationService typeRegistration);
 
@@ -92,7 +92,7 @@ namespace xFrame.WPF
         private Window CreateShell()
         {
             var viewProvider = TypeService.Current.Resolve<IViewProvider>();
-            var view = viewProvider.GetViewForViewModel<T>();
+            var view = viewProvider.GetViewForViewModel(StartupViewModelType);
             return view is Window window ? window : throw new Exception();
         }
     }

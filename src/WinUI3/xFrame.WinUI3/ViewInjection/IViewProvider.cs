@@ -11,6 +11,8 @@ namespace xFrame.WinUI3.ViewInjection
         FrameworkElement GetViewWithViewModel<T>()
             where T : IViewModel;
 
+        FrameworkElement GetView()
+
         Window GetWindowWithViewModel(IViewModel vm);
         Window GetWindowWithViewModel(Type viewModelType);
         Window GetWindowWithViewModel<T>();

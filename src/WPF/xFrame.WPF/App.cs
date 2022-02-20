@@ -3,8 +3,7 @@ using xFrame.Core.MVVM;
 
 namespace xFrame.WPF
 {
-    public abstract class App<T>: BaseApplication<T>
-        where T : IViewModel
+    public abstract class App: BaseApplication
     {
 
         protected override ITypeService CreateTypeService()

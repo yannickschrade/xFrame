@@ -20,5 +20,7 @@
         <xFrame:Button Margin="5"
                        Content="Klick Mich"
                        Command="{Binding Command}"/>
+        <ContentControl xFrame:ViewInjectionService.ContainerKey="Main"/>
+        <TextBlock Text="Hallo Welt"/>
     </StackPanel>
 </xFrame:Window>

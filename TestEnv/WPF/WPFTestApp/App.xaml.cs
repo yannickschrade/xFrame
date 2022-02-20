@@ -11,8 +11,10 @@ namespace WPFTestApp
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : ModularApp<ViewModel>
+    public partial class App : ModularApp
     {
+        protected override Type StartupViewModelType => typeof(ViewModel);
+
         protected override void OnInitialized()
         {
 

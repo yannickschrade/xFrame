@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Generators\xFrame.SourceGenerators.csproj" 
+					  OutputItemType="Analyzer"/>
     <ProjectReference Include="..\..\..\src\WPF\xFrame.WPF\xFrame.WPF.csproj" />
   </ItemGroup>
 

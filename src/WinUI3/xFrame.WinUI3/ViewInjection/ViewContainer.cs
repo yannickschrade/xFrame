@@ -103,5 +103,17 @@ namespace xFrame.WinUI3.ViewInjection
                 _dispatcher.TryEnqueue(() => adapter.AddChildToView(view, uIElement));
             }
         }
+
+        public void InjectView(object view)
+        {
+            if (view is not FrameworkElement frameworkElement)
+                throw new ArgumentException($"view must be an {typeof(FrameworkElement)}");
+            Inject(frameworkElement);
+        }
+
+        public void InjectView(Type viewType)
+        {
+            _viewProvider.GetView
+        }
     }
 }

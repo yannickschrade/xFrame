@@ -3,8 +3,11 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:local="clr-namespace:WPFTestApp"
                    xmlns:vm="clr-namespace:WPFTestApp"
-                   x:TypeArguments="vm:ViewModel"
                    xmlns:xFrame="xFrame/Wpf">
-    
+    <xFrame:ModularApp.Resources>
+        <ResourceDictionary xFrame:ThemeManager.Theme="SystemDefault">
+            
+        </ResourceDictionary>
+    </xFrame:ModularApp.Resources>
 </xFrame:ModularApp >
 

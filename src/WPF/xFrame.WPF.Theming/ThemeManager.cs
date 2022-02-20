@@ -105,9 +105,13 @@ namespace xFrame.WPF.Theming
 
         public void AddThemeToDictionary(ResourceDictionary dictionary, string themeName)
         {
+            if(themeName == "SystemDefault")
+                themeName = ThemeHelper.AppUsesLightTheme() ? "Light" : "Dark";
+
             if (!_themes.ContainsKey(themeName))
                 throw new KeyNotFoundException($"theme with name: {themeName} not found");
 
+            dictionary.MergedDictionaries.Add(new DefaultSettings());
             dictionary.MergedDictionaries.Add(_themes[themeName]);
         }
 

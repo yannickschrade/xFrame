@@ -10,7 +10,7 @@ namespace xFrame.WPF.ViewInjection
 {
     public class ViewInjectionService : IViewInjectionService
     {
-        public static readonly Dictionary<object, IViewContainer> Containers = new Dictionary<object,IViewContainer>();
+        public static readonly Dictionary<object, IViewContainer> Containers = new Dictionary<object, IViewContainer>();
         private readonly IViewProvider _viewProvider;
         private readonly IViewAdapterCollection _viewAdapterCollection;
 
@@ -33,7 +33,7 @@ namespace xFrame.WPF.ViewInjection
             {
                 var adaptercollection = TypeProvider.Current.Resolve<IViewAdapterCollection>();
                 var viewProvider = TypeProvider.Current.Resolve<IViewProvider>();
-                Containers[e.NewValue] = new ViewContainer(e.NewValue,adaptercollection, viewProvider);
+                Containers[e.NewValue] = new ViewContainer(e.NewValue, adaptercollection, viewProvider);
             }
 
             Containers[e.NewValue].AttachTo(d);
@@ -51,7 +51,7 @@ namespace xFrame.WPF.ViewInjection
         public void Inject(Type viewModelType, object key)
         {
             if (!Containers.ContainsKey(key))
-                Containers[key] = new ViewContainer(key, _viewAdapterCollection,_viewProvider);
+                Containers[key] = new ViewContainer(key, _viewAdapterCollection, _viewProvider);
             Containers[key].Inject(viewModelType);
         }
 
@@ -65,6 +65,18 @@ namespace xFrame.WPF.ViewInjection
         public void Inject<T>(object key) where T : IViewModel
         {
             Inject(typeof(T), key);
+        }
+
+        public void InjectView(Type viewType, object key)
+        {
+            if (!Containers.ContainsKey(key))
+                Containers[key] = new ViewContainer(key, _viewAdapterCollection, _viewProvider);
+            Containers[key].InjectView(viewType);
+        }
+
+        public void InjectView<T>(object key)
+        {
+            InjectView(typeof(T), key);
         }
 
         public void Remove(IViewModel vm, object key)
