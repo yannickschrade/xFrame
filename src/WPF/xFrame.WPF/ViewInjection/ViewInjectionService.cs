@@ -31,8 +31,8 @@ namespace xFrame.WPF.ViewInjection
         {
             if (!Containers.ContainsKey(e.NewValue))
             {
-                var adaptercollection = TypeProvider.Current.Resolve<IViewAdapterCollection>();
-                var viewProvider = TypeProvider.Current.Resolve<IViewProvider>();
+                var adaptercollection = TypeService.Current.Resolve<IViewAdapterCollection>();
+                var viewProvider = TypeService.Current.Resolve<IViewProvider>();
                 Containers[e.NewValue] = new ViewContainer(e.NewValue, adaptercollection, viewProvider);
             }
 
