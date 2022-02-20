@@ -26,10 +26,9 @@ namespace xFrame.WPF.Theming.ExtensionMethodes
             float green = color.G;
             float blue = color.B;
 
-            value = 1 + value;
-            red *= value;
-            green *= value;
-            blue *= value;
+            red *= 1 - value;
+            green *= 1 - value;
+            blue *= 1 - value;
 
 
             return Color.FromArgb(color.A, (byte)red, (byte)green, (byte)blue);

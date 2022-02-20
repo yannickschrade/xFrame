@@ -29,6 +29,9 @@
 
                         <ContentPresenter Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          TextBlock.Foreground="{TemplateBinding Foreground}"
+                                          TextBlock.FontSize="{TemplateBinding FontSize}"
+                                          TextBlock.FontFamily="{TemplateBinding FontFamily}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -39,6 +42,10 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ButtonPressedColorBrush}}"/>
                             <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundDisabeldColorBrush}}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundDisabeldColorBrush}}"/>
+                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ButtonPressedColorBrush}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -63,6 +70,7 @@
                 <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
                 <Setter Property="Foreground" Value="{DynamicResource AccentColorDarken30Brush}"/>
             </Trigger>
+            
         </Style.Triggers>
     </Style>
 

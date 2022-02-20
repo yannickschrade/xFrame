@@ -11,4 +11,5 @@ using System.Windows.Markup;
 )]
 
 [assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Theming")]
+[assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Theming.Themes")]
 [assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Theming.Templates")]

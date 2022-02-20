@@ -69,11 +69,7 @@ namespace xFrame.WPF.Theming
 
         public void ChangeAppTheme(Application app, string themeName)
         {
-            if (!_defaultsAdded)
-            {
-                _defaultsAdded = true;
-                app.Resources.MergedDictionaries.Add(new DefaultSettings());
-            }
+            
             if (themeName == "SystemDefault")
                 themeName = ThemeHelper.AppUsesLightTheme() ? "Light" : "Dark";
 
@@ -111,7 +107,6 @@ namespace xFrame.WPF.Theming
             if (!_themes.ContainsKey(themeName))
                 throw new KeyNotFoundException($"theme with name: {themeName} not found");
 
-            dictionary.MergedDictionaries.Add(new DefaultSettings());
             dictionary.MergedDictionaries.Add(_themes[themeName]);
         }
 

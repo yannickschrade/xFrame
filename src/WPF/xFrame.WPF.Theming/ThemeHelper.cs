@@ -23,13 +23,23 @@ namespace xFrame.WPF.Theming
 
         public static Color GetAccentColor()
         {
-            var colorizationColorRegistryValue = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM", "ColorizationColor", null);
-            var colorizationColorTypedRegistryValue = (uint)(int)colorizationColorRegistryValue;
-            var colorizationColor = Color.FromRgb((byte)(colorizationColorTypedRegistryValue >> 16),
-                                                      (byte)(colorizationColorTypedRegistryValue >> 8),
-                                                      (byte)colorizationColorTypedRegistryValue);
+            var accentPaletteRegistryValue = Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Accent", "AccentPalette", null);
 
-            return colorizationColor;
+            if (accentPaletteRegistryValue is null)
+            {
+                var colorizationColorRegistryValue = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM", "ColorizationColor", null);
+                var colorizationColorTypedRegistryValue = (uint)(int)colorizationColorRegistryValue;
+                var colorizationColor = Color.FromRgb((byte)(colorizationColorTypedRegistryValue >> 16),
+                                                          (byte)(colorizationColorTypedRegistryValue >> 8),
+                                                          (byte)colorizationColorTypedRegistryValue);
+
+                return colorizationColor;
+            }
+
+            var bin = (byte[])accentPaletteRegistryValue;
+
+            return Color.FromRgb(bin[0x0C], bin[0x0D], bin[0x0E]);
+
         }
     }
 }
