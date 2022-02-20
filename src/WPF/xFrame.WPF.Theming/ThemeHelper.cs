@@ -21,15 +21,14 @@ namespace xFrame.WPF.Theming
             return Convert.ToBoolean(registryValue);
         }
 
-        internal static Color? GetAccentColor()
+        internal static Color GetAccentColor()
         {
             var registryValue = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM", "AccentColor", null);
 
-            Color? accentColor = null;
-
+            Color accentColor;
             if (registryValue is null)
             {
-                return null;
+                return Colors.Transparent;
             }
 
             var pp = (uint)(int)registryValue;

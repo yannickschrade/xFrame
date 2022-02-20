@@ -5,11 +5,6 @@
                    xmlns:vm="clr-namespace:WPFTestApp"
                    x:TypeArguments="vm:ViewModel"
                    xmlns:xFrame="xFrame/Wpf">
-    <Application.Resources>
-        <ResourceDictionary xFrame:ThemeManager.Theme="Dark">
-            <ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
+    
 </xFrame:ModularApp >
 

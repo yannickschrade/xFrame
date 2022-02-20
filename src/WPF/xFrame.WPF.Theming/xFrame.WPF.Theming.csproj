@@ -5,4 +5,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\xFrame.WPF.Theming.Generators\xFrame.WPF.Theming.Generators.csproj" OutputItemType="Analyzer" />
+  </ItemGroup>
+
 </Project>

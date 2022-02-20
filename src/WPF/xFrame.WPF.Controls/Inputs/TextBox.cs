@@ -73,6 +73,11 @@ namespace xFrame.WPF.Controls.Inputs
             base.OnApplyTemplate();
             _headerTextBlock = (TextBlock)GetTemplateChild("PART_Header");
             _placeHolderText = (TextBlock)GetTemplateChild("PART_PlaceHolderText");
+
+            if (string.IsNullOrWhiteSpace(Header))
+                _headerTextBlock.Visibility = Visibility.Collapsed;
+            else
+                _headerTextBlock.Visibility = Visibility.Visible;
         }
     }
 }

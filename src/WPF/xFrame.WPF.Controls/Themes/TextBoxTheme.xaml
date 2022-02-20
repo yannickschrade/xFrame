@@ -5,8 +5,8 @@
 
     <Style TargetType="{x:Type input:TextBox}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor1BrushKey}}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundColorBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ControlBackgroundColorBrush}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
         <Setter Property="MinWidth" Value="60"/>
@@ -23,10 +23,10 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="{TemplateBinding Header}"
-                                               Foreground="{TemplateBinding Foreground}"
-                                               FontSize="12"
-                                               x:Name="PART_Header"
-                                               Margin="0,2"/>
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontSize="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.FontSizeXSmall}}"
+                                   x:Name="PART_Header"
+                                   Margin="0,2"/>
 
                         <Border Name="clipingBorder" 
                                 CornerRadius="{TemplateBinding CornerRadius}" 
@@ -34,7 +34,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Grid.Row="1"/>
-                        <Border BorderBrush="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor2BrushKey}}"
+                        <Border BorderBrush="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BaseColor20Brush}}"
                                 BorderThickness="0,0,0,2"
                                 Grid.Row="1"
                                 Padding="5,2"
@@ -56,7 +56,7 @@
                                            Margin="10,3"
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                           Foreground="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundDisabledColorBrushKey}}"/>
+                                           Foreground="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundDisabeldColorBrush}}"/>
                                 <ScrollViewer x:Name="PART_ContentHost"
                                               Grid.Column="0"
                                               Padding="{TemplateBinding Padding}"
@@ -76,13 +76,18 @@
                     <ControlTemplate.Triggers>
 
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter Property="BorderBrush" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.AccentColorBrushKey}}" TargetName="IndicatorBorder"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.AccentColorBrush}}" TargetName="IndicatorBorder"/>
+                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.HoverColorBrush}}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.HoverColorBrush}}"/>
                         </Trigger>
                         
                         <Trigger Property="Validation.HasError" Value="True">
                             <Setter Property="BorderBrush" Value="Red" TargetName="IndicatorBorder"/>
                         </Trigger>
-
+                        
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

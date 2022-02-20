@@ -33,10 +33,10 @@
                                 Background="Transparent"
                                 Grid.Column="1">
                             <ContentPresenter x:Name="PART_Header"
-                                              Content="{TemplateBinding WindowHeader}"/>    
+                                              Content="{TemplateBinding WindowHeader}"/>
                         </Border>
-                        
-                        
+
+
                         <ContentPresenter x:Name="PART_WindowCommands"
                                           Grid.Column="2"
                                           HorizontalAlignment="Right"
@@ -90,6 +90,8 @@
                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                               RecognizesAccessKey="True"
+                              TextBlock.FontSize="12"
+                              TextBlock.FontFamily="{TemplateBinding FontFamily}"
                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
         </Border>
         <ControlTemplate.Triggers>
@@ -107,7 +109,7 @@
     <Style TargetType="{x:Type Button}" x:Key="WindowCommandButtonStyle">
         <Setter Property="Template" Value="{StaticResource WindowCommandButton}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundColorBrushKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
         <Style.Triggers>
             <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
                 <Setter Property="Background" Value="#a8a8a899"/>
@@ -129,43 +131,63 @@
         <StackPanel Orientation="Horizontal">
             <Button x:Name="PART_MinimizeCommand"
                     Style="{StaticResource WindowCommandButtonStyle}"
-                    Content="&#xE949;"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    FontFamily="Segoe MDL2 Assets"
-                    controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="MINBUTTON"/>
+                        controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
+                    controlzex:NonClientControlProperties.HitTestResult="MINBUTTON">
+                <Path Width="16"
+                      Height="16"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="F1M3,8L13,8 13,7 3,7z"
+                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+            </Button>
 
             <Button x:Name="PART_MaximizeCommand"
                     Style="{StaticResource WindowCommandButtonStyle}"
-                    Content="&#xE739;"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    FontFamily="Segoe MDL2 Assets"
                     controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="MAXBUTTON"/>
+                    controlzex:NonClientControlProperties.HitTestResult="MAXBUTTON">
+                <Path Width="16"
+                      Height="16"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="F1M12,12L4,12 4,4 12,4z M3,13L13,13 13,3 3,3z"
+                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+            </Button>
 
             <Button x:Name="PART_RestoreCommand"
                     Style="{StaticResource WindowCommandButtonStyle}"
-                    Content="&#xE923;"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    FontFamily="Segoe MDL2 Assets"
                     controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="MAXBUTTON"/>
+                    controlzex:NonClientControlProperties.HitTestResult="MAXBUTTON">
+                <Path Width="16"
+                      Height="16"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="F1M11.999,10.002L10.998,10.002 10.998,5.002 5.998,5.002 5.998,4.001 11.999,4.001z M10.002,11.999L4.001,11.999 4.001,5.998 10.002,5.998z M5.002,3L5.002,5.002 3,5.002 3,13 10.998,13 10.998,10.998 13,10.998 13,3z"
+                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+            </Button>
 
             <Button x:Name="PART_CloseCommand"
                     Style="{StaticResource WindowCommandCloseButtonStyle}"
-                    Content="&#xE106;"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    FontFamily="Segoe MDL2 Assets"
                     controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="CLOSE"/>
+                    controlzex:NonClientControlProperties.HitTestResult="CLOSE">
+                <Path Width="16"
+                      Height="16"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="F1M8.583,8L13,12.424 12.424,13 8,8.583 3.576,13 3,12.424 7.417,8 3,3.576 3.576,3 8,7.417 12.424,3 13,3.576z"
+                      Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+            </Button>
 
         </StackPanel>
         <ControlTemplate.Triggers>
@@ -191,10 +213,10 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    
+
 
     <Style TargetType="{x:Type local:Window}">
-        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BaseColorBrush}}"/>
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="Template" Value="{StaticResource xFrameWindow}"/>
     </Style>
@@ -203,7 +225,7 @@
         <Setter Property="Template" Value="{StaticResource WindowCommands}"/>
     </Style>
 
-   
+
 
 
 

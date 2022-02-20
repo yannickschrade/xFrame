@@ -4,9 +4,9 @@
                     xmlns:xFrame="xFrame/Wpf">
 
     <Style TargetType="{x:Type xFrameButtons:Button}" x:Key="BaseStyle">
-        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor1BrushKey}}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundColorBrushKey}}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor2BrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ControlBackgroundColorBrush}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BorderColorBrush}}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="CornerRadius" Value="5"/>
@@ -33,12 +33,12 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColor2BrushKey}}"/>
+                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.HoverColorBrush}}"/>
 
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorDisabledBrushKey}}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.ForegroundDisabledColorBrushKey}}"/>
+                            <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ButtonPressedColorBrush}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundDisabeldColorBrush}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -52,7 +52,7 @@
     <Style TargetType="{x:Type xFrameButtons:Button}" 
            BasedOn="{StaticResource BaseStyle}" 
            x:Key="AccentButton">
-        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.AccentColorBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.AccentColorBrush}}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource AccentColorLighten10Brush}"/>

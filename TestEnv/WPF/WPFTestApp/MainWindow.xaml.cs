@@ -26,6 +26,7 @@ namespace WPFTestApp
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel();
         }
     }
 }

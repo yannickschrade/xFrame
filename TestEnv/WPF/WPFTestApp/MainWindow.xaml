@@ -8,13 +8,15 @@
                Title="HelloWorld" Height="450" Width="800"
                xmlns:xFrame="xFrame/Wpf" 
                d:DataContext="{d:DesignInstance Type=local:ViewModel}"
-               Background="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.BaseColorBrushKey}}"
-               GlowColor="{DynamicResource ResourceKey={x:Static xFrame:ThemeColor.AccentColorKey}}">
+               Background="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BaseColorBrush}}"
+               GlowColor="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.AccentColor}}">
     <StackPanel>
         <xFrame:TextBox Text="{Binding Name}"
-                    HorizontalAlignment="Center"
-                    x:Name="NametextBox"
-                    VerticalAlignment="Center"/>
+                        HorizontalAlignment="Center"
+                        x:Name="NametextBox"
+                        FontSize="16"
+                        Header="Hallo Welt:"
+                        VerticalAlignment="Center"/>
         <xFrame:Button Margin="5"
                        Content="Klick Mich"
                        Command="{Binding Command}"/>

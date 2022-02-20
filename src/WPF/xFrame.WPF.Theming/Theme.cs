@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows;
-using System.Windows.Markup;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace xFrame.WPF.Theming
 {
-    public class Theme : ResourceDictionary
+    public abstract class Theme : ResourceDictionary
     {
-        public string Name { get; set; }
+        public abstract string ThemeName { get; }
 
+
+        public Theme()
+        {
+        }
     }
 }
