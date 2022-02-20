@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netStandard2.0;netStandard2.1;netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
+	  <TargetFrameworks>netStandard2.0;netStandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 	  <LangVersion>9</LangVersion>
+	  <Version>1.0.0-alpha</Version>
+	  <Authors>Yannick Schrade</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Helpers\xFrame.Helpers.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
 </Project>

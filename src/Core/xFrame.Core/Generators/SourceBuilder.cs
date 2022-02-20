@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace xFrame.SourceGenerators.Helper
+namespace xFrame.Core.Generators
 {
     internal class SourceBuilder
     {

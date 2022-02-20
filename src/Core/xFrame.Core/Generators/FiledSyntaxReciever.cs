@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace xFrame.SourceGenerators
+namespace xFrame.Core.Generators
 {
     internal class FieldSyntaxReciever : ISyntaxContextReceiver
     {

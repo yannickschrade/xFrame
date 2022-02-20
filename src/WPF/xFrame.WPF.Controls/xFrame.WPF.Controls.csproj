@@ -3,12 +3,8 @@
   <PropertyGroup>
 	  <TargetFrameworks>net5.0-windows;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
+    <Version>1.0.0-alpha</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\xFrame.WPF.Theming\xFrame.WPF.Theming.csproj" />
-    <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ControlzEx" Version="6.0.0-alpha0204" />
@@ -16,6 +12,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="xFrame.WPF" Version="1.0.0-alpha" />
+    <PackageReference Include="xFrame.WPF.Theming" Version="1.0.0-alpha" />
   </ItemGroup>
 
 </Project>

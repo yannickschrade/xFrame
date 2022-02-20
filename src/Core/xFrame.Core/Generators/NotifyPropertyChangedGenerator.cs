@@ -6,9 +6,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using xFrame.SourceGenerators.Helper;
 
-namespace xFrame.SourceGenerators
+#if NETSTANDARD2_0
+namespace xFrame.Core.Generators
 {
     [Generator]
     public class NotifyPropertyChangedGenerator : ISourceGenerator
@@ -107,3 +107,4 @@ namespace xFrame.SourceGenerators
 
 
 }
+#endif

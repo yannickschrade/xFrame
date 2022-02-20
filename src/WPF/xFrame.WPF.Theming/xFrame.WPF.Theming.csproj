@@ -3,10 +3,11 @@
   <PropertyGroup>
 	  <TargetFrameworks>netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
+    <Version>1.0.0-alpha</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\xFrame.WPF.Theming.Generators\xFrame.WPF.Theming.Generators.csproj" OutputItemType="Analyzer" />
+    <PackageReference Include="xFrame.WPF.Theming.Generators" Version="1.0.0-alpha" />
   </ItemGroup>
 
 </Project>
