@@ -11,11 +11,6 @@ using xFrame.Core.Validation;
 
 namespace xFrame.Core.MVVM
 {
-    public interface IViewModel : INotifyPropertyChanged, INotifyDataErrorInfo, IValidatable
-    {
-        void OnViewStateChanged(bool IsActive);
-
-    }
 
     public abstract class ViewModelBase<T> : IViewModel
         where T : ViewModelBase<T>
