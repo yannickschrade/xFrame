@@ -56,14 +56,14 @@ namespace xFrame.Core.Context
         #region PropertyChangedContext
 
         public static IPropertyChangedContext<T, TProperty> IF<T, TProperty>(this IPropertyChangedContext<T, TProperty> context, Func<T, bool> condition)
-           where T : INotifyPropertyChanged, new()
+           where T : INotifyPropertyChanged
         {
             context.CurrentExecution.Conditions.Add(condition);
             return context;
         }
 
         public static IPropertyChangedContext<T, TProperty> Execute<T, TProperty>(this IPropertyChangedContext<T, TProperty> context, Action<TProperty> action)
-            where T : INotifyPropertyChanged, new()
+            where T : INotifyPropertyChanged
         {
             context.ExecutionPipline.Add(new Execution<T, TProperty>(action));
             return context;

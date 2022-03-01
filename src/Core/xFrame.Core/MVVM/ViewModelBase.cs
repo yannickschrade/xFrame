@@ -18,7 +18,7 @@ namespace xFrame.Core.MVVM
     }
 
     public abstract class ViewModelBase<T> : IViewModel
-        where T : ViewModelBase<T>, new()
+        where T : ViewModelBase<T>
     {
 
         #region INotifyPropertyChanged
