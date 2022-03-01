@@ -1,6 +1,8 @@
-﻿namespace xFrame.Core.IoC
+﻿using System;
+
+namespace xFrame.Core.IoC
 {
-    public interface ITypeService : ITypeRegistrationService, ITypeProviderService
+    public interface ITypeService : ITypeRegistrationService, ITypeProviderService, IDisposable
     {
 
     }

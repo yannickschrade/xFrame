@@ -134,6 +134,21 @@ namespace xFrame.Core.IoC
         {
             return TypeService.IsRegistered(type, name);
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                TypeService.Dispose();
+            }
+        }
     }
     public static class DryIoCExtensionMethodes
     {

@@ -95,5 +95,11 @@ namespace xFrame.WPF
             var view = viewProvider.GetViewForViewModel(StartupViewModelType);
             return view is Window window ? window : throw new Exception();
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            TypeService.Current.Dispose();
+        }
     }
 }
