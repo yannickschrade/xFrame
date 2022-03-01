@@ -4,13 +4,13 @@
 		<TargetFrameworks>netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<Version>1.0.0-alpha.2</Version>
+		<Version>1.0.0-alpha.3</Version>
 		<Authors>Yannick Schrade</Authors>
 		<PackageProjectUrl>https://github.com/yannickschrade/xFrame</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-	  <PackageReference Include="xFrame.Core" Version="1.0.0-alpha.*" />
+	  <PackageReference Include="xFrame.Core" Version="1.0.0-alpha.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
