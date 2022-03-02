@@ -12,7 +12,6 @@ namespace xFrame.Core.Context
         PropertyInfo Property { get; }
         T TypeInstance { get; }
         TProperty PropertyValue { get; }
-        Expression<Func<T, TProperty>> Expression { get; }
         Func<T, TProperty> PropertyReader { get; }
     }
 }

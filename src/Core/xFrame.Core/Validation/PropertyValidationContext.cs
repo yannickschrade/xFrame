@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using xFrame.Core.Context;
 using xFrame.Core.ExtensionMethodes;
@@ -22,6 +20,12 @@ namespace xFrame.Core.Validation
 
         public PropertyValidationContext(Expression<Func<T, TProperty>> expression, T classInstance)
         {
+            InnerContext = new PropertyContext<T,TProperty>(expression, classInstance);
+        }
+
+        public PropertyValidationContext(Func<T, TProperty> propertyReader, PropertyInfo propertyInfo, T typeInstance)
+        {
+            InnerContext = new PropertyContext<T,TProperty>(propertyReader, propertyInfo, typeInstance);
         }
 
         public PropertyValidationContext(IPropertyContext<T, TProperty> context)

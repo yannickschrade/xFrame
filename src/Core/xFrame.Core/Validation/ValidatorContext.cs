@@ -22,5 +22,20 @@ namespace xFrame.Core.Validation
         {
             _validationContext.AddConditionFor(ValidatorComponent.Validator, condition);
         }
+
+        public void WithMessage(string message)
+        {
+            ValidatorComponent.SetMessage(message);
+        }
+
+        public void WithMessage(Func<T, TProperty, string> messageFactory)
+        {
+            ValidatorComponent.SetMessage(messageFactory);
+        }
+
+        public void WithSeverity(Severity severity)
+        {
+            ValidatorComponent.SetSeverity(severity);
+        }
     }
 }

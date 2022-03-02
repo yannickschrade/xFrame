@@ -12,23 +12,27 @@ namespace xFrame.Core.Context
         public PropertyInfo Property { get; }
         public T TypeInstance { get; }
         public TProperty PropertyValue => PropertyReader(TypeInstance);
-        public Expression<Func<T, TProperty>> Expression { get; }
         public Func<T, TProperty> PropertyReader { get; }
 
-        public PropertyContext(Expression<Func<T, TProperty>> expression, T classInstance)
+        public PropertyContext(Expression<Func<T, TProperty>> expression, T typeInstance)
         {
-            Expression = expression;
-            TypeInstance = classInstance;
-
+            TypeInstance = typeInstance;
             PropertyReader = expression.Compile();
             Property = expression.GetPropertyInfo();
+        }
+
+        public PropertyContext(Func<T, TProperty> propertyReader, PropertyInfo propertyInfo, T typeInstance)
+        {
+            TypeInstance = typeInstance;
+            Property = propertyInfo;
+            PropertyReader = propertyReader;
+
         }
 
         public PropertyContext(IPropertyContext<T, TProperty> context)
         {
             Property = context.Property;
             TypeInstance = context.TypeInstance;
-            Expression = context.Expression;
             PropertyReader = context.PropertyReader;
         }
     }

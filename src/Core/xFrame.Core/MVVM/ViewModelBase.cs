@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using xFrame.Core.Fluent;
 using xFrame.Core.Validation;
 
 namespace xFrame.Core.MVVM

@@ -11,6 +11,8 @@ namespace xFrame.WPF.Controls.Inputs
 
         private TextBlock _headerTextBlock;
         private TextBlock _placeHolderText;
+        private TextBlock _errorMessage;
+
         public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
@@ -73,6 +75,7 @@ namespace xFrame.WPF.Controls.Inputs
             base.OnApplyTemplate();
             _headerTextBlock = (TextBlock)GetTemplateChild("PART_Header");
             _placeHolderText = (TextBlock)GetTemplateChild("PART_PlaceHolderText");
+            _errorMessage = (TextBlock)GetTemplateChild("PART_ErrorMessage");
 
             if (string.IsNullOrWhiteSpace(Header))
                 _headerTextBlock.Visibility = Visibility.Collapsed;

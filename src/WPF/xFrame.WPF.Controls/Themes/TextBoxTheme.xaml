@@ -3,6 +3,18 @@
                     xmlns:xFrame="xFrame/Wpf"
                     xmlns:input="clr-namespace:xFrame.WPF.Controls.Inputs">
 
+
+    <Style TargetType="{x:Type ContentControl}" x:Key="PopUpContentStyle">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border CornerRadius="5"
+                            Background="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ControlBackgroundColorBrush}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type input:TextBox}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ControlBackgroundColorBrush}}"/>
@@ -13,43 +25,64 @@
         <Setter Property="MinWidth" Value="60"/>
         <Setter Property="MaxWidth" Value="200"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel>
+                        <AdornedElementPlaceholder x:Name="Placeholder"/>
+                        <Border Background="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ControlBackgroundColorBrush}}"
+                                CornerRadius="5"
+                                Padding="5"
+                                Margin="0,5">
+                            <TextBlock Text="{Binding ErrorContent}"
+                                   FontSize="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.FontSizeSmall}}"/>
+                        </Border>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=Placeholder, Path=AdornedElement.IsMouseOver}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=Placeholder, Path=AdornedElement.IsKeyboardFocusWithin}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type input:TextBox}">
-                    <Grid Name="OuterBorder">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                    <AdornerDecorator>
+                        <Grid Name="OuterBorder">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="{TemplateBinding Header}"
+                            <TextBlock Text="{TemplateBinding Header}"
                                    Foreground="{TemplateBinding Foreground}"
                                    FontSize="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.FontSizeXSmall}}"
                                    x:Name="PART_Header"
                                    Margin="0,2"/>
 
-                        <Border Name="clipingBorder" 
+                            <Border Name="clipingBorder" 
                                 CornerRadius="{TemplateBinding CornerRadius}" 
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Grid.Row="1"/>
-                        <Border BorderBrush="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BaseColor20Brush}}"
+                            <Border BorderBrush="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BaseColor20Brush}}"
                                 BorderThickness="0,0,0,2"
                                 Grid.Row="1"
                                 Padding="5,2"
                                 x:Name="IndicatorBorder">
-                            <Border.OpacityMask>
-                                <VisualBrush Visual="{Binding ElementName=clipingBorder}"/>
-                            </Border.OpacityMask>
+                                <Border.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=clipingBorder}"/>
+                                </Border.OpacityMask>
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{TemplateBinding PlaceHolderText}"
-                                           Grid.Column="0"
+                                <Grid>
+                                    <TextBlock Text="{TemplateBinding PlaceHolderText}"
                                            x:Name="PART_PlaceHolderText"
                                            Visibility="Visible"
                                            IsHitTestVisible="False"
@@ -57,8 +90,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundDisabeldColorBrush}}"/>
-                                <ScrollViewer x:Name="PART_ContentHost"
-                                              Grid.Column="0"
+                                    <ScrollViewer x:Name="PART_ContentHost"
                                               Padding="{TemplateBinding Padding}"
                                               HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Disabled"
@@ -70,9 +102,10 @@
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 
-                            </Grid>
-                        </Border>
-                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </AdornerDecorator>
                     <ControlTemplate.Triggers>
 
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -83,14 +116,16 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.HoverColorBrush}}"/>
                         </Trigger>
-                        
                         <Trigger Property="Validation.HasError" Value="True">
                             <Setter Property="BorderBrush" Value="Red" TargetName="IndicatorBorder"/>
                         </Trigger>
-                        
+
+
+
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>

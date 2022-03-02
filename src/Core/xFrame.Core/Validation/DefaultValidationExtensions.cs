@@ -7,36 +7,27 @@ namespace xFrame.Core.Validation
 {
     public static class DefaultValidationExtensions
     {
-        public static IPropertyValidationContext<T, TProperty> NotNull<T, TProperty>(this IPropertyValidationContext<T, TProperty> context,
-            Action<IValidatorContext<T, TProperty>> validatorContext)
+        public static IPropertyValidationContext<T,TProperty> Transform<T,TProperty,TOld>(this IPropertyValidationContext<T,TOld> context, Func<TOld, TProperty> transformer)
+        {
+            Func<T, TProperty> expression = T => transformer(context.InnerContext.PropertyReader(T));
+            var ctx = new PropertyValidationContext<T,TProperty>(expression,context.InnerContext.Property,context.InnerContext.TypeInstance);
+            return ctx;
+        }
+
+        public static IValidatorContext<T, TProperty> IsNotNull<T, TProperty>(this IPropertyValidationContext<T, TProperty> context)
         {
             var validator = new NotNullValidator<TProperty>();
             var ctx = new ValidatorContext<T, TProperty>(context, validator);
-            validatorContext(ctx);
             context.AddValidator(ctx.ValidatorComponent);
-            return context;
+            return ctx;
         }
 
-        public static IPropertyValidationContext<T, TProperty> IsNotNull<T, TProperty>(this IPropertyValidationContext<T, TProperty> context)
+        public static IValidatorContext<T, TPoperty> IsNotEmpty<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context)
         {
-            context.AddValidator(new NotNullValidator<TProperty>());
-            return context;
-        }
-
-        public static IPropertyValidationContext<T, TPoperty> IsNotEmpty<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context)
-        {
-            context.AddValidator(new NotEmptyValidator<TPoperty>());
-            return context;
-        }
-
-        public static IPropertyValidationContext<T, TProperty> IsNotEmpty<T, TProperty>(this IPropertyValidationContext<T, TProperty> context,
-            Action<IValidatorContext<T, TProperty>> validatorContext)
-        {
-            var validator = new NotEmptyValidator<TProperty>();
-            var ctx = new ValidatorContext<T,TProperty>(context, validator);
-            validatorContext(ctx);
-            context.AddValidator(validator);
-            return context;
+            var validator = new NotEmptyValidator<TPoperty>();
+            var ctx = new ValidatorContext<T,TPoperty>(context, validator);
+            context.AddValidator(ctx.ValidatorComponent);
+            return ctx;
         }
 
         public static IPropertyValidationContext<T, TProperty> IfValid<T, TProperty>(this IPropertyValidationContext<T, TProperty> context, Action<T, TProperty> callback)

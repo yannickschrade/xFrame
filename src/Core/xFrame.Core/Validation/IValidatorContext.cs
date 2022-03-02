@@ -6,6 +6,9 @@ namespace xFrame.Core.Validation
     {
         IValidatorComponent<T,TProperty> ValidatorComponent{ get; }
         void AddCondition(Func<T,bool> condition);
+        void WithMessage(string message);
+        void WithMessage(Func<T, TProperty, string> messageFactory);
+        void WithSeverity(Severity severity);
 
     }
 }

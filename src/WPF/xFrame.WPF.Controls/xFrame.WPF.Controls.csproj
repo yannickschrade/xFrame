@@ -18,12 +18,10 @@
 
 	<ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
 		<PackageReference Include="xFrame.WPF.Theming" Version="1.0.0-alpha.*" />
-		<PackageReference Include="xFrame.WPF" Version="1.0.0-alpha.*" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
 		<ProjectReference Include="..\xFrame.WPF.Theming\xFrame.WPF.Theming.csproj" />
-		<ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
 	</ItemGroup>
 
 </Project>

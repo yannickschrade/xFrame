@@ -19,26 +19,65 @@ namespace xFrame.Core.Context
             return new PropertyContext<T, TProperty>(selector, @class);
         }
 
-        public static IPropertyContext<T, TProperty> WhenChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<IPropertyChangedContext<T, TProperty>> whenChanged)
+        public static IPropertyContext<T, TProperty> AddChangedHandler<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<IPropertyChangedContext<T, TProperty>> handler)
             where T : INotifyPropertyChanged
         {
             var propertyChangedContext = new PropertyChangedContext<T, TProperty>(context);
-            whenChanged(propertyChangedContext);
-            context.TypeInstance.SubscribePropertyChanged(context.Expression, p =>
+            handler(propertyChangedContext);
+            context.SubscribePropertyChanged(p =>
             {
-                if (p is not TProperty property)
-                    throw new InvalidOperationException();
-
-                propertyChangedContext.PropertyValue = property;
+                propertyChangedContext.PropertyValue = p;
 
                 foreach (var task in propertyChangedContext.ExecutionPipline)
                 {
                     if (task.Conditions.Any(func => !func(context.TypeInstance)))
                         continue;
-                    task.Action(property);
+                    task.Action(p);
                 }
             });
 
+            return context;
+        }
+
+        public static IPropertyContext<T, TProperty> OnChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, params Action<TProperty>[] callbacks)
+            where T : INotifyPropertyChanged
+        {
+
+            context.SubscribePropertyChanged(p =>
+            {
+                foreach (var callback in callbacks)
+                {
+                    callback(p);
+                }
+            });
+            return context;
+        }
+
+        public static IPropertyContext<T, TProperty> OnChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, params Action<T,TProperty>[] callbacks)
+            where T : INotifyPropertyChanged
+        {
+
+            context.SubscribePropertyChanged(p =>
+            {
+                foreach (var callback in callbacks)
+                {
+                    callback(context.TypeInstance,p);
+                }
+            });
+            return context;
+        }
+
+        public static IPropertyContext<T, TProperty> OnChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<TProperty> callback)
+            where T : INotifyPropertyChanged
+        {
+            context.SubscribePropertyChanged(p => callback(p));
+            return context;
+        }
+
+        public static IPropertyContext<T, TProperty> OnChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<T,TProperty> callback)
+            where T : INotifyPropertyChanged
+        {
+            context.SubscribePropertyChanged(p => callback(context.TypeInstance,p));
             return context;
         }
 
@@ -47,7 +86,7 @@ namespace xFrame.Core.Context
         {
             var validationContext = new PropertyValidationContext<T, TProperty>(context);
             validation(validationContext);
-            context.TypeInstance.SubscribePropertyChanged(context.Expression, p =>
+            context.SubscribePropertyChanged(p =>
             {
                 var result = validationContext.Validate(context.PropertyValue);
                 context.TypeInstance.OnValidated(result);

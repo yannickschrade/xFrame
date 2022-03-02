@@ -34,14 +34,17 @@
                                Height="25"/>
                         <Border x:Name="HeaderBorder"
                                 Background="Transparent"
-                                Grid.Column="1">
+                                Grid.Column="1"
+                                Focusable="False">
                             <ContentPresenter x:Name="PART_Header"
-                                              Content="{TemplateBinding WindowHeader}"/>
+                                              Content="{TemplateBinding WindowHeader}"
+                                              Focusable="False"/>
                         </Border>
 
 
                         <ContentPresenter x:Name="PART_WindowCommands"
                                           Grid.Column="2"
+                                          Focusable="False"
                                           HorizontalAlignment="Right"
                                           Panel.ZIndex="1"
                                           Content="{TemplateBinding WindowCommands}"/>
@@ -228,6 +231,7 @@
 
     <Style TargetType="{x:Type local:WindowCommands}">
         <Setter Property="Template" Value="{StaticResource WindowCommands}"/>
+        <Setter Property="Focusable" Value="False"/>
     </Style>
 
 
