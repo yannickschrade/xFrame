@@ -21,7 +21,7 @@ namespace xFrame.Core.Commands
     public class RelayCommand<T> : RelayCommand
     {
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null) 
-            : base(p => execute((T)p), canExecute != null ? p => canExecute((T)p) : null)
+            : base(p => execute((T)Convert.ChangeType(p, typeof(T))), canExecute != null ? p => canExecute((T)p) : null)
         {
         }
     }

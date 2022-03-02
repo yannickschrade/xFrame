@@ -7,6 +7,7 @@ using xFrame.Core.IoC;
 using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewInjection;
+using xFrame.WPF.Controls;
 using xFrame.WPF.ViewAdapters;
 using xFrame.WPF.ViewInjection;
 
@@ -52,11 +53,13 @@ namespace xFrame.WPF
             viewAdapterCollection.RegisterAdapterIfMissing<SelectorAdapter>();
         }
 
-        private void RegisterDefaultTypes(ITypeRegistrationService typeService)
+        private void RegisterDefaultTypes(ITypeService typeService)
         {
             typeService.RegisterSingelton<ViewAdapterCollection, IViewAdapterCollection>();
             typeService.RegisterSingeltonMany<ViewProvider>(typeof(IViewRegistration), typeof(IViewProvider));
             typeService.RegisterSingelton<ViewInjectionService, IViewInjectionService>();
+            typeService.RegisterSingelton<DialogService, IDialogService>();
+            typeService.RegisterType<DialogWindow, IDialogWindow>();
         }
 
         protected virtual void RegisterViewAdapters(IViewAdapterCollection viewAdapterCollection)

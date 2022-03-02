@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
+using xFrame.Core.Commands;
 using xFrame.Core.ViewInjection;
 
 namespace xFrame.Core.MVVM
 {
-    public interface IDialogViewModel
+    public interface IDialogViewModel : IViewModel
     {
-        bool CanClose();
-        DialogResult OnClose();
+        RelayCommand<bool> CloseDialogCommand { get; } 
+        void OnLoaded();
     }
 }

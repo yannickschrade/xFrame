@@ -28,6 +28,20 @@ namespace xFrame.WPF.Controls.Inputs
             DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(Button), new PropertyMetadata(new CornerRadius(0)));
 
 
+
+
+        public ElementType HilightedElement
+        {
+            get { return (ElementType)GetValue(HilighetedElementProperty); }
+            set { SetValue(HilighetedElementProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HilighetedElement.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HilighetedElementProperty =
+            DependencyProperty.Register("HilightedElement", typeof(ElementType), typeof(Button), new PropertyMetadata(ElementType.Background));
+
+
+
         static Button()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(typeof(Button)));

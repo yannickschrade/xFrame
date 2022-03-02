@@ -122,7 +122,7 @@
            BasedOn="{StaticResource WindowCommandButtonStyle}">
         <Style.Triggers>
             <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
-                <Setter Property="Background" Value="DarkRed"/>
+                <Setter Property="Background" Value="Red"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -208,7 +208,7 @@
                 <Setter TargetName="PART_RestoreCommand" Property="Visibility" Value="Collapsed" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsPressed, ElementName=PART_CloseCommand}" Value="True">
-                <Setter TargetName="PART_CloseCommand" Property="Background" Value="Red" />
+                <Setter TargetName="PART_CloseCommand" Property="Background" Value="DarkRed" />
             </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -216,7 +216,9 @@
 
 
     <Style TargetType="{x:Type local:Window}">
-        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BaseColorBrush}}"/>
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BackgroundColorBrush}}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.FontSizeRegular}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="Template" Value="{StaticResource xFrameWindow}"/>
     </Style>

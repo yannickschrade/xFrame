@@ -20,36 +20,43 @@ namespace xFrame.WPF.ViewInjection
         }
 
 
-        public void Show<T>() where T : IViewModel
+        public T Show<T>() where T : IDialogViewModel
         {
-            var window = CreateDialogWindow<T>();
-            window.Show();
-        }
-
-        public void Show<T>(T viewModel) where T : IViewModel
-        {
-            var window = CreateDialogWindow<T>();
-            window.Show();
-        }
-
-        public DialogResult ShowDialog<T>() where T : IViewModel
-        {
-            var window = CreateDialogWindow<T>();
+            var window = CreateDialogWindow<T>(out var vm);
             window.ShowDialog();
+            return vm;
         }
 
-        public DialogResult ShowDialog<T>(DialogResult dialogResult) where T : IViewModel
+        public void Show<T>(T viewModel) where T : IDialogViewModel
         {
-            var window = CreateDialogWindow<T>();
+            var window = CreateDialogWindow(viewModel);
             window.ShowDialog();
         }
         
-        private IDialogWindow CreateDialogWindow<T>()
-            where T : IViewModel
+        private IDialogWindow CreateDialogWindow<T>(out T viewModel)
+            where T : IDialogViewModel
         {
             var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
             var content = _viewProvider.GetViewForViewModel<T>();
-            dialogWindow.Content = content;
+
+            var vm  = (T)content.DataContext;
+            viewModel = vm;
+            dialogWindow.Loaded += (s, e) => vm.OnLoaded();
+            dialogWindow.DataContext = vm;
+            dialogWindow.DialogContent = content;
+
+            return dialogWindow;
+        }
+
+        private IDialogWindow CreateDialogWindow<T>(T viewModel)
+            where T : IDialogViewModel
+        {
+            var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
+            var content = _viewProvider.GetViewForViewModel(viewModel);
+            dialogWindow.DataContext = viewModel;
+            dialogWindow.Loaded += (s, e) => viewModel.OnLoaded();
+            dialogWindow.DialogContent = content;
+
             return dialogWindow;
         }
     }

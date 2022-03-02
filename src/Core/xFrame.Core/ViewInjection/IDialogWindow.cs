@@ -1,9 +1,16 @@
-﻿namespace xFrame.Core.ViewInjection
+﻿using System;
+using xFrame.Core.MVVM;
+
+namespace xFrame.Core.ViewInjection
 {
     public interface IDialogWindow
     {
         void Show();
         void ShowDialog();
-        object Content { get; set; }
+        object DialogContent { get; set; }
+
+        object DataContext { get; set; }
+
+        event EventHandler Loaded;
     }
 }
