@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Text;
 using xFrame.Core.Commands;
 using xFrame.Core.ExtensionMethodes;
-using xFrame.Core.Fluent;
 using xFrame.Core.Validation;
 
 namespace xFrame.Core.Context
@@ -14,6 +13,11 @@ namespace xFrame.Core.Context
     public static class ContextExtensions
     {
         #region PropertyContext
+
+        public static IPropertyContext<T, TProperty> Property<T, TProperty>(this T @class, Expression<Func<T, TProperty>> selector)
+        {
+            return new PropertyContext<T, TProperty>(selector, @class);
+        }
 
         public static IPropertyContext<T, TProperty> WhenChanged<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<IPropertyChangedContext<T, TProperty>> whenChanged)
             where T : INotifyPropertyChanged
@@ -39,7 +43,7 @@ namespace xFrame.Core.Context
         }
 
         public static IPropertyContext<T, TProperty> AddValidation<T, TProperty>(this IPropertyContext<T, TProperty> context, Action<IPropertyValidationContext<T, TProperty>> validation)
-            where T : INotifyPropertyChanged, IValidatable
+            where T : IValidatable
         {
             var validationContext = new PropertyValidationContext<T, TProperty>(context);
             validation(validationContext);
@@ -48,6 +52,9 @@ namespace xFrame.Core.Context
                 var result = validationContext.Validate(context.PropertyValue);
                 context.TypeInstance.OnValidated(result);
             });
+
+            var result = validationContext.Validate(context.PropertyValue);
+            context.TypeInstance.OnValidated(result);
             return context;
         }
 

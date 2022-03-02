@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using xFrame.Core.Fluent;
+using xFrame.Core.Context;
 
 namespace xFrame.Core.Validation
 {
-    public interface IPropertyValidationContext<T, TProperty> : IPropertyContext<T, TProperty>
+    public interface IPropertyValidationContext<T, TProperty>
     {
+        IPropertyContext<T, TProperty> InnerContext { get; }
         ValidationResult Validate(TProperty property);
         void AddValidator(IValidator<TProperty> validator);
         void AddValidator(IValidatorComponent<T,TProperty> component);

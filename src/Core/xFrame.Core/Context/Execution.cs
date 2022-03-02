@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace xFrame.Core.Fluent
+namespace xFrame.Core.Context
 {
-    public class Execution<T,TProperty>
+    public class Execution<T, TProperty>
     {
         public Action<TProperty> Action { get; }
 

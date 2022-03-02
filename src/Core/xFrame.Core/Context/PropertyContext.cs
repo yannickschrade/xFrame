@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using xFrame.Core.ExtensionMethodes;
 
-namespace xFrame.Core.Fluent
+namespace xFrame.Core.Context
 {
     internal class PropertyContext<T, TProperty> : IPropertyContext<T, TProperty>
     {
@@ -15,7 +15,7 @@ namespace xFrame.Core.Fluent
         public Expression<Func<T, TProperty>> Expression { get; }
         public Func<T, TProperty> PropertyReader { get; }
 
-        public PropertyContext(Expression<Func<T,TProperty>> expression, T classInstance)
+        public PropertyContext(Expression<Func<T, TProperty>> expression, T classInstance)
         {
             Expression = expression;
             TypeInstance = classInstance;
@@ -24,7 +24,7 @@ namespace xFrame.Core.Fluent
             Property = expression.GetPropertyInfo();
         }
 
-        public PropertyContext(IPropertyContext<T,TProperty> context)
+        public PropertyContext(IPropertyContext<T, TProperty> context)
         {
             Property = context.Property;
             TypeInstance = context.TypeInstance;

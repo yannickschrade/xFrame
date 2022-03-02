@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace xFrame.Core.Validation
 {
-    public interface IValidatable
+    public interface IValidatable : INotifyPropertyChanged
     {
         void OnValidated(ValidationResult result);
     }

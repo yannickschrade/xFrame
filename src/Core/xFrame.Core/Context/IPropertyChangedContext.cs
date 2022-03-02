@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace xFrame.Core.Fluent
+namespace xFrame.Core.Context
 {
-    public interface IPropertyChangedContext<T, TProperty> : IPropertyContext<T, TProperty>
+    public interface IPropertyChangedContext<T, TProperty>
         where T : INotifyPropertyChanged
     {
-
-        List<Execution<T,TProperty>> ExecutionPipline { get; }
-        Execution<T,TProperty> CurrentExecution { get; }
+        IPropertyContext<T, TProperty> InnerContext { get; }
+        List<Execution<T, TProperty>> ExecutionPipline { get; }
+        Execution<T, TProperty> CurrentExecution { get; }
         TProperty PropertyValue { get; }
     }
 }

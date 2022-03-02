@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace xFrame.Core.Validation
 {
     internal class ValidatorContext<T, TProperty> : IValidatorContext<T, TProperty>
@@ -18,7 +15,7 @@ namespace xFrame.Core.Validation
         public ValidatorContext(IPropertyValidationContext<T, TProperty> context, IValidator<TProperty> validator)
         {
             _validationContext = context;
-            ValidatorComponent = new ValidatorComponent<T,TProperty>(context.TypeInstance, context.PropertyValue, validator);
+            ValidatorComponent = new ValidatorComponent<T,TProperty>(context.InnerContext.TypeInstance, context.InnerContext.PropertyValue, validator);
         }
 
         public void AddCondition(Func<T, bool> condition)

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace xFrame.WPF.Extensions
+namespace xFrame.Core.ExtensionMethodes
 {
     public static class Dictionaries
     {
         public static TValue GetOrSetIfMissing<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, TValue ifNotFound = default)
         {
-            if(!dic.ContainsKey(key))
+            if (!dic.ContainsKey(key))
                 dic.Add(key, ifNotFound);
             return dic[key];
         }

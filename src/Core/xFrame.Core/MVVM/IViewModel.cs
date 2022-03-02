@@ -6,6 +6,7 @@ namespace xFrame.Core.MVVM
     public interface IViewModel : INotifyPropertyChanged, INotifyDataErrorInfo, IValidatable
     {
         void OnViewStateChanged(bool IsActive);
-
+        void OnLoaded();
+        void SetupValidation();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Data;
 using xFrame.Core.IoC;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewInjection;

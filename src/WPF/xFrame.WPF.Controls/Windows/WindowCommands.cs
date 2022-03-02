@@ -63,29 +63,37 @@ namespace xFrame.WPF.Controls.Windows
         private void CloseClick(object sender, RoutedEventArgs e)
         {
             var parentWinodw = GetParentWindow();
-            if(parentWinodw is not null)
+            if (parentWinodw is not null)
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
                 ControlzEx.SystemCommands.CloseWindow(parentWinodw);
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
         private void RestoreClick(object sender, RoutedEventArgs e)
         {
             var parentWindow = GetParentWindow();
             if (parentWindow is not null)
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
                 ControlzEx.SystemCommands.RestoreWindow(parentWindow);
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
         private void MaximiseClick(object sender, RoutedEventArgs e)
         {
             var parentWindow = GetParentWindow();
             if (parentWindow is not null)
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
                 ControlzEx.SystemCommands.MaximizeWindow(parentWindow);
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
         private void MinimizeClick(object sender, RoutedEventArgs e)
         {
             var parentWindow = GetParentWindow();
             if (parentWindow is not null)
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
                 ControlzEx.SystemCommands.MinimizeWindow(parentWindow);
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
         private unsafe string GetCaption(uint id)
@@ -107,7 +115,7 @@ namespace xFrame.WPF.Controls.Windows
             }
         }
 
-        private System.Windows.Window GetParentWindow()
+        private Window GetParentWindow()
         {
             var window = System.Windows.Window.GetWindow(this);
 
@@ -117,7 +125,7 @@ namespace xFrame.WPF.Controls.Windows
             }
 
             var parent = VisualTreeHelper.GetParent(this);
-            System.Windows.Window parentWindow = null;
+            Window parentWindow = null;
 
             while (parent is not null
                 && (parentWindow = parent as XWindow) is null)

@@ -12,8 +12,7 @@ using xFrame.Core.Validation;
 namespace xFrame.Core.MVVM
 {
 
-    public abstract class ViewModelBase<T> : IViewModel
-        where T : ViewModelBase<T>
+    public abstract class ViewModelBase : IViewModel
     {
 
         #region INotifyPropertyChanged
@@ -85,11 +84,6 @@ namespace xFrame.Core.MVVM
         #endregion
 
         
-        public IPropertyContext<T,TProperty> Property<TProperty>(Expression<Func<T,TProperty>> property)
-        {
-            return new PropertyContext<T, TProperty>(property, (T)this);
-        }
-
         public virtual void OnViewStateChanged(bool IsActive) { }
 
         public void OnValidated(ValidationResult result)
@@ -105,5 +99,12 @@ namespace xFrame.Core.MVVM
                 AddError(message, result.ValidatedProperty);
             }
         }
+
+        public virtual void OnLoaded()
+        {
+            SetupValidation();
+        }
+
+        public abstract void SetupValidation();
     }
 }

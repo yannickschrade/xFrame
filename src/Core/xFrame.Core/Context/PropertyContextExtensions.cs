@@ -6,7 +6,7 @@ using xFrame.Core.Commands;
 using xFrame.Core.ExtensionMethodes;
 using xFrame.Core.Validation;
 
-namespace xFrame.Core.Fluent
+namespace xFrame.Core.Context
 {
     public static class PropertyContextExtensions
     {

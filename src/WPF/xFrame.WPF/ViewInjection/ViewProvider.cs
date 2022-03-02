@@ -35,17 +35,15 @@ namespace xFrame.WPF.ViewInjection
         {
             var viewType = _viewModelToViewMapping[vm.GetType()];
             var uiElement = (FrameworkElement)_typeProvider.Resolve(viewType);
+            uiElement.Loaded += (s, e) => vm.OnLoaded();
             uiElement.DataContext = vm;
             return uiElement;
         }
 
         public FrameworkElement GetViewForViewModel(Type viewModelType)
         {
-            var viewType = _viewModelToViewMapping[viewModelType];
-            var uiElement = (FrameworkElement)_typeProvider.Resolve(viewType);
             var vm = (IViewModel)_typeProvider.Resolve(viewModelType);
-            uiElement.DataContext = vm;
-            return uiElement;
+            return GetViewForViewModel(vm);
         }
 
         public FrameworkElement GetViewForViewModel<T>()

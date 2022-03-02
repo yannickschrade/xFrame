@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using xFrame.Core.Commands;
-using xFrame.Core.Context;
-using xFrame.Core.Fluent;
 using xFrame.Core.Validators;
 
 namespace xFrame.Core.Validation
@@ -33,6 +29,16 @@ namespace xFrame.Core.Validation
             return context;
         }
 
+        public static IPropertyValidationContext<T, TProperty> IsNotEmpty<T, TProperty>(this IPropertyValidationContext<T, TProperty> context,
+            Action<IValidatorContext<T, TProperty>> validatorContext)
+        {
+            var validator = new NotEmptyValidator<TProperty>();
+            var ctx = new ValidatorContext<T,TProperty>(context, validator);
+            validatorContext(ctx);
+            context.AddValidator(validator);
+            return context;
+        }
+
         public static IPropertyValidationContext<T, TProperty> IfValid<T, TProperty>(this IPropertyValidationContext<T, TProperty> context, Action<T, TProperty> callback)
         {
             context.AddValidationCallBack((@class, property, result) =>
@@ -45,14 +51,14 @@ namespace xFrame.Core.Validation
 
         public static IPropertyValidationContext<T, TPoperty> NotifyCommandIfValid<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context, Expression<Func<T, CommandBase>> command)
         {
-            var com = command.Compile()(context.TypeInstance);
+            var com = command.Compile()(context.InnerContext.TypeInstance);
             context.IfValid((c, p) => com.RaisCanExecuteChanged());
             return context;
         }
 
         public static IPropertyValidationContext<T, TProperty> UpdateCommandCanExecute<T, TProperty>(this IPropertyValidationContext<T, TProperty> context, Expression<Func<T, CommandBase>> command)
         {
-            var com = command.Compile()(context.TypeInstance);
+            var com = command.Compile()(context.InnerContext.TypeInstance);
             context.AddValidationCallBack((c,p,r) => com.RaisCanExecuteChanged(r.IsValid));
             return context;
         }
