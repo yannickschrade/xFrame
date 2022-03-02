@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using xFrame.Core.IoC;
 using xFrame.Core.MVVM;
@@ -37,24 +35,25 @@ namespace xFrame.WPF.ViewInjection
             where T : IDialogViewModel
         {
             var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
-            var content = _viewProvider.GetViewForViewModel<T>();
-
+            var content = _viewProvider.GetViewForViewModel<T>();            
             var vm  = (T)content.DataContext;
             viewModel = vm;
             dialogWindow.Loaded += (s, e) => vm.OnLoaded();
+            vm.CloseDialogAction = new Action(() => dialogWindow.Close());
             dialogWindow.DataContext = vm;
             dialogWindow.DialogContent = content;
 
             return dialogWindow;
         }
 
-        private IDialogWindow CreateDialogWindow<T>(T viewModel)
+        private IDialogWindow CreateDialogWindow<T>(T vm)
             where T : IDialogViewModel
         {
             var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
-            var content = _viewProvider.GetViewForViewModel(viewModel);
-            dialogWindow.DataContext = viewModel;
-            dialogWindow.Loaded += (s, e) => viewModel.OnLoaded();
+            var content = _viewProvider.GetViewForViewModel(vm);
+            dialogWindow.DataContext = vm;
+            vm.CloseDialogAction = new Action(() => dialogWindow.Close());
+            dialogWindow.Loaded += (s, e) => vm.OnLoaded();
             dialogWindow.DialogContent = content;
 
             return dialogWindow;

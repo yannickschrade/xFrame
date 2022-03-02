@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 
 namespace xFrame.WPF.Controls.Windows
 {
-    public class Window : WindowChromeWindow
+    public class XWindow : WindowChromeWindow
     {
         private const string PART_ContentPresenter = "PART_ContentPresenter";
         private const string PART_Header = "PART_Header";
@@ -32,7 +32,7 @@ namespace xFrame.WPF.Controls.Windows
 
         // Using a DependencyProperty as the backing store for WindowCommands.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty WindowCommandsProperty =
-            DependencyProperty.Register(nameof(WindowCommands), typeof(UIElement), typeof(Window), new FrameworkPropertyMetadata(null));
+            DependencyProperty.Register(nameof(WindowCommands), typeof(UIElement), typeof(XWindow), new FrameworkPropertyMetadata(null));
 
 
 
@@ -44,11 +44,26 @@ namespace xFrame.WPF.Controls.Windows
 
         // Using a DependencyProperty as the backing store for WindowHeader.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty WindowHeaderProperty =
-            DependencyProperty.Register("WindowHeader", typeof(UIElement), typeof(Window), new PropertyMetadata(null));
+            DependencyProperty.Register("WindowHeader", typeof(UIElement), typeof(XWindow), new PropertyMetadata(null));
 
-        static Window()
+
+
+
+        public double HeaderHeight
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(typeof(Window)));
+            get { return (double)GetValue(HeaderHeightProperty); }
+            set { SetValue(HeaderHeightProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HeaderHeight.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderHeightProperty =
+            DependencyProperty.Register("HeaderHeight", typeof(double), typeof(XWindow), new PropertyMetadata(double.NaN));
+
+
+
+        static XWindow()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(XWindow), new FrameworkPropertyMetadata(typeof(XWindow)));
         }
 
         #region Behaviors
@@ -81,7 +96,7 @@ namespace xFrame.WPF.Controls.Windows
 
         #endregion
 
-        public Window()
+        public XWindow()
         {
             InitializeWindowChromeBehavior();
             InitializeGlowWindowBehavior();
@@ -141,7 +156,7 @@ namespace xFrame.WPF.Controls.Windows
             }
         }
 
-        private static readonly PropertyInfo criticalHandlePropertyInfo = typeof(Window).GetProperty("CriticalHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly PropertyInfo criticalHandlePropertyInfo = typeof(XWindow).GetProperty("CriticalHandle", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly object[] emptyObjectArray = Array.Empty<object>();
 
         private ImageSource GetDefaultIcon(Size desiredSize)

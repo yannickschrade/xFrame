@@ -120,7 +120,7 @@ namespace xFrame.WPF.Controls.Windows
             System.Windows.Window parentWindow = null;
 
             while (parent is not null
-                && (parentWindow = parent as Window) is null)
+                && (parentWindow = parent as XWindow) is null)
             {
                 parent = VisualTreeHelper.GetParent(parent);
             }

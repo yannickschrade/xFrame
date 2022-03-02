@@ -4,7 +4,7 @@
                     xmlns:controlzex="urn:controlzex"
                     xmlns:xFrame="xFrame/Wpf">
 
-    <ControlTemplate TargetType="{x:Type local:Window}" x:Key="xFrameWindow">
+    <ControlTemplate TargetType="{x:Type local:XWindow}" x:Key="xFrameWindow">
         <Grid UseLayoutRounding="True"
               LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
               RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
@@ -18,7 +18,8 @@
                     </Grid.RowDefinitions>
 
                     <Grid x:Name="HeaderRootGrid"
-                          Grid.Row="0">
+                          Grid.Row="0"
+                          Height="{TemplateBinding HeaderHeight}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
@@ -28,7 +29,9 @@
                         <Image Grid.Column="0"
                                Source="{TemplateBinding Icon}"
                                RenderOptions.BitmapScalingMode="Fant"
-                               Margin="5"/>
+                               Margin="5"
+                               Width="25"
+                               Height="25"/>
                         <Border x:Name="HeaderBorder"
                                 Background="Transparent"
                                 Grid.Column="1">
@@ -215,7 +218,7 @@
 
 
 
-    <Style TargetType="{x:Type local:Window}">
+    <Style TargetType="{x:Type local:XWindow}">
         <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BackgroundColorBrush}}"/>
         <Setter Property="FontSize" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.FontSizeRegular}}"/>
         <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
