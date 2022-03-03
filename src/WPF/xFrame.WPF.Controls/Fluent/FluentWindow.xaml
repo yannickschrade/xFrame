@@ -1,10 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:xFrame.WPF.Controls.Windows"
-                    xmlns:controlzex="urn:controlzex"
-                    xmlns:xFrame="xFrame:Wpf.Theming">
+                    xmlns:xShell="clr-namespace:xFrame.WPF.Controls.WindowShell"
+                    xmlns:xFrame="clr-namespace:xFrame.WPF.Controls.Fluent"
+                    xmlns:xTheme="xFrame:Wpf.Theming"
+                    xmlns:xConv="xFrame:WPF.Converters">
 
-    <ControlTemplate TargetType="{x:Type local:XWindow}" x:Key="xFrameWindow">
+    <ControlTemplate TargetType="{x:Type local:DefaultHeader}" x:Key="DefaultheaderTemplate">
+        <Border Background="{TemplateBinding Background}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{TemplateBinding IconSource}"
+                       Width="20"
+                       VerticalAlignment="Center"
+                       Height="20"
+                       Margin="10,5"
+                       RenderOptions.BitmapScalingMode="Fant"/>
+                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"
+                           Margin="5"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate TargetType="{x:Type Window}" x:Key="WindowControlTemplate">
         <Grid UseLayoutRounding="True"
               LayoutTransform="{Binding LayoutTransform, RelativeSource={RelativeSource TemplatedParent}}"
               RenderTransform="{Binding RenderTransform, RelativeSource={RelativeSource TemplatedParent}}"
@@ -19,35 +37,16 @@
 
                     <Grid x:Name="HeaderRootGrid"
                           Grid.Row="0"
-                          Height="{TemplateBinding HeaderHeight}">
+                          Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(xFrame:Window.HeaderHeight)}">
+
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-
-                        <Image Grid.Column="0"
-                               Source="{TemplateBinding Icon}"
-                               RenderOptions.BitmapScalingMode="Fant"
-                               Margin="5"
-                               Width="25"
-                               Height="25"/>
-                        <Border x:Name="HeaderBorder"
-                                Background="Transparent"
-                                Grid.Column="1"
-                                Focusable="False">
-                            <ContentPresenter x:Name="PART_Header"
-                                              Content="{TemplateBinding WindowHeader}"
-                                              Focusable="False"/>
-                        </Border>
-
-
-                        <ContentPresenter x:Name="PART_WindowCommands"
-                                          Grid.Column="2"
-                                          Focusable="False"
-                                          HorizontalAlignment="Right"
-                                          Panel.ZIndex="1"
-                                          Content="{TemplateBinding WindowCommands}"/>
+                        
+                        <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(xFrame:Window.WindowHeader)}"/>
+                        <ContentPresenter Grid.Column="1"
+                                          Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(xFrame:Window.WindowCommands)}"/>
                     </Grid>
 
                     <ContentPresenter x:Name="PART_ContentPresenter"
@@ -115,9 +114,9 @@
     <Style TargetType="{x:Type Button}" x:Key="WindowCommandButtonStyle">
         <Setter Property="Template" Value="{StaticResource WindowCommandButton}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xTheme:DefaultThemeKeys.ForegroundColorBrush}}"/>
         <Style.Triggers>
-            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+            <Trigger Property="xShell:NonClientControlProperties.IsNCMouseOver" Value="True">
                 <Setter Property="Background" Value="#a8a8a899"/>
             </Trigger>
         </Style.Triggers>
@@ -127,7 +126,7 @@
            x:Key="WindowCommandCloseButtonStyle"
            BasedOn="{StaticResource WindowCommandButtonStyle}">
         <Style.Triggers>
-            <Trigger Property="controlzex:NonClientControlProperties.IsNCMouseOver" Value="True">
+            <Trigger Property="xShell:NonClientControlProperties.IsNCMouseOver" Value="True">
                 <Setter Property="Background" Value="Red"/>
             </Trigger>
         </Style.Triggers>
@@ -136,12 +135,13 @@
     <ControlTemplate TargetType="{x:Type local:WindowCommands}" x:Key="WindowCommands">
         <StackPanel Orientation="Horizontal">
             <Button x:Name="PART_MinimizeCommand"
+                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=(xFrame:Window.ShowMinButton), Converter={xConv:BoolToVisibilityConverter}}"
                     Style="{StaticResource WindowCommandButtonStyle}"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                        controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="MINBUTTON">
+                        xShell:NonClientControlProperties.ClickStrategy="MouseEvent"
+                    xShell:NonClientControlProperties.HitTestResult="MINBUTTON">
                 <Path Width="16"
                       Height="16"
                       HorizontalAlignment="Center"
@@ -152,11 +152,12 @@
 
             <Button x:Name="PART_MaximizeCommand"
                     Style="{StaticResource WindowCommandButtonStyle}"
+                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=(xFrame:Window.ShowMaxRestoreButton), Converter={xConv:BoolToVisibilityConverter}}"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="MAXBUTTON">
+                    xShell:NonClientControlProperties.ClickStrategy="MouseEvent"
+                    xShell:NonClientControlProperties.HitTestResult="MAXBUTTON">
                 <Path Width="16"
                       Height="16"
                       HorizontalAlignment="Center"
@@ -166,12 +167,13 @@
             </Button>
 
             <Button x:Name="PART_RestoreCommand"
+                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=(xFrame:Window.ShowMaxRestoreButton), Converter={xConv:BoolToVisibilityConverter}}"
                     Style="{StaticResource WindowCommandButtonStyle}"
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="MAXBUTTON">
+                    xShell:NonClientControlProperties.ClickStrategy="MouseEvent"
+                    xShell:NonClientControlProperties.HitTestResult="MAXBUTTON">
                 <Path Width="16"
                       Height="16"
                       HorizontalAlignment="Center"
@@ -185,8 +187,8 @@
                     Padding="8,5"
                     SnapsToDevicePixels="True"
                     Focusable="False"
-                    controlzex:NonClientControlProperties.ClickStrategy="MouseEvent"
-                    controlzex:NonClientControlProperties.HitTestResult="CLOSE">
+                    xShell:NonClientControlProperties.ClickStrategy="MouseEvent"
+                    xShell:NonClientControlProperties.HitTestResult="CLOSE">
                 <Path Width="16"
                       Height="16"
                       HorizontalAlignment="Center"
@@ -220,22 +222,25 @@
     </ControlTemplate>
 
 
-
-    <Style TargetType="{x:Type local:XWindow}">
-        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.BackgroundColorBrush}}"/>
-        <Setter Property="FontSize" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.FontSizeRegular}}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xFrame:DefaultThemeKeys.ForegroundColorBrush}}"/>
-        <Setter Property="WindowStyle" Value="None"/>
-        <Setter Property="Template" Value="{StaticResource xFrameWindow}"/>
-    </Style>
-
     <Style TargetType="{x:Type local:WindowCommands}">
         <Setter Property="Template" Value="{StaticResource WindowCommands}"/>
         <Setter Property="Focusable" Value="False"/>
     </Style>
 
+    <Style TargetType="{x:Type local:DefaultHeader}">
+        <Setter Property="Template" Value="{StaticResource DefaultheaderTemplate}"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
 
-
-
+    <Style TargetType="{x:Type Window}" x:Key="FluentWindow">
+        <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xTheme:DefaultThemeKeys.BackgroundColorBrush}}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ResourceKey={x:Static xTheme:DefaultThemeKeys.FontSizeRegular}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ResourceKey={x:Static xTheme:DefaultThemeKeys.ForegroundColorBrush}}"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Template" Value="{StaticResource WindowControlTemplate}"/>
+        <Setter Property="xFrame:Window.UseDefaultHeader" Value="True"/>
+        <Setter Property="xFrame:Window.UseDefaultSystemCommands" Value="True"/>
+        <Setter Property="xFrame:Window.AttachShellBehaviors" Value="True"/>
+    </Style>
 
 </ResourceDictionary>

@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xFrame.Core", "src\Core\xFr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFTestApp", "..\xFrame.DevEnv\TestEnv\WPF\WPFTestApp\WPFTestApp.csproj", "{EA3A1178-6B95-400F-AB44-FB65538B0347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xFrame.Wpf.Converters", "src\WPF\xFrame.Wpf.Converters\xFrame.Wpf.Converters.csproj", "{26790E6C-0A9E-454E-A8CC-63306BCC9C68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xFrame.WPF.Converters", "src\WPF\xFrame.Wpf.Converters\xFrame.WPF.Converters.csproj", "{26790E6C-0A9E-454E-A8CC-63306BCC9C68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

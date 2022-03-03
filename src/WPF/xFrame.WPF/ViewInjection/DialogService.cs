@@ -38,6 +38,11 @@ namespace xFrame.WPF.ViewInjection
             var content = _viewProvider.GetViewForViewModel<T>();            
             var vm  = (T)content.DataContext;
             viewModel = vm;
+            var dialogStyle = Dialog.GetStyle(content);
+            if (dialogStyle != null && dialogWindow is Window diagWindow)
+            {
+                diagWindow.Style = dialogStyle;
+            }
             dialogWindow.Loaded += (s, e) => vm.OnLoaded();
             vm.CloseDialogAction = new Action(() => dialogWindow.Close());
             dialogWindow.DataContext = vm;
@@ -51,6 +56,11 @@ namespace xFrame.WPF.ViewInjection
         {
             var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
             var content = _viewProvider.GetViewForViewModel(vm);
+            var dialogStyle = Dialog.GetStyle(content);
+            if(dialogStyle != null && dialogWindow is Window diagWindow)
+            {
+                diagWindow.Style = dialogStyle;
+            }
             dialogWindow.DataContext = vm;
             vm.CloseDialogAction = new Action(() => dialogWindow.Close());
             dialogWindow.Loaded += (s, e) => vm.OnLoaded();

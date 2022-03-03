@@ -4,5 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/xFrame.WPF.Controls;component/Fluent/FluentButtons.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/xFrame.WPF.Controls;component/Fluent/FluenttextBoxes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/xFrame.WPF.Controls;component/Fluent/FluentTextBoxes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/xFrame.WPF.Controls;component/Fluent/FluentWindow.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

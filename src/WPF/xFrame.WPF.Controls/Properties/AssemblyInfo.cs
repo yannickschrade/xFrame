@@ -34,3 +34,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("xFrame:Wpf", "xFrame.WPF.Controls")]
 [assembly: XmlnsDefinition("xFrame:Wpf", "xFrame.WPF.Controls.Windows")]
 [assembly: XmlnsDefinition("xFrame:Wpf", "xFrame.WPF.Controls.Fluent")]
+[assembly: XmlnsDefinition("xFrame:Wpf.WindowShell", "xFrame.WPF.Controls.WindowShell")]

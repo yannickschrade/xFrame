@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace xFrame.WPF.Converter
+namespace xFrame.WPF.Converters
 {
     public abstract class BaseValueConverter<TConverter, TFor> : MarkupExtension, IValueConverter
         where TConverter : BaseValueConverter<TConverter, TFor>, new()

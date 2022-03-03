@@ -65,7 +65,7 @@ namespace xFrame.WPF.Controls.Windows
             var parentWinodw = GetParentWindow();
             if (parentWinodw is not null)
 #pragma warning disable CS0618 // Typ oder Element ist veraltet
-                ControlzEx.SystemCommands.CloseWindow(parentWinodw);
+                WindowShell.SystemCommands.CloseWindow(parentWinodw);
 #pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
@@ -74,7 +74,7 @@ namespace xFrame.WPF.Controls.Windows
             var parentWindow = GetParentWindow();
             if (parentWindow is not null)
 #pragma warning disable CS0618 // Typ oder Element ist veraltet
-                ControlzEx.SystemCommands.RestoreWindow(parentWindow);
+                WindowShell.SystemCommands.RestoreWindow(parentWindow);
 #pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
@@ -83,7 +83,7 @@ namespace xFrame.WPF.Controls.Windows
             var parentWindow = GetParentWindow();
             if (parentWindow is not null)
 #pragma warning disable CS0618 // Typ oder Element ist veraltet
-                ControlzEx.SystemCommands.MaximizeWindow(parentWindow);
+                WindowShell.SystemCommands.MaximizeWindow(parentWindow);
 #pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
@@ -92,7 +92,7 @@ namespace xFrame.WPF.Controls.Windows
             var parentWindow = GetParentWindow();
             if (parentWindow is not null)
 #pragma warning disable CS0618 // Typ oder Element ist veraltet
-                ControlzEx.SystemCommands.MinimizeWindow(parentWindow);
+                WindowShell.SystemCommands.MinimizeWindow(parentWindow);
 #pragma warning restore CS0618 // Typ oder Element ist veraltet
         }
 
@@ -128,7 +128,7 @@ namespace xFrame.WPF.Controls.Windows
             Window parentWindow = null;
 
             while (parent is not null
-                && (parentWindow = parent as XWindow) is null)
+                && (parentWindow = parent as Window) is null)
             {
                 parent = VisualTreeHelper.GetParent(parent);
             }

@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace xFrame.WPF.Converter
+namespace xFrame.WPF.Converters
 {
     public class WindowIconConverter : BaseValueConverter<WindowIconConverter, ImageSource>
     {
@@ -13,11 +13,12 @@ namespace xFrame.WPF.Converter
         {
             var size = Size.Empty;
 
-            if(parameter is double || parameter is int || parameter is string)
+            if (parameter is double || parameter is int || parameter is string)
             {
                 var sizeVal = System.Convert.ToDouble(parameter);
                 size = new Size(sizeVal, sizeVal);
-            }else if(parameter is Size sizeVal)
+            }
+            else if (parameter is Size sizeVal)
             {
                 size = sizeVal;
             }

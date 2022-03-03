@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:xTheme="xFrame:Wpf.Theming"
                     xmlns:xFluent="clr-namespace:xFrame.WPF.Controls.Fluent"
-                    xmlns:xConverter="clr-namespace:xFrame.Wpf.Converters;assembly=xFrame.Wpf.Converters">
+                    xmlns:xConverter="xFrame:WPF.Converters">
+    
     <Style TargetType="{x:Type TextBoxBase}" x:Key="BasetextBoxStyle">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Background" Value="{DynamicResource ResourceKey={x:Static xTheme:DefaultThemeKeys.ControlBackgroundColorBrush}}"/>

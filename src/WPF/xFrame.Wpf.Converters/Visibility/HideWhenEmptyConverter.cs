@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using xFrame.WPF.Converter;
 
-namespace xFrame.Wpf.Converters
+namespace xFrame.WPF.Converters.Visibility
 {
     public class HideWhenEmptyConverter : BaseValueConverter<HideWhenEmptyConverter>
     {
@@ -17,7 +16,7 @@ namespace xFrame.Wpf.Converters
 
             var empty = false;
             var invert = false;
-            if(parameter != null)
+            if (parameter != null)
                 bool.TryParse(parameter.ToString(), out invert);
             switch (value)
             {
@@ -32,7 +31,7 @@ namespace xFrame.Wpf.Converters
             if (invert == true)
                 empty = !empty;
 
-            return empty ? Visibility.Collapsed : Visibility.Visible;
+            return empty ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

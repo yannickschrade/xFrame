@@ -10,5 +10,5 @@ using System.Windows.Markup;
                                               // app, or any theme specific resource dictionaries)
 
 )]
-[assembly: XmlnsDefinition("xFrame:Wpf.Converters", "xFrame.WPF.Converters")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Converters", "xFrame.WPF.Converters.Visibility")]
+[assembly: XmlnsDefinition("xFrame:WPF.Converters", "xFrame.WPF.Converters")]
+[assembly: XmlnsDefinition("xFrame:WPF.Converters", "xFrame.WPF.Converters.Visibility")]
