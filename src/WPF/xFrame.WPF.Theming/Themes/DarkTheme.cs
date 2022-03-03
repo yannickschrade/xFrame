@@ -6,7 +6,8 @@ namespace xFrame.WPF.Theming.Themes
 {
     public class DarkTheme : DefaultThemeTemplate
     {
-        public override string ThemeName => "Dark";
+        public override ThemeType ThemeType => ThemeType.Dark;
+        public override string ThemeName => "DefaultDark";
         public override Color BaseColor => (Color)ColorConverter.ConvertFromString("#202020");
         public override Color BaseColor02 => BaseColor.Lighten(2);
         public override Color BaseColor05 => BaseColor.Lighten(5);
@@ -32,5 +33,6 @@ namespace xFrame.WPF.Theming.Themes
         public override Color BorderColor => BaseColor05;
 
         public override Color ControlBackgroundColor => BaseColor05;
+
     }
 }

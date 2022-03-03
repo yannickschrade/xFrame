@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using xFrame.WPF.Theming.Themes;
 
@@ -10,80 +11,91 @@ namespace xFrame.WPF.Theming
 
         #region Dependency properties
 
-        public static readonly DependencyProperty ThemeProperty = DependencyProperty.RegisterAttached(
-            "Theme", typeof(string), typeof(ThemeManager), new PropertyMetadata(null, OnThemeChanged));
+        public static readonly DependencyProperty ThemeTypeProperty = DependencyProperty.RegisterAttached(
+            "ThemeType", typeof(ThemeType), typeof(ThemeManager), new PropertyMetadata(ThemeType.SystemDefault));
 
-        public static void SetTheme(object element, string name)
+        public static void SetThemeType(object element, ThemeType themeType)
         {
             switch (element)
             {
                 case FrameworkElement frameworkElement:
-                    frameworkElement.SetValue(ThemeProperty, name);
-                    break;
-                case Application app:
-                    Current.ChangeAppTheme(app, name);
+                    frameworkElement.SetValue(ThemeTypeProperty, themeType);
+                    ChangeTheme(frameworkElement, themeType);
                     break;
                 case ResourceDictionary resourceDictionary:
-                    Current.AddThemeToDictionary(resourceDictionary, name);
+                    resourceDictionary[ThemeTypeResourceKey] = themeType;
+                    ChangeTheme(themeType, resourceDictionary);
                     break;
                 default:
-                    break;
+                    throw new NotSupportedException("element is not Supported for theming");
             }
 
         }
 
-        public static string GetTheme(FrameworkElement element)
-            => (string)element.GetValue(ThemeProperty);
-
-        private static void OnThemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static ThemeType GetThemeType(object element)
         {
-            ChangeTheme((FrameworkElement)d, (string)e.NewValue);
+            return element switch
+            {
+                FrameworkElement frameworkElement => (ThemeType)frameworkElement.GetValue(ThemeTypeProperty),
+                ResourceDictionary resourceDictionary => (ThemeType)resourceDictionary[ThemeTypeResourceKey],
+                _ => throw new NotSupportedException("element is not supported for themeing"),
+            };
+        }
+
+        public static readonly DependencyProperty CustomThemeProperty = DependencyProperty.RegisterAttached(
+            "CustomTheme", typeof(string), typeof(ThemeManager), new PropertyMetadata(default));
+
+        public static void SetCustomTheme(object element, string themeName)
+        {
+            switch (element)
+            {
+                case FrameworkElement frameworkElement:
+                    frameworkElement.SetValue(CustomThemeProperty, themeName);
+                    break;
+                case ResourceDictionary resourceDictionary:
+                    resourceDictionary[CustomThemeResourceKey] = themeName;
+                    break;
+                default:
+                    throw new NotSupportedException("element is not supported for themeing");
+            }
+        }
+
+        public static string GetCustomTheme(object element)
+        {
+            return element switch
+            {
+                FrameworkElement frameworkElement => (string)frameworkElement.GetValue(CustomThemeProperty),
+                ResourceDictionary resourceDictionary => (string)resourceDictionary[CustomThemeResourceKey],
+                _ => throw new NotSupportedException("element is not supported for themeing"),
+            };
+
         }
 
         #endregion
 
+        private const string CustomThemeResourceKey = "customTheme";
+        private const string ThemeTypeResourceKey = "themeType";
 
         private Theme _activeTheme;
-        private Application _app;
-        private bool _defaultsAdded;
-        private Dictionary<string, Theme> _themes = new Dictionary<string, Theme>();
+        private readonly static Dictionary<ThemeType, Theme> _resources = new Dictionary<ThemeType, Theme>();
+        private readonly static Dictionary<string, Theme> _customThemes;
+
+        public ThemeType ThemeType { get; private set; }
 
         private static ThemeManager _current;
         public static ThemeManager Current => _current ??= new ThemeManager();
 
-        private ThemeManager()
+        static ThemeManager()
         {
-            _themes.Add("Dark", new DarkTheme());
+            _resources[ThemeType.Dark] = new DarkTheme();
         }
 
-        public Theme this[string name] => _themes[name];
-
-
-        public static void ChangeTheme(FrameworkElement element, string themeName)
+        public static void ChangeTheme(FrameworkElement element, ThemeType theme)
         {
-            if (!Current._themes.ContainsKey(themeName))
-                throw new KeyNotFoundException($"the theme");
-
-            element.Resources = Current._themes[themeName];
+            var res = element.Resources;
+            res[CustomThemeResourceKey] = GetCustomTheme(element);
+            ChangeTheme(theme, res);
         }
-
-        public void ChangeAppTheme(Application app, string themeName)
-        {
-            
-            if (themeName == "SystemDefault")
-                themeName = ThemeHelper.AppUsesLightTheme() ? "Light" : "Dark";
-
-            if (!_themes.ContainsKey(themeName))
-                throw new KeyNotFoundException($"theme with name: {themeName} not found");
-
-            if (_activeTheme != null)
-                app.Resources.MergedDictionaries.Remove(_activeTheme);
-
-            _activeTheme = _themes[themeName];
-            app.Resources.MergedDictionaries.Add(_themes[themeName]);
-            app.Resources["ActiveTheme"] = themeName;
-        }
-
 
         public static void AddTheme(Theme theme, string key = null)
         {
@@ -91,30 +103,49 @@ namespace xFrame.WPF.Theming
                 key = theme.ThemeName;
         }
 
-        public static void AddOrReplaceTheme(Theme theme, string key)
+        public static void RegisterTheme(Theme theme)
         {
-            Current._themes[key] = theme;
-            Current._themes.Add(key, theme);
-            if ((string)Current._app.Resources["ActiveTheme"] == key)
-                Current.ChangeAppTheme(Current._app, key);
+            switch (theme.ThemeType)
+            {
+                case ThemeType.SystemDefault:
+                    _resources[ThemeType.SystemDefault] = theme;
+                    break;
+                case ThemeType.Dark:
+                    _resources[ThemeType.Dark] = theme;
+                    break;
+                case ThemeType.Light:
+                    _resources[ThemeType.Light] = theme;
+                    break;
+                case ThemeType.Custom:
+                    _customThemes[theme.ThemeName] = theme;
+                    break;
+                default:
+                    break;
+            }
         }
 
-        public void AddThemeToDictionary(ResourceDictionary dictionary, string themeName)
+        private static void ChangeTheme(ThemeType themeType, ResourceDictionary dictionary)
         {
-            if(themeName == "SystemDefault")
-                themeName = ThemeHelper.AppUsesLightTheme() ? "Light" : "Dark";
+            Theme theme;
+            switch (themeType)
+            {
+                case ThemeType.SystemDefault:
+                    theme = _resources.ContainsKey(ThemeType.SystemDefault)
+                            ? _resources[ThemeType.SystemDefault]
+                            : ThemeHelper.AppUsesLightTheme() ?
+                                _resources[ThemeType.Light] :
+                                _resources[ThemeType.Dark];
+                    break;
+                case ThemeType.Custom:
+                    var themeName = (string)dictionary[CustomThemeResourceKey];
+                    theme = _customThemes[themeName];
+                    break;
+                default:
+                    throw new NotSupportedException($"themetype {themeType} is not supported");
+            }
 
-            if (!_themes.ContainsKey(themeName))
-                throw new KeyNotFoundException($"theme with name: {themeName} not found");
-
-            dictionary.MergedDictionaries.Add(_themes[themeName]);
+            dictionary.MergedDictionaries.Add(theme);
         }
 
-        public static ThemeManager Initialize(Application app)
-        {
-            Current.ChangeAppTheme(app, "SystemDefault");
-            Current._app = app;
-            return Current;
-        }
     }
 }

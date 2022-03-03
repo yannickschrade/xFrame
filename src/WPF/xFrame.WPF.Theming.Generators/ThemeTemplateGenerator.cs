@@ -51,8 +51,6 @@ namespace xFrame.WPF.Theming.Generators
                 var keysSource = SourceText.From(keysSourceCode.ToString(), Encoding.UTF8);
                 context.AddSource($"{classSymbole.Name}.g.cs", templateSourceCode.ToString());
                 context.AddSource($"{GetTemplateClassName(classSymbole.Name)}Keys.g.cs", keysSource.ToString());
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\{classSymbole.Name}.g.cs", templateSourceCode.ToString());
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\{GetTemplateClassName(classSymbole.Name)}Keys.g.cs", keysSource.ToString());
             }
         }
 
