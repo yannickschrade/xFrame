@@ -24,4 +24,8 @@
 		<ProjectReference Include="..\xFrame.WPF.Theming\xFrame.WPF.Theming.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Inputs\" />
+	</ItemGroup>
+
 </Project>

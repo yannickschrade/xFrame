@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:xFrame.WPF.Controls.Windows"
                     xmlns:controlzex="urn:controlzex"
-                    xmlns:xFrame="xFrame/Wpf">
+                    xmlns:xFrame="xFrame:Wpf.Theming">
 
     <ControlTemplate TargetType="{x:Type local:XWindow}" x:Key="xFrameWindow">
         <Grid UseLayoutRounding="True"

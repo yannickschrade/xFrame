@@ -31,6 +31,5 @@ using System.Windows.Markup;
 
 [assembly: Guid("cf7ef51a-613f-4558-b353-dd9307cd31bb")]
 
-[assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Controls")]
-[assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Controls.Inputs")]
-[assembly: XmlnsDefinition("xFrame/Wpf", "xFrame.WPF.Controls.Windows")]
+[assembly: XmlnsDefinition("xFrame:Wpf", "xFrame.WPF.Controls")]
+[assembly: XmlnsDefinition("xFrame:Wpf", "xFrame.WPF.Controls.Windows")]

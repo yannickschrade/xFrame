@@ -8,10 +8,7 @@ using System.Windows.Markup;
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
                                               //(used if a resource is not found in the page,
                                               // app, or any theme specific resource dictionaries)
-)]
 
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming", "xFrame.WPF.Theming")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming", "xFrame.WPF.Theming.Themes")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming", "xFrame.WPF.Theming.Templates")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming.Fluent", "xFrame.WPF.Theming.Themes.Fluent")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming.Fluent", "xFrame.WPF.Theming.Templates")]
+)]
+[assembly: XmlnsDefinition("xFrame:Wpf.Converters", "xFrame.WPF.Converters")]
+[assembly: XmlnsDefinition("xFrame:Wpf.Converters", "xFrame.WPF.Converters.Visibility")]

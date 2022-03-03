@@ -21,5 +21,5 @@ using System.Windows.Markup;
 [assembly: Guid("da91b385-7401-4281-98da-30bdf2a73f89")]
 
 
-[assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF")]
-[assembly: XmlnsDefinition("xFrame/Wpf","xFrame.WPF.ViewInjection")]
+[assembly: XmlnsDefinition("xFrame:Wpf","xFrame.WPF")]
+[assembly: XmlnsDefinition("xFrame:Wpf","xFrame.WPF.ViewInjection")]
