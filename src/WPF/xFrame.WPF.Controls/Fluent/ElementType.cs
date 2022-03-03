@@ -1,4 +1,4 @@
-﻿namespace xFrame.WPF.Theming.Themes.Fluent
+﻿namespace xFrame.WPF.Controls.Fluent
 {
     public enum ElementType
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
-namespace xFrame.WPF.Theming.Themes.Fluent
+namespace xFrame.WPF.Controls.Fluent
 {
     public static class Button
     {

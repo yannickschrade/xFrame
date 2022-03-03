@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    x:Class="xFrame.WPF.Theming.Themes.FluentTheme">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/xFrame.WPF.Theming;component/Themes/Fluent/FluentButtons.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/xFrame.WPF.Theming;component/Themes/Fluent/FluenttextBoxes.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
-</ResourceDictionary>

@@ -13,5 +13,3 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("xFrame:Wpf.Theming", "xFrame.WPF.Theming")]
 [assembly: XmlnsDefinition("xFrame:Wpf.Theming", "xFrame.WPF.Theming.Themes")]
 [assembly: XmlnsDefinition("xFrame:Wpf.Theming", "xFrame.WPF.Theming.Templates")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming.Fluent", "xFrame.WPF.Theming.Themes.Fluent")]
-[assembly: XmlnsDefinition("xFrame:Wpf.Theming.Fluent", "xFrame.WPF.Theming.Templates")]
