@@ -6,13 +6,11 @@ namespace xFrame.Core.MVVM
     {
         public object Content { get; set; }
         public ICommand Command { get; set; }
-        public double Width { get; set; }
 
-        public DialogButton(object content, ICommand command, double width = 50)
+        public DialogButton(object content, ICommand command)
         {
             Content = content;
             Command = command;
-            Width = width;
         }
     }
 }

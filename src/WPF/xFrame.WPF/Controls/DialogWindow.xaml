@@ -19,13 +19,15 @@
 
         <ItemsControl ItemsSource="{Binding DialogButtons}"
                       Grid.Row="1"
+                      x:Name="DialogButtonsPresenter"
                       HorizontalAlignment="Right">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type xCore:DialogButton}">
                     <Button Content="{Binding Content}"
                             Command="{Binding Command}"
-                            Width="{Binding Width}"
-                            Margin="10"/>
+                            Margin="10"
+                            Padding="5"
+                            Loaded="Button_Loaded"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
