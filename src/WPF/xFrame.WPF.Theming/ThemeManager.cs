@@ -124,7 +124,7 @@ namespace xFrame.WPF.Theming
             }
         }
 
-        private static void ChangeTheme(ThemeType themeType, ResourceDictionary dictionary)
+        public static void ChangeTheme(ThemeType themeType, ResourceDictionary dictionary)
         {
             Theme theme;
             switch (themeType)

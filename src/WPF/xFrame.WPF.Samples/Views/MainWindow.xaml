@@ -4,9 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:xFrame.WPF.Samples"
+        xmlns:xFrame="xFrame:Wpf"
+        xmlns:xTheme="xFrame:Wpf.Theming"
+        Style="{StaticResource FluentWindow}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Window.Resources>
+        <d:ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <xTheme:DarkTheme/>
+                <xFrame:FluentControls/>
+            </ResourceDictionary.MergedDictionaries>
+        </d:ResourceDictionary>
+    </Window.Resources>
+    <StackPanel>
+        <TextBox HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Text=" Hallo Welt"/>
+        <Button Margin="5"
+                Content="Hallo Welt"/>
+    </StackPanel>
 </Window>

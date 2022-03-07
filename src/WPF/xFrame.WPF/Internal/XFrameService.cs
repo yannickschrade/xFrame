@@ -56,8 +56,20 @@ namespace xFrame.WPF
             app.Exit += (s, e) => HandleExit();
             _xFrameContext.Dispatcher = Dispatcher.CurrentDispatcher;
             _logger.LogInformation("Starting xFrame app");
-            _xFrameContext.IsRunning = true;
             _xFrameContext.Application = app;
+
+            foreach (var setup in _services.GetServices<IXFrameAppSetup>())
+            {
+                setup.RunSetup(app);
+            }
+
+            foreach (var action in _services.GetServices<Action<Application>>())
+            {
+                action(app);
+            }
+            
+
+            _xFrameContext.IsRunning = true;
             app.Run();
         }
 

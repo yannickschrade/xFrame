@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using xFrame.Core.MVVM;
+using xFrame.WPF.Controls;
 using xFrame.WPF.Extensions;
 using xFrame.WPF.Samples.ViewModels;
+using xFrame.WPF.Theming;
 
 namespace xFrame.WPF.Samples
 {
@@ -16,6 +18,8 @@ namespace xFrame.WPF.Samples
                     x.UseShellViewModel<MainViewModel>();
                 })
                 .UseXFrameLifetime()
+                .UseColorTheme(ThemeType.SystemDefault)
+                .UseFluentControls()
                 .RunConsoleAsync();
         }
     }
