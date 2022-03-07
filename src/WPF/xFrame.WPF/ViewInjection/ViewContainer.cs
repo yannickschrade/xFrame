@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.Text;
 using System.Windows;
-using xFrame.Core.IoC;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewInjection;
 

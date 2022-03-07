@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
-using xFrame.Core.IoC;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewInjection;
 
@@ -9,12 +9,12 @@ namespace xFrame.WPF.ViewInjection
     internal class DialogService : IDialogService
     {
         private readonly IViewProvider _viewProvider;
-        private readonly ITypeProviderService _typeProvider;
+        private readonly IServiceProvider _services;
 
-        public DialogService(IViewProvider viewProvider, ITypeProviderService typeProvider)
+        public DialogService(IViewProvider viewProvider, IServiceProvider services)
         {
             _viewProvider = viewProvider;
-            _typeProvider = typeProvider;
+            _services = services;
         }
 
 
@@ -34,7 +34,7 @@ namespace xFrame.WPF.ViewInjection
         private IDialogWindow CreateDialogWindow<T>(out T viewModel)
             where T : IDialogViewModel
         {
-            var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
+            var dialogWindow = _services.GetService<IDialogWindow>();
             var content = _viewProvider.GetViewForViewModel<T>();            
             var vm  = (T)content.DataContext;
             viewModel = vm;
@@ -54,7 +54,7 @@ namespace xFrame.WPF.ViewInjection
         private IDialogWindow CreateDialogWindow<T>(T vm)
             where T : IDialogViewModel
         {
-            var dialogWindow = _typeProvider.Resolve<IDialogWindow>();
+            var dialogWindow = _services.GetService<IDialogWindow>();
             var content = _viewProvider.GetViewForViewModel(vm);
             var dialogStyle = Dialog.GetStyle(content);
             if(dialogStyle != null && dialogWindow is Window diagWindow)

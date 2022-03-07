@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using xFrame.Core.IoC;
+using xFrame.Core.ExtensionMethodes;
 using xFrame.Core.MVVM;
 
 namespace xFrame.WPF.ViewInjection
 {
     internal class ViewProvider : IViewProvider, IViewRegistration
     {
-        private readonly ITypeProviderService _typeProvider;
+        private readonly IServiceProvider _services;
         private readonly Dictionary<Type, Type> _viewModelToViewMapping = new Dictionary<Type, Type>();
 
-        public ViewProvider(ITypeProviderService typeProvider)
+        public ViewProvider(IServiceProvider services)
         {
-            _typeProvider = typeProvider;
+            _services = services;
         }
 
         public FrameworkElement GetView(Type viewType)
@@ -22,19 +23,19 @@ namespace xFrame.WPF.ViewInjection
             if (!typeof(FrameworkElement).IsAssignableFrom(viewType))
                 throw new ArgumentException($"Type must be an {typeof(FrameworkElement)}");
 
-            return (FrameworkElement)_typeProvider.Resolve(viewType);
+            return (FrameworkElement)_services.GetService(viewType);
         }
 
         public T GetView<T>() 
             where T : FrameworkElement
         {
-            return _typeProvider.Resolve<T>();
+            return _services.GetUnregistredService<T>();
         }
 
         public FrameworkElement GetViewForViewModel(IViewModel vm)
         {
             var viewType = _viewModelToViewMapping[vm.GetType()];
-            var uiElement = (FrameworkElement)_typeProvider.Resolve(viewType);
+            var uiElement = (FrameworkElement)_services.GetUnregistredService(viewType);
             uiElement.Loaded += (s, e) => vm.OnLoaded();
             uiElement.DataContext = vm;
             return uiElement;
@@ -42,7 +43,7 @@ namespace xFrame.WPF.ViewInjection
 
         public FrameworkElement GetViewForViewModel(Type viewModelType)
         {
-            var vm = (IViewModel)_typeProvider.Resolve(viewModelType);
+            var vm = (IViewModel)_services.GetUnregistredService(viewModelType);
             return GetViewForViewModel(vm);
         }
 
@@ -77,7 +78,6 @@ namespace xFrame.WPF.ViewInjection
 
             var vmType = viewType.GetInterfaces().Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IViewFor<>)).Select(t => t.GetGenericArguments()[0]).FirstOrDefault();
             _viewModelToViewMapping.Add(vmType, viewType);
-
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using xFrame.Core.IoC;
 using xFrame.Core.MVVM;
 using xFrame.Core.ViewInjection;
 
@@ -30,9 +29,9 @@ namespace xFrame.WPF.ViewInjection
         {
             if (!Containers.ContainsKey(e.NewValue))
             {
-                var adaptercollection = TypeService.Current.Resolve<IViewAdapterCollection>();
-                var viewProvider = TypeService.Current.Resolve<IViewProvider>();
-                Containers[e.NewValue] = new ViewContainer(e.NewValue, adaptercollection, viewProvider);
+                //var adaptercollection = TypeService.Current.Resolve<IViewAdapterCollection>();
+                //var viewProvider = TypeService.Current.Resolve<IViewProvider>();
+                //Containers[e.NewValue] = new ViewContainer(e.NewValue, adaptercollection, viewProvider);
             }
 
             Containers[e.NewValue].AttachTo(d);

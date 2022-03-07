@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\xFrame.Core\xFrame.Core.csproj" OutputItemType="Analyzer" AdditionalProperties="TargetFramework=netstandard2.0" />
+    <ProjectReference Include="..\xFrame.WPF.Controls\xFrame.WPF.Controls.csproj" />
+    <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
+  </ItemGroup>
+
+</Project>

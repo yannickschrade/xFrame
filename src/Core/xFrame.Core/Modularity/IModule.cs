@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.ExceptionServices;
-using xFrame.Core.IoC;
 
 namespace xFrame.Core.Modularity
 {
@@ -10,8 +9,8 @@ namespace xFrame.Core.Modularity
         Version Version { get; }
         Exception LoadingException { get; set; }
 
-        void RegisterServices(ITypeRegistrationService registrationService);
+        void RegisterServices(IServiceProvider services);
 
-        void InitializeModule(ITypeProviderService resolver);
+        void InitializeModule(IServiceProvider services);
     }
 }

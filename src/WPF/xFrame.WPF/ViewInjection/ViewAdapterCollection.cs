@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using xFrame.Core.IoC;
 using xFrame.Core.ViewInjection;
 
 namespace xFrame.WPF.ViewInjection
