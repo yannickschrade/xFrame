@@ -40,10 +40,13 @@ namespace xFrame.Core.Validation
             return context;
         }
 
-        public static IPropertyValidationContext<T, TPoperty> NotifyCommandIfValid<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context, Expression<Func<T, CommandBase>> command)
+        public static IPropertyValidationContext<T, TPoperty> NotifyCommand<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context, Expression<Func<T, CommandBase>> command)
         {
             var com = command.Compile()(context.InnerContext.TypeInstance);
-            context.IfValid((c, p) => com.RaisCanExecuteChanged());
+            context.AddValidationCallBack((@class, property, result) =>
+            {
+                com.RaisCanExecuteChanged(result.IsValid);
+            });
             return context;
         }
 

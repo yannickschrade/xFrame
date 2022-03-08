@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:xFrame.WPF.Samples"
         xmlns:xFrame="xFrame:Wpf"
-        xmlns:xTheme="xFrame:Wpf.Theming"
+        xmlns:xTheme="xFrame:Wpf.Theming" xmlns:viewmodels="clr-namespace:xFrame.WPF.Samples.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         Style="{StaticResource FluentWindow}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -20,8 +21,9 @@
     <StackPanel>
         <TextBox HorizontalAlignment="Center"
                  VerticalAlignment="Center"
-                 Text=" Hallo Welt"/>
+                 Text="{Binding Text}"/>
         <Button Margin="5"
-                Content="Hallo Welt"/>
+                Content="Hallo Welt"
+                Command="{Binding TextCommand}"/>
     </StackPanel>
 </Window>

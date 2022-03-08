@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 using xFrame.Core.Context;
 using xFrame.Core.ExtensionMethodes;
 
@@ -50,7 +49,10 @@ namespace xFrame.Core.Validation
                 if (component != null)
                     result.AddComponent(component);
             }
-            Parallel.ForEach(_validationCallbacks, c => c(InnerContext.TypeInstance, InnerContext.PropertyValue, result));
+            foreach (var callback in _validationCallbacks)
+            {
+                callback(InnerContext.TypeInstance, InnerContext.PropertyValue, result);
+            }
             return result;
 
         }

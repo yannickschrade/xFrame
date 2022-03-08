@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\xFrame.Core\xFrame.Core.csproj" OutputItemType="Analyzer" AdditionalProperties="TargetFramework=netstandard2.0" />
+    <ProjectReference Include="..\..\Core\xFrame.Core\xFrame.Core.csproj" 
+					  OutputItemType="Analyzer"
+					  AdditionalProperties="TargetFramework=netstandard2.0" />
     <ProjectReference Include="..\xFrame.WPF.Controls\xFrame.WPF.Controls.csproj" />
     <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
   </ItemGroup>
