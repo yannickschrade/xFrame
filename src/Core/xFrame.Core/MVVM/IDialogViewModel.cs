@@ -9,7 +9,6 @@ namespace xFrame.Core.MVVM
         IEnumerable<DialogButton> DialogButtons { get; }
         Action CloseDialogAction { get; set; }
         bool? Confirmed { get; set; }
-        void OnLoaded();
 
     }
 }

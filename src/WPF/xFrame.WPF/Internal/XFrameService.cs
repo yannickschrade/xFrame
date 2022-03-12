@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using xFrame.Core.Modularity;
 using xFrame.WPF.Extensions;
 using xFrame.WPF.Host;
 

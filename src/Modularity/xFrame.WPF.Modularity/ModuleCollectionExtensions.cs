@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using xFrame.Modularity.Abstraction;
@@ -16,13 +17,16 @@ namespace xFrame.WPF.Modularity
             if (!typeof(IModule).IsAssignableFrom(moduleType) || moduleType.IsAbstract || !moduleType.IsClass)
                 throw new ArgumentException(nameof(moduleType) + " must be an non abstract class which implements the " + typeof(IModule) + " interface");
 
+            if (moduleType.GetConstructor(Type.EmptyTypes) == null)
+                throw new ArgumentException(nameof(moduleType) + " must have an parameterless constructor");
+
             modules.Add(new ModuleDescription(moduleType));
             return modules;
         }
         
 
         public static IModuleCollection AddModule<T>(this IModuleCollection modules)
-            where T : class, IModule
+            where T : IModule, new ()
         {
             return modules.AddMoulde(typeof(T));
         }
@@ -46,7 +50,8 @@ namespace xFrame.WPF.Modularity
                 var dirname = Path.GetDirectoryName(directory);
                 foreach (var file in Directory.GetFiles(directory, "*" + dirname + "*.dll"))
                 {
-                    modules.Add(new ModuleDescription())
+                    var name = Path.GetFileName(file);
+                    modules.Add(new ModuleDescription(name, file));
                 }
             }
 

@@ -8,5 +8,7 @@ namespace xFrame.Modularity.Abstraction
     public interface IModule
     {
         void RegisterServices(IServiceCollection services);
+
+        void OnLoaded(IServiceProvider services);
     }
 }

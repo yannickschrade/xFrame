@@ -4,6 +4,7 @@ using xFrame.Core.Commands;
 using xFrame.Core.Context;
 using xFrame.Core.MVVM;
 using xFrame.Core.Validation;
+using xFrame.Modularity.Abstraction;
 
 namespace xFrame.WPF.Samples.ViewModels
 {
@@ -17,9 +18,11 @@ namespace xFrame.WPF.Samples.ViewModels
         private RelayCommand _textCommand;
 
 
-        public MainViewModel()
+        public MainViewModel(IModuleManager moduleManager)
         {
+            moduleManager.InitializeModules();
             TextCommand = new RelayCommand(P => MessageBox.Show("Test"));
+            
         }
 
         public override void SetupValidation()
