@@ -1,11 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
-using xFrame.Core.MVVM;
+﻿using System.Threading.Tasks;
 using xFrame.WPF.Controls;
-using xFrame.WPF.Extensions;
-using xFrame.WPF.Modularity;
-using xFrame.WPF.Samples.Module1;
-using xFrame.WPF.Samples.ViewModels;
+using xFrame.WPF.Hosting;
 using xFrame.WPF.Theming;
 
 namespace xFrame.WPF.Samples
@@ -14,20 +9,12 @@ namespace xFrame.WPF.Samples
     {
         public static async Task Main()
         {
-            await Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
-                .ConfigureXFrame(x =>
-                {
-                    x.UseShellViewModel<MainViewModel>();
-                })
-                .ConfigureModules(x =>
-                {
-                    x.AddModule<Module>();
-                })
-                .UseXFrameLifetime()
-                .UseColorTheme(ThemeType.SystemDefault)
-                .UseFluentControls()
-                .Build()
-                .RunAsync();
+            var builder = XFrameHost.CreateBuilder();
+            builder.UseColorTheme(ThemeType.SystemDefault);
+            builder.UseFluentControls();
+            
+            await builder.Build()
+                .StartAsync();
         }
     }
 }

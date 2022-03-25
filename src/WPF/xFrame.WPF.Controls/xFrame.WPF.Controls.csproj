@@ -26,6 +26,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\xFrame.Wpf.Converters\xFrame.WPF.Converters.csproj" />
+	  <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

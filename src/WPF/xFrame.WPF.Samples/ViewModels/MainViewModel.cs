@@ -18,11 +18,9 @@ namespace xFrame.WPF.Samples.ViewModels
         private RelayCommand _textCommand;
 
 
-        public MainViewModel(IModuleManager moduleManager)
+        public MainViewModel()
         {
-            moduleManager.InitializeModules();
             TextCommand = new RelayCommand(P => MessageBox.Show("Test"));
-            
         }
 
         public override void SetupValidation()

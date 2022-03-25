@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -23,13 +22,23 @@ namespace xFrame.WPF.ViewInjection
             if (!typeof(FrameworkElement).IsAssignableFrom(viewType))
                 throw new ArgumentException($"Type must be an {typeof(FrameworkElement)}");
 
-            return (FrameworkElement)_services.GetService(viewType);
+
+            var vmType = viewType.GetInterfaces()
+                .Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IViewFor<>))
+                .Select(t => t.GetGenericArguments()[0]).FirstOrDefault();
+
+            if(vmType != null)
+            {
+                return GetViewForViewModel(vmType);
+            }
+            
+            return (FrameworkElement)_services.GetUnregistredService(viewType);
         }
 
         public T GetView<T>() 
             where T : FrameworkElement
         {
-            return _services.GetUnregistredService<T>();
+            return (T)GetView(typeof(T));
         }
 
         public FrameworkElement GetViewForViewModel(IViewModel vm)
@@ -73,10 +82,11 @@ namespace xFrame.WPF.ViewInjection
         public void Register(Type viewType)
         {
             if (!typeof(IViewFor).IsAssignableFrom(viewType))
-                // TODO : Better excpetion
-                throw new Exception();
+                throw new ArgumentException($"Type must implement {typeof(IViewFor<>)}");
 
-            var vmType = viewType.GetInterfaces().Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IViewFor<>)).Select(t => t.GetGenericArguments()[0]).FirstOrDefault();
+            var vmType = viewType.GetInterfaces()
+                .Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IViewFor<>))
+                .Select(t => t.GetGenericArguments()[0]).FirstOrDefault();
             _viewModelToViewMapping.Add(vmType, viewType);
         }
     }

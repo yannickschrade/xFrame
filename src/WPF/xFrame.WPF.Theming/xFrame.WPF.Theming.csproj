@@ -15,11 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\xFrame.Wpf.Converters\xFrame.WPF.Converters.csproj" />
+    <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
   </ItemGroup>
 
 </Project>

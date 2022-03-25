@@ -3,18 +3,14 @@ using System.Windows;
 using System;
 using xFrame.WPF.ViewAdapters;
 using xFrame.WPF.ViewInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using xFrame.Core.ViewInjection;
 using System.Linq;
 
 namespace xFrame.WPF
 {
-    internal class XFrameApp : Application
+    public class XFrameApp : Application
     {
-        private Type _shellViewModelType;
-        private bool _stopped;
-
         public IServiceProvider Services { get; }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -25,9 +21,8 @@ namespace xFrame.WPF
             ShowShell();
         }
 
-        public XFrameApp(IServiceProvider serviceProvider, Type shellViewModelType)
+        public XFrameApp(IServiceProvider serviceProvider)
         {
-            _shellViewModelType = shellViewModelType;
             Services = serviceProvider;
         }
 
@@ -83,9 +78,16 @@ namespace xFrame.WPF
         private Window CreateShell()
         {
             var viewProvider = Services.GetService<IViewProvider>();
-            var view = viewProvider.GetViewForViewModel(_shellViewModelType);
+            var shell = Assembly.GetEntryAssembly()
+                .GetTypes()
+                .Where(t => typeof(IShell).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
+                .FirstOrDefault();
+
+            if (shell == null)
+                throw new InvalidOperationException("No shell window Found");
+
+            var view = viewProvider.GetView(shell);
             return view is Window window ? window : throw new Exception();
         }
-
     }
 }

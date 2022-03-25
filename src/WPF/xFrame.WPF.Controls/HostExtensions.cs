@@ -1,30 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using xFrame.WPF.Hosting;
 
 namespace xFrame.WPF.Controls
 {
     public static class HostExtensions
     {
-        public static IHostBuilder UseFluentControls(this IHostBuilder builder)
+        public static XFrameHostBuilder UseFluentControls(this XFrameHostBuilder builder)
         {
-            if (builder.Properties.TryGetValue("XFrameContext", out var context))
-                throw new InvalidOperationException("please configure xframe app first!");
-
-
-            builder.ConfigureServices((context, services) =>
-            {
-                services.AddSingleton(s => new Action<Application>(app =>
-                {
-                    app.Resources.MergedDictionaries.Add(new FluentControls());
-                }));
-            });
-
+            builder.ConfigureResources(r => r.MergedDictionaries.Add(new FluentControls()));
             return builder;
         }
     }

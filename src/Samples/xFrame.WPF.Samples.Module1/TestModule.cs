@@ -5,7 +5,7 @@ using xFrame.Modularity.Abstraction;
 
 namespace xFrame.WPF.Samples.Module1
 {
-    public class Module : IModule
+    public class TestModule : IModule
     {
         public void RegisterServices(IServiceCollection services)
         {
@@ -14,7 +14,7 @@ namespace xFrame.WPF.Samples.Module1
 
         public void OnLoaded(IServiceProvider services)
         {
-            services.GetRequiredService<ILogger<Module>>().LogInformation("Module Initialized");
+            services.GetRequiredService<ILogger<TestModule>>().LogInformation("Module Initialized");
         }
     }
 }
