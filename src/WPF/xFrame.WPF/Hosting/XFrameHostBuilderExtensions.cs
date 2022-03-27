@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace xFrame.WPF.Hosting
 {
-    public static class XFrameAppBuilderExtensions
+    public static class XFrameHostBuilderExtensions
     {
         public static XFrameHostBuilder UseApp<TApp>(this XFrameHostBuilder builder)
             where TApp : Application

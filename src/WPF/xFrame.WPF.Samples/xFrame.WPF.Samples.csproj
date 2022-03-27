@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\xFrame.Core\xFrame.Core.csproj" OutputItemType="Analyzer" AdditionalProperties="TargetFramework=netstandard2.0" />
-    <ProjectReference Include="..\..\Modularity\xFrame.WPF.Modularity\xFrame.WPF.Modularity.csproj" />
     <ProjectReference Include="..\..\Samples\xFrame.WPF.Samples.Module1\xFrame.WPF.Samples.Module1.csproj" />
     <ProjectReference Include="..\xFrame.WPF.Controls\xFrame.WPF.Controls.csproj" />
     <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />

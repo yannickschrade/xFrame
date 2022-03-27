@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace xFrame.WPF.Hosting.Internal
+namespace xFrame.WPF.Hosting
 {
     internal class ConfigurationProviderSource : IConfigurationSource
     {

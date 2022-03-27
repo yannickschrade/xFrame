@@ -1,20 +1,27 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using xFrame.Modularity.Abstraction;
+using xFrame.Core.Modularity;
 
 namespace xFrame.WPF.Samples.Module1
 {
     public class TestModule : IModule
     {
-        public void RegisterServices(IServiceCollection services)
+        private readonly ILogger _logger;
+
+        public string Name => "TestModule";
+        public string Description => "Module for Test propouse";
+        public Version Version { get; } = new Version(0, 1);
+
+
+        public TestModule(ILogger<TestModule> logger)
         {
-            
+            _logger = logger;
         }
 
-        public void OnLoaded(IServiceProvider services)
+        public void Initialize(IServiceProvider services)
         {
-            services.GetRequiredService<ILogger<TestModule>>().LogInformation("Module Initialized");
+            _logger.LogInformation("Module Initialized");
         }
     }
 }

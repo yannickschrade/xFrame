@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using xFrame.Modularity.Abstraction;
+using xFrame.Core.Modularity;
 
 namespace xFrame.WPF.Modularity
 {
@@ -10,14 +11,20 @@ namespace xFrame.WPF.Modularity
     {
         private List<ModuleDescription> _modules = new List<ModuleDescription>();
 
-        public ModuleDescription this[int index] 
+        public ModuleDescription this[int index]
         {
             get => _modules[index];
             set => _modules[index] = value;
         }
 
         public int Count => _modules.Count;
-        public bool IsReadOnly => false;
+        public bool IsReadOnly { get; set; } = false;
+
+        public IEnumerable<ModuleDescription> GetModules(ModuleType moduleType)
+        {
+            return _modules.Where(m => m.ModuleType == moduleType);
+        }
+
 
         public void Add(ModuleDescription item)
         {

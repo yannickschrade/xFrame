@@ -2,6 +2,8 @@
 using xFrame.WPF.Controls;
 using xFrame.WPF.Hosting;
 using xFrame.WPF.Theming;
+using xFrame.Core.Modularity;
+using System;
 
 namespace xFrame.WPF.Samples
 {
@@ -9,10 +11,12 @@ namespace xFrame.WPF.Samples
     {
         public static async Task Main()
         {
-            var builder = XFrameHost.CreateBuilder();
-            builder.UseColorTheme(ThemeType.SystemDefault);
-            builder.UseFluentControls();
-            
+            var builder = XFrameHost.CreateBuilder()
+                .UseColorTheme(ThemeType.SystemDefault)
+                .UseFluentControls();
+
+            builder.Modules.AddFromFolder(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+ @"\Modules\");
+
             await builder.Build()
                 .StartAsync();
         }

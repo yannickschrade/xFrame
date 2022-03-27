@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace xFrame.WPF.Hosting.Internal
+namespace xFrame.WPF.Hosting
 {
     internal static class HostingPathResolver
     {

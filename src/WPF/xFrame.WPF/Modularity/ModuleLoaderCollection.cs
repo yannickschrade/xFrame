@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using xFrame.Modularity.Abstraction;
+using xFrame.Core.Modularity;
 
-namespace xFrame.WPF.Modularity.@internal
+namespace xFrame.WPF.Modularity
 {
     public class ModuleLoaderCollection : IModuleLoaderCollection
     {
         private Dictionary<Type, IModuleLoader> _loaders = new Dictionary<Type, IModuleLoader>();
+
+        public ModuleLoaderCollection()
+        {
+            Add(new DefaultModuleLoader());
+        }
+
         public IModuleLoader GetLoaderFor(IModule module)
         {
             var moduleType = module.GetType();
@@ -29,7 +35,7 @@ namespace xFrame.WPF.Modularity.@internal
                     return moduleLoader;
                 }
             }
-            
+
             return null;
         }
 

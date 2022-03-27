@@ -1,15 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.ComponentModel;
 
-namespace xFrame.Modularity.Abstraction
+namespace xFrame.Core.Modularity
 {
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IModuleLoader
     {
         Type ForModuleType { get; }
-        IModule CreateModule(HostBuilderContext context, IServiceCollection services, Type moduleType);
+        IModule CreateModule(IServiceProvider services, Type moduleType);
 
         void InitializeModule(IServiceProvider services, object module);
     }

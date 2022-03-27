@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace xFrame.WPF.Hosting.Internal
+namespace xFrame.WPF.Hosting
 {
     internal class TrackingChainedConfigurationSource : IConfigurationSource
     {

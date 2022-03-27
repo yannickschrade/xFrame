@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace xFrame.Modularity.Abstraction
+namespace xFrame.Core.Modularity
 {
     public interface IModuleLoaderCollection
     {

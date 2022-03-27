@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace xFrame.WPF.Hosting.Internal
+namespace xFrame.WPF.Hosting
 {
     internal class HostedAppService : IHostedService
     {

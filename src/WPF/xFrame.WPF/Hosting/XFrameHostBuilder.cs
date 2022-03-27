@@ -5,13 +5,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using xFrame.Core.ExtensionMethodes;
+using xFrame.Core.Modularity;
 using xFrame.Core.ViewInjection;
-using xFrame.WPF.Hosting.Internal;
+using xFrame.WPF.Modularity;
 using xFrame.WPF.ViewInjection;
 
 namespace xFrame.WPF.Hosting
@@ -22,17 +21,17 @@ namespace xFrame.WPF.Hosting
         private Func<IServiceProvider> _serviceProviderFactory;
         private ILoggingBuilder _loggingBuilder;
         private readonly List<KeyValuePair<string, string>> _hostConfigurationValues;
-
+        private readonly ModuleCollection _modules = new ModuleCollection();
 
         public IServiceCollection Services { get; } = new ServiceCollection();
         public ILoggingBuilder Logging => _loggingBuilder ??= InitializeLogging();
+        public IModuleCollection Modules => _modules;
+
+        public IModuleLoaderCollection ModuleLoaders { get; } = new ModuleLoaderCollection();
 
         public ConfigurationManager Configuration { get; } = new ConfigurationManager();
-
         public HostOptions HostOptions { get; } = new HostOptions();
-
         public HostConfiguration HostConfiguration { get; }
-
         public XFrameAppContext AppContext { get; } = new XFrameAppContext();
 
         private ILoggingBuilder InitializeLogging()
@@ -99,9 +98,17 @@ namespace xFrame.WPF.Hosting
 
             _hostBuilder.ConfigureServices((context,services) =>
             {
+                _modules.IsReadOnly = true;
+                services.AddSingleton(Modules);
                 foreach (var service in Services)
                 {
                     services.Add(service);
+                }
+
+                foreach (var serviceModule in _modules.GetModules(ModuleType.ServiceModule))
+                {
+                    var module = (IServiceModule)Activator.CreateInstance(serviceModule.ImplementationType);
+                    module.RegisterServices(services);
                 }
 
                 var hostBuilderProviders = ((IConfigurationRoot)context.Configuration).Providers;
@@ -121,6 +128,9 @@ namespace xFrame.WPF.Hosting
                 }
 
                 services.TryAddSingleton<Application, XFrameApp>();
+                services.AddSingleton<IModuleProvider>(sp => new ModuleProvider(Modules, ModuleLoaders, sp));
+
+
             });
 
             _hostBuilder.ConfigureHostOptions((c,h) =>

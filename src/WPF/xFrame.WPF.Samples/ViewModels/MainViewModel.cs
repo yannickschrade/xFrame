@@ -1,10 +1,11 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.Logging;
+using System.Windows;
 using xFrame.Core.Attributes;
 using xFrame.Core.Commands;
 using xFrame.Core.Context;
+using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
 using xFrame.Core.Validation;
-using xFrame.Modularity.Abstraction;
 
 namespace xFrame.WPF.Samples.ViewModels
 {
@@ -18,9 +19,10 @@ namespace xFrame.WPF.Samples.ViewModels
         private RelayCommand _textCommand;
 
 
-        public MainViewModel()
+        public MainViewModel(IModuleProvider moduleProvider, ILogger<MainViewModel> logger)
         {
             TextCommand = new RelayCommand(P => MessageBox.Show("Test"));
+            moduleProvider.LoadAllModules(m => logger.LogInformation("loaded Module {moduleName}", m.Name));
         }
 
         public override void SetupValidation()

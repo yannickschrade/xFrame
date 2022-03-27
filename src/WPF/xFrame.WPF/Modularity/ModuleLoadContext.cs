@@ -4,16 +4,16 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
 
-namespace xFrame.WPF.Modularity.Internal
+namespace xFrame.WPF.Modularity
 {
     internal class ModuleLoadContext : AssemblyLoadContext
     {
         private readonly AssemblyDependencyResolver _resolver;
 
-        public ModuleLoadContext(string pluginPath, string name) : base(name) 
+        public ModuleLoadContext(string pluginPath, string name) : base(name)
             => _resolver = new AssemblyDependencyResolver(pluginPath);
 
-        public string ResolveAssemblyPath(AssemblyName assemblyName) 
+        public string ResolveAssemblyPath(AssemblyName assemblyName)
             => _resolver.ResolveAssemblyToPath(assemblyName);
 
         /// <inheritdoc />
@@ -58,7 +58,7 @@ namespace xFrame.WPF.Modularity.Internal
         /// <inheritdoc />
         protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
         {
-            var libraryPath = this._resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+            var libraryPath = _resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
             if (libraryPath == null)
             {
                 return IntPtr.Zero;
