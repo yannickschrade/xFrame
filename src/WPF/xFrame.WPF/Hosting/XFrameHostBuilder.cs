@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using xFrame.Core.Modularity;
 using xFrame.Core.ViewInjection;
@@ -127,7 +128,7 @@ namespace xFrame.WPF.Hosting
                     }
                 }
 
-                services.TryAddSingleton<Application, XFrameApp>();
+                services.TryAddSingleton<XFrameApp>();
                 services.AddSingleton<IModuleProvider>(sp => new ModuleProvider(Modules, ModuleLoaders, sp));
 
 
@@ -145,6 +146,11 @@ namespace xFrame.WPF.Hosting
 
             host.Services.GetService<IEnumerable<IConfiguration>>();
             return host;
+        }
+
+        public Task StartAppAsync()
+        {
+            return Build().StartAsync();
         }
 
         private void RegisterDefaultServices()

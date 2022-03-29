@@ -5,25 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:xFrame.WPF.Samples"
         xmlns:xFrame="xFrame:Wpf"
-        xmlns:xTheme="xFrame:Wpf.Theming" xmlns:viewmodels="clr-namespace:xFrame.WPF.Samples.ViewModels"
+        xmlns:xTheme="xFrame:Wpf.Theming" 
+        xmlns:viewmodels="clr-namespace:xFrame.WPF.Samples.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         Style="{StaticResource FluentWindow}"
+        xFrame:Window.ShowMinButton="False"
+        xFrame:Window.ShowMaxRestoreButton="False"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <xTheme:DarkTheme/>
-                <xFrame:FluentControls/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    <StackPanel>
-        <TextBox HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 Text="{Binding Text}"/>
-        <Button Margin="5"
-                Content="Hallo Welt"
-                Command="{Binding TextCommand}"/>
-    </StackPanel>
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Height="auto" Width="auto">
+
+    <xFrame:Window.WindowHeader>
+        <Grid/>
+    </xFrame:Window.WindowHeader>
+    <Grid>
+        <TextBlock Text="{Binding LoadingText}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="26"
+                   Margin="650,400"/>
+    </Grid>
 </Window>

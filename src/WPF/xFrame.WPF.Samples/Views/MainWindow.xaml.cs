@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using xFrame.WPF.Samples.ViewModels;
 using xFrame.WPF.ViewInjection;
 

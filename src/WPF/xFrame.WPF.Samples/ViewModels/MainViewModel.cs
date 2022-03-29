@@ -11,30 +11,26 @@ namespace xFrame.WPF.Samples.ViewModels
 {
     public partial class MainViewModel : ViewModelBase
     {
+        private readonly IModuleProvider _moduleProvider;
 
         [Generateproperty]
-        private string _text;
-
-        [Generateproperty]
-        private RelayCommand _textCommand;
-
+        private string _loadingText;
 
         public MainViewModel(IModuleProvider moduleProvider, ILogger<MainViewModel> logger)
         {
-            TextCommand = new RelayCommand(P => MessageBox.Show("Test"));
-            moduleProvider.LoadAllModules(m => logger.LogInformation("loaded Module {moduleName}", m.Name));
+            LoadingText = "Lade App";
+            _moduleProvider = moduleProvider;
+        }
+
+        public override void OnLoaded()
+        {
+            _moduleProvider.LoadAllModules(m => LoadingText = $"Module: {m.Name} geladen");
+
         }
 
         public override void SetupValidation()
         {
 
-
-            this.Property(x => x.Text)
-                .AddValidation(v =>
-                {
-                    v.IsNotEmpty();
-                    v.NotifyCommand(x => TextCommand);
-                });
         }
     }
 }

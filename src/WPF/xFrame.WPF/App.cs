@@ -6,6 +6,7 @@ using xFrame.WPF.ViewInjection;
 using Microsoft.Extensions.DependencyInjection;
 using xFrame.Core.ViewInjection;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace xFrame.WPF
 {
@@ -13,11 +14,12 @@ namespace xFrame.WPF
     {
         public IServiceProvider Services { get; }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             SetupApp();
             InitializeShell(CreateShell());
+            await ShowSplashScreen();
             ShowShell();
         }
 
@@ -89,5 +91,39 @@ namespace xFrame.WPF
             var view = viewProvider.GetView(shell);
             return view is Window window ? window : throw new Exception();
         }
+
+        private async Task ShowSplashScreen()
+        {
+            var splashVm = Services.GetService<ISplashScreenViewModel>();
+            if (splashVm == null)
+                return;
+
+            var viewProvider = Services.GetService<IViewProvider>();
+            var content = viewProvider.GetViewForViewModel(splashVm);
+
+
+            var window = new Window();
+            if(!string.IsNullOrWhiteSpace(splashVm.StyleKey))
+            {
+                var style = Resources[splashVm.StyleKey] as Style;
+                if(style != null)
+                    window.Style = style;
+            }
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            window.Content = content;
+            window.Closed += OnShellClosed;
+            window.Show();
+            await splashVm.LoadAppAsync();
+            window.Closed -= OnShellClosed;
+            window.Close();
+            window = null;
+            splashVm = null;
+        }
+
+        private void OnShellClosed(object sender, EventArgs e)
+        {
+            Shutdown();
+        }
+
     }
 }

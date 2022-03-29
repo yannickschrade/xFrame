@@ -1,17 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\xFrame.Core\xFrame.Core.csproj" OutputItemType="Analyzer" AdditionalProperties="TargetFramework=netstandard2.0" />
-    <ProjectReference Include="..\..\Samples\xFrame.WPF.Samples.Module1\xFrame.WPF.Samples.Module1.csproj" />
-    <ProjectReference Include="..\xFrame.WPF.Controls\xFrame.WPF.Controls.csproj" />
-    <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="AsyncFixer" Version="1.5.1">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\xFrame.Core\xFrame.Core.csproj" OutputItemType="Analyzer" AdditionalProperties="TargetFramework=netstandard2.0" />
+		<ProjectReference Include="..\..\Samples\xFrame.WPF.Samples.Module1\xFrame.WPF.Samples.Module1.csproj" />
+		<ProjectReference Include="..\xFrame.WPF.Controls\xFrame.WPF.Controls.csproj" />
+		<ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
+	</ItemGroup>
 
 </Project>

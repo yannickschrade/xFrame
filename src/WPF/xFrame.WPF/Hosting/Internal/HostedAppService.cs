@@ -51,16 +51,11 @@ namespace xFrame.WPF.Hosting
         {
             SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(Dispatcher.CurrentDispatcher));
 
-            var app = _services.GetRequiredService<Application>();
+            var app = _services.GetRequiredService<XFrameApp>();
             app.Exit += (s, e) => HandleExit();
             _appContext.Dispatcher = Dispatcher.CurrentDispatcher;
 
             _logger.LogInformation("Starting app");
-
-            foreach (var action in _services.GetServices<Action<Application>>())
-            {
-                action(app);
-            }
 
             foreach (var action in _services.GetServices<Action<ResourceDictionary>>())
             {

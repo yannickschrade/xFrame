@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using xFrame.Core.Validation;
 
@@ -104,6 +103,6 @@ namespace xFrame.Core.MVVM
             SetupValidation();
         }
 
-        public abstract void SetupValidation();
+        public virtual void SetupValidation() { }
     }
 }
