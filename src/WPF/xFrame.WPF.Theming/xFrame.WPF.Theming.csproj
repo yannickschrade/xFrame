@@ -1,18 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-	  <TargetFrameworks>netcoreapp3.1;net5.0-windows;net6.0-windows</TargetFrameworks>
+	  <TargetFrameworks>net5.0-windows;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Version>1.0.0-alpha.2</Version>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <PackageReference Include="xFrame.WPF.Theming.Generators" Version="1.0.0-alpha" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <ProjectReference Include="..\xFrame.WPF.Theming.Generators\xFrame.WPF.Theming.Generators.csproj" OutputItemType="Analyzer" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.5.1">
@@ -23,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\xFrame.Wpf.Converters\xFrame.WPF.Converters.csproj" />
+    <ProjectReference Include="..\xFrame.WPF.Theming.Generators\xFrame.WPF.Theming.Generators.csproj" OutputItemType="Analyzer"/>
     <ProjectReference Include="..\xFrame.WPF\xFrame.WPF.csproj" />
   </ItemGroup>
 

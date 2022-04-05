@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using xFrame.WPF.Theming.Generators.Attributes;
 using xFrame.WPF.Theming.Generators.SyntaxReceiver;
 
 namespace xFrame.WPF.Theming.Generators

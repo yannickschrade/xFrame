@@ -1,5 +1,5 @@
 ﻿using System.Windows.Media;
-using xFrame.WPF.Theming.Generators.Attributes;
+using xFrame.WPF.Theming.Generators;
 
 namespace xFrame.WPF.Theming.Templates
 {

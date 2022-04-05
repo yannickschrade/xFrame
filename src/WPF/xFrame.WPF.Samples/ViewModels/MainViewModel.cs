@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Windows;
-using xFrame.Core.Attributes;
 using xFrame.Core.Commands;
-using xFrame.Core.Context;
+using xFrame.Core.Generators;
 using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
-using xFrame.Core.Validation;
 
 namespace xFrame.WPF.Samples.ViewModels
 {
@@ -14,7 +11,12 @@ namespace xFrame.WPF.Samples.ViewModels
         private readonly IModuleProvider _moduleProvider;
 
         [Generateproperty]
-        private string _loadingText;
+        private string _loadingText = "Test";
+
+        private AsyncRelayCommand _backgroundCommand;
+
+        public AsyncRelayCommand BackgroundCommand => _backgroundCommand ?? new AsyncRelayCommand(AsyncWork);
+        
 
         public MainViewModel(IModuleProvider moduleProvider, ILogger<MainViewModel> logger)
         {
@@ -31,6 +33,13 @@ namespace xFrame.WPF.Samples.ViewModels
         public override void SetupValidation()
         {
 
+        }
+
+        private async Task AsyncWork(CancellationToken token)
+        {
+            LoadingText = "Do Some Async Suff";
+            await Task.Delay(5000, token);
+            LoadingText = "Async Work done";
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using xFrame.Core.Attributes;
+using xFrame.Core.Generators;
 using xFrame.Core.MVVM;
 using xFrame.WPF.Theming.Templates;
 

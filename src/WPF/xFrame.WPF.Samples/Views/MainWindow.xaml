@@ -9,21 +9,24 @@
         xmlns:viewmodels="clr-namespace:xFrame.WPF.Samples.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         Style="{StaticResource FluentWindow}"
-        xFrame:Window.ShowMinButton="False"
-        xFrame:Window.ShowMaxRestoreButton="False"
         mc:Ignorable="d"
-        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Height="auto" Width="auto">
+        Height="450" Width="800">
 
-    <xFrame:Window.WindowHeader>
-        <Grid/>
-    </xFrame:Window.WindowHeader>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <TextBlock Text="{Binding LoadingText}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   FontSize="26"
-                   Margin="650,400"/>
+                   FontSize="26"/>
+
+        <Button Content="Async Command"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Command="{Binding BackgroundCommand}"/>
     </Grid>
 </Window>

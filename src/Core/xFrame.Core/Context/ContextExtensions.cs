@@ -115,11 +115,11 @@ namespace xFrame.Core.Context
             return context;
         }
         public static IPropertyChangedContext<T, TProperty> NotifyCommand<T, TProperty>(this IPropertyChangedContext<T, TProperty> context, Expression<Func<T, TProperty>> expression)
-            where TProperty : CommandBase
+            where TProperty : IRelayCommand
             where T : INotifyPropertyChanged
         {
             var command = context.PropertyValue;
-            context.ExecutionPipline.Add(new Execution<T, TProperty>(P => command.RaisCanExecuteChanged()));
+            context.ExecutionPipline.Add(new Execution<T, TProperty>(P => command.NotifyCanExecuteChanged()));
             return context;
         }
 

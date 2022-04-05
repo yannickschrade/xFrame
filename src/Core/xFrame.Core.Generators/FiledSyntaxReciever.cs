@@ -19,7 +19,7 @@ namespace xFrame.Core.Generators
                 foreach (var variable in variableDeclaration)
                 {
                     var field = context.SemanticModel.GetDeclaredSymbol(variable);
-                    if (field is IFieldSymbol fieldInfo && fieldInfo.GetAttributes().Any(x => x.AttributeClass.ToDisplayString() == "xFrame.Core.Attributes.GeneratepropertyAttribute"))
+                    if (field is IFieldSymbol fieldInfo && fieldInfo.GetAttributes().Any(x => x.AttributeClass.ToDisplayString() == "Generateproperty"))
                     {
                         IdentifiedFields.Add(fieldInfo);
                     }

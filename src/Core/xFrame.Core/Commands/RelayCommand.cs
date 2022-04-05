@@ -3,26 +3,79 @@ using System.Windows.Input;
 
 namespace xFrame.Core.Commands
 {
-    public class RelayCommand : CommandBase
+    public class RelayCommand : IRelayCommand
     {
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null) : base(execute, canExecute)
+        private readonly Action _execute;
+        private readonly Func<bool> _canExecute;
+
+        public event EventHandler CanExecuteChanged;
+
+        public RelayCommand(Action execute, Func<bool> canExecute = null)
         {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
         }
 
-        public override void Execute(object parameter)
+        public bool CanExecute(object parameter)
         {
-            if (CanExecute(parameter))
-                ExecuteAction(parameter);
+            return _canExecute?.Invoke() != false;
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute();
+        }
+
+        public void NotifyCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
 
-    public class RelayCommand<T> : RelayCommand
+    public class RelayCommand<T> : IRelayCommand<T>
     {
-        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null) 
-            : base(p => execute((T)Convert.ChangeType(p, typeof(T))), canExecute != null ? p => canExecute((T)p) : null)
+
+        private readonly Action<T> _execute;
+        private readonly Predicate<T> _canExecute;
+
+        public event EventHandler CanExecuteChanged;
+
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
         {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(T parameter)
+        {
+            return _canExecute?.Invoke(parameter) != false;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            if(default(T) is not null && parameter is null)
+            {
+                return false;
+            }
+
+            return CanExecute((T)Convert.ChangeType(parameter, typeof(T)));
+        }
+
+        public void Execute(T parameter)
+        {
+            _execute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            Execute((T)Convert.ChangeType(parameter,typeof(T)));
+        }
+
+        public void NotifyCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -6,7 +6,8 @@ using xFrame.WPF.Samples.ViewModels;
 
 var builder = XFrameHost.CreateBuilder()
     .UseColorTheme(ThemeType.SystemDefault)
-    .UseFluentControls();
+    .UseFluentControls()
+    .UseSplashScreen<SplashViewModel>();
 
 builder.Modules.AddFromFolder(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Modules\");
 

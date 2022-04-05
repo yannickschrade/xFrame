@@ -40,22 +40,24 @@ namespace xFrame.Core.Validation
             return context;
         }
 
-        public static IPropertyValidationContext<T, TPoperty> NotifyCommand<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context, Expression<Func<T, CommandBase>> command)
-        {
-            var com = command.Compile()(context.InnerContext.TypeInstance);
-            context.AddValidationCallBack((@class, property, result) =>
-            {
-                com.RaisCanExecuteChanged(result.IsValid);
-            });
-            return context;
-        }
 
-        public static IPropertyValidationContext<T, TProperty> UpdateCommandCanExecute<T, TProperty>(this IPropertyValidationContext<T, TProperty> context, Expression<Func<T, CommandBase>> command)
-        {
-            var com = command.Compile()(context.InnerContext.TypeInstance);
-            context.AddValidationCallBack((c,p,r) => com.RaisCanExecuteChanged(r.IsValid));
-            return context;
-        }
+        // TODO FIX!
+        //public static IPropertyValidationContext<T, TPoperty> NotifyCommand<T, TPoperty>(this IPropertyValidationContext<T, TPoperty> context, Expression<Func<T, IRelayCommand>> command)
+        //{
+        //    var com = command.Compile()(context.InnerContext.TypeInstance);
+        //    context.AddValidationCallBack((@class, property, result) =>
+        //    {
+        //        com.RaisCanExecuteChanged(result.IsValid);
+        //    });
+        //    return context;
+        //}
+
+        //public static IPropertyValidationContext<T, TProperty> UpdateCommandCanExecute<T, TProperty>(this IPropertyValidationContext<T, TProperty> context, Expression<Func<T, IRelayCommand>> command)
+        //{
+        //    var com = command.Compile()(context.InnerContext.TypeInstance);
+        //    context.AddValidationCallBack((c,p,r) => com.RaisCanExecuteChanged(r.IsValid));
+        //    return context;
+        //}
     }
 
 

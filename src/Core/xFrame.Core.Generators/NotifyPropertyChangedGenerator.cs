@@ -1,13 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-#if NETSTANDARD2_0
 namespace xFrame.Core.Generators
 {
     [Generator]
@@ -18,6 +15,8 @@ namespace xFrame.Core.Generators
 
         public void Execute(GeneratorExecutionContext context)
         {
+            context.AddSource("GeneratePropertyAttribute", SourceText.From(AttributeTemplates.GeneratePropertyAttribute, Encoding.UTF8));
+
             if (context.SyntaxContextReceiver is not FieldSyntaxReciever syntaxReciever) return;
             notifyChangedInterface = context.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
             callerMemberSymbol = context.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.CallerMemberNameAttribute");
@@ -107,4 +106,3 @@ namespace xFrame.Core.Generators
 
 
 }
-#endif
