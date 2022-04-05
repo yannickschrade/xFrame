@@ -14,7 +14,7 @@ using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace xFrame.WPF.Controls.Windows
 {
-    public class DefaultHeader : Control
+    internal class DefaultHeader : Control
     {
 
         private Window _ownerWindow;

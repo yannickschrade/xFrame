@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:xFrame.WPF.Samples"
         xmlns:xFrame="xFrame:Wpf"
-        xmlns:xTheme="xFrame:Wpf.Theming" 
+        xmlns:xTheme="xFrame:Wpf.Theming"
         xmlns:viewmodels="clr-namespace:xFrame.WPF.Samples.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         Style="{StaticResource FluentWindow}"
@@ -13,6 +13,14 @@
         WindowStartupLocation="CenterScreen"
         Height="450" Width="800">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <xTheme:DarkTheme/>
+                <xFrame:FluentControls/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

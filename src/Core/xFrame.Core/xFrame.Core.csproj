@@ -21,9 +21,4 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Generators\" />
-  </ItemGroup>
 </Project>
