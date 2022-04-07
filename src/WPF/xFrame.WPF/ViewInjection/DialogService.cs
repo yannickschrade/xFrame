@@ -43,7 +43,9 @@ namespace xFrame.WPF.ViewInjection
             {
                 diagWindow.Style = dialogStyle;
             }
-            dialogWindow.Loaded += (s, e) => vm.OnLoaded();
+            dialogWindow.Loaded += (s, e) => {
+                vm.OnLoaded();
+                };
             vm.CloseDialogAction = new Action(() => dialogWindow.Close());
             dialogWindow.DataContext = vm;
             dialogWindow.DialogContent = content;

@@ -28,12 +28,11 @@ namespace xFrame.WPF.Samples.ViewModels
         public async Task LoadAppAsync()
         {
             Message = "Hello From Splash Screen";
-            await Task.Delay(5000);
+            await Task.Delay(1000);
             Message = "Little Progress update";
-            await Task.Delay(5000);
+            await Task.Delay(1000);
             Message = "Allready done";
             await Task.Delay(2000);
-            _logger.LogInformation("Hello World");
         }
 
     }

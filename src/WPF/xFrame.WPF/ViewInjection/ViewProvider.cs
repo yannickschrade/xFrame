@@ -45,7 +45,9 @@ namespace xFrame.WPF.ViewInjection
         {
             var viewType = _viewModelToViewMapping[vm.GetType()];
             var uiElement = (FrameworkElement)_services.GetUnregistredService(viewType);
-            uiElement.Loaded += (s, e) => vm.OnLoaded();
+            uiElement.Loaded += (s, e) => {
+                vm.OnLoaded();
+                };
             uiElement.DataContext = vm;
             return uiElement;
         }

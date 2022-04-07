@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using xFrame.Core.Commands;
+using xFrame.Core.Context;
 using xFrame.Core.Generators;
 using xFrame.Core.Modularity;
 using xFrame.Core.MVVM;
+using xFrame.Core.Validation;
 
 namespace xFrame.WPF.Samples.ViewModels
 {
@@ -13,10 +15,12 @@ namespace xFrame.WPF.Samples.ViewModels
         [Generateproperty]
         private string _loadingText = "Test";
 
-        private AsyncRelayCommand _backgroundCommand;
+        [Generateproperty]
+        private string _inputTextBox;
 
+        private AsyncRelayCommand _backgroundCommand;
         public AsyncRelayCommand BackgroundCommand => _backgroundCommand ?? new AsyncRelayCommand(AsyncWork);
-        
+
 
         public MainViewModel(IModuleProvider moduleProvider, ILogger<MainViewModel> logger)
         {
@@ -26,13 +30,19 @@ namespace xFrame.WPF.Samples.ViewModels
 
         public override void OnLoaded()
         {
+            base.OnLoaded();
             _moduleProvider.LoadAllModules(m => LoadingText = $"Module: {m.Name} geladen");
 
         }
 
         public override void SetupValidation()
         {
-
+            this.Property(x => x.InputTextBox)
+                    .AddValidation(x =>
+                    {
+                        x.IsNotEmpty()
+                        .WithMessage("Textfeld darf nicht Leer sein");
+                    });
         }
 
         private async Task AsyncWork(CancellationToken token)

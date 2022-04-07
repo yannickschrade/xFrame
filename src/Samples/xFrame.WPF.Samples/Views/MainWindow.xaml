@@ -21,20 +21,21 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <StackPanel>
         <TextBlock Text="{Binding LoadingText}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   FontSize="26"/>
+                   FontSize="26"
+                   Margin="10"/>
 
         <Button Content="Async Command"
                 Grid.Row="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Command="{Binding BackgroundCommand}"/>
-    </Grid>
+                Command="{Binding BackgroundCommand}"
+                Margin="10"/>
+
+        <TextBox Text="{Binding InputTextBox, ValidatesOnNotifyDataErrors=True}"
+                 Margin="10"/>
+    </StackPanel>
 </Window>
