@@ -12,7 +12,7 @@ namespace xFrame.Core.Modularity
     public static class ModuleCollectionExtensions
     {
 
-        public static IModuleCollection AddMoulde(this IModuleCollection modules, Type moduleType)
+        public static IModuleCollection AddModule(this IModuleCollection modules, Type moduleType)
         {
             if (!typeof(IServiceModule).IsAssignableFrom(moduleType) || !typeof(IModule).IsAssignableFrom(moduleType) || moduleType.IsAbstract || !moduleType.IsClass)
                 throw new ArgumentException(nameof(moduleType) + " must be an non abstract class which implements the " + typeof(IServiceModule) + " or " + typeof(IModule) + " interface");
@@ -23,9 +23,9 @@ namespace xFrame.Core.Modularity
 
 
         public static IModuleCollection AddModule<T>(this IModuleCollection modules)
-            where T : IServiceModule, new()
+            where T : class, IModule
         {
-            return modules.AddMoulde(typeof(T));
+            return modules.AddModule(typeof(T));
         }
 
         public static IModuleCollection AddFromFolder(this IModuleCollection modules, string path)

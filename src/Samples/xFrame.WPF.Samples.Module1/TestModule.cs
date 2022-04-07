@@ -5,7 +5,7 @@ using xFrame.Core.Modularity;
 
 namespace xFrame.WPF.Samples.Module1
 {
-    public class TestModule : IModule
+    public class TestModule : IServiceModule
     {
         private readonly ILogger _logger;
 
@@ -19,9 +19,14 @@ namespace xFrame.WPF.Samples.Module1
             _logger = logger;
         }
 
+        public void RegisterServices(IServiceCollection services)
+        {
+            
+        }
+
         public void Initialize(IServiceProvider services)
         {
-            _logger.LogInformation("Module Initialized");
+            
         }
     }
 }

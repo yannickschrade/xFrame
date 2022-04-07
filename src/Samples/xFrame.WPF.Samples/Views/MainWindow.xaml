@@ -35,7 +35,7 @@
                 Command="{Binding BackgroundCommand}"
                 Margin="10"/>
 
-        <TextBox Text="{Binding InputTextBox, ValidatesOnNotifyDataErrors=True}"
+        <TextBox Text="{Binding InputTextBox}"
                  Margin="10"/>
     </StackPanel>
 </Window>

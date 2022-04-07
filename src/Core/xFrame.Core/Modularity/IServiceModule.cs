@@ -2,7 +2,7 @@
 
 namespace xFrame.Core.Modularity
 {
-    public interface IServiceModule
+    public interface IServiceModule : IModule
     {
         void RegisterServices(IServiceCollection services);
     }
